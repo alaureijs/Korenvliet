@@ -1,0 +1,102 @@
+digraph finite_state_machine {
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Helvetica,Arial,sans-serif"]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+	rankdir=LR;
+	node [shape = doublecircle]; 12 13 14 15 17 16 20 19 18;
+    node [shape = pentagon]; 34 35;
+	node [shape = octagon]; 20 21 27 26 25 23 24 22;
+	node [shape = rectangle]; 1 2 3 4 5 6 7 8 9 10 11 33 36 37;
+	node [shape = circle];
+
+    1 -> 2 [label="west"]
+    1 -> 4 [label="zuid"]
+    2 -> 1 [label="oost"]
+    2 -> 3 [label="zuid"]
+    2 -> 9 [label="noord"]
+    3 -> 2 [label="noord"]
+    3 -> 4 [label="oost"]
+    4 -> 3 [label="west"]
+    4 -> 5 [label="oost"]
+    4 -> 1 [label="noord"]
+    5 -> 4 [label="west"]
+    6 -> 9 [label="zuid"]
+    6 -> 7 [label="oost"]
+    7 -> 6 [label="west"]
+    7 -> 8 [label="oost"]
+    8 -> 7 [label="west"]
+    9 -> 2 [label="zuid"]
+    9 -> 6 [label="noord"]
+    10 -> 9 [label="uit"]
+    11 -> 9 [label="uit"]
+    12 -> 9 [label="uit"]
+    12 -> 13 [label="zuid"]
+    13 -> 12 [label="noord"]
+    13 -> 14 [label="oost"]
+    13 -> 17 [label="zuid"]
+    14 -> 13 [label="west"]
+    14 -> 15 [label="oost"]
+    14 -> 16 [label="zuid"]
+    15 -> 14 [label="west"]
+    16 -> 14 [label="noord"]
+    16 -> 17 [label="west"]
+    17 -> 1 [label="uit"]
+    17 -> 13 [label="noord"]
+    17 -> 16 [label="oost"]
+    18 -> 19 [label="oost"]
+    19 -> 18 [label="west"]
+    19 -> 20 [label="omhoog"]
+    20 -> 19 [label="omlaag"]
+    21 -> 13 [label="uit"]
+    21 -> 22 [label="zuid"]
+    22 -> 21 [label="noord"]
+    22 -> 23 [label="oost"]
+    23 -> 22 [label="west"]
+    23 -> 24 [label="noord"]
+    23 -> 25 [label="zuid"]
+    24 -> 14 [label="uit"]
+    24 -> 23 [label="zuid"]
+    25 -> 23 [label="noord"]
+    25 -> 26 [label="west"]
+    26 -> 17 [label="uit"]
+    26 -> 27 [label="omlaag"]
+    26 -> 25 [label="oost"]
+    27 -> 18 [label="uit"]
+    27 -> 26 [label="omhoog"]
+    28 -> 5 [label="uit"]
+    28 -> 29 [label="zuid"]
+    29 -> 28 [label="noord"]
+    30 -> 28 [label="uit"]
+    30 -> 31 [label="zuid"]
+    31 -> 29 [label="omhoog"]
+    31 -> 30 [label="noord"]
+    32 -> 31 [label="oost"]
+    32 -> 33 [label="west"]
+    33 -> 32 [label="oost"]
+    34 -> 8 [label="uit"]
+    35 -> 36 [label="uit"]
+    37 -> 36 [label="uit"]
+
+    # naar winkel
+    9 -> 10 [label="ga"]
+
+    # naar ziekenhuis
+    9 -> 11 [label="ga"]
+
+    # naar korenvliet
+    9 -> 12 [label="ga"]
+    1 -> 17 [label="ga"]
+
+    # bootje varen
+    5 -> 28 [label="boot"]
+
+    # ballon varen
+    8 -> 34 [label="in ballon"]
+
+    34 -> 35 [label="ballon varen"]
+    35 -> 34 [label="ballon varen"]
+
+    # ingang riool
+    16 -> 20 [label="deur"]
+
+}
