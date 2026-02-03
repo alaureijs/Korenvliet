@@ -138,7 +138,10 @@
 1380 IF LEFT$(C$,4) = "ga u" THEN 3030
 1390 IF LEFT$(C$,2) = "ga" THEN 3080
 1410 IF C$ = "voer panter" OR C$ = "geef zalm" THEN 3150
-1420 h = INSTR(C$,"panter") : if h <> 0 THEN 3130
+1419 rem 1420 h = INSTR(C$,"panter") : if h <> 0 THEN 3130
+1420 H = 0:FOR I = 1 TO LEN(C$) - 5
+1421 IF MID$(C$,I,6) = "PANTER" THEN H = I:I = LEN(C$):REM EXIT LOOP
+1422 NEXT I:IF H <> 0 THEN 3130
 1430 IF RIGHT$(C$,4) <> "boom" AND RIGHT$(C$,5) <> "bomen" THEN 1450
 1435 IF LEFT$(C$,3) = "hak" OR LEFT$(C$,4) = "snij" THEN  3190
 1440 IF LEFT$(C$,4) = "klim" THEN 3800
@@ -178,16 +181,21 @@
 2140 IF C$ = "neem kist" AND O(26) = L THEN :PRINT "Ik heb geen dorst.":GOTO 1190
 2150 IF C$ = "neem kluis" AND O(25) = L THEN :PRINT "De kluis zit aan de muur vast.":GOTO 1190
 2160 GOTO 1990: rem EINDE NEEM
-2189 rem: "LEG"
-2190 FOR X =1 TO 19: H = INSTR(C$," ",5)
-2191   IF H <> 0 THEN G = H-5
-2192   IF h = 0  THEN G = LEN(C$)-4
-2200   IF G > 0 THEN IF MID$(C$,5,G) = RIGHT$(I$(X),G) AND O(X) = 0 THEN 2240
-2220 NEXT :GOTO 1990
+2189 rem: "LEG" 2190 FOR X =1 TO 19: H = INSTR(5,C$," "): IF H <> 0 THEN G = H-5 ELSE G = LEN(C$)-4
+2190 FOR X =1 TO 19
+2191   h=0: print X
+2192   for g = 5 to len(c$)
+2193     if mid$(c$,g,1) = " " then H=g
+2194   next g
+2195   IF H <> 0 THEN G = H-5
+2196   IF h = 0  THEN G = LEN(C$)-4
+2197   IF G > 0 THEN IF MID$(C$,5,G) = RIGHT$(I$(X),G) AND O(X) = 0 THEN 2240
+2198 NEXT X
+2199 GOTO 1990
 2240 IF X = 8 AND (L = 28 OR L = 29) THEN O(8) = 5:I = I-1: :PRINT "De boot drijft weg.....":X = 19: GOTO 990
 2270 I = I-1
-2280 IF (L = 28 OR L = 29) THEN O(X) = L + 2:GOTO 1040
-2300   O(X) = L:X = 19: GOTO 1040
+2280 IF (L = 28 OR L = 29) THEN O(X) = L + 2: GOTO 1040
+2300   O(X) = L : X = 19: GOTO 1040
 2315 NEXT
 2340 rem print inventaris
 2350 FOR X = 1 TO 19: IF O(X) <> 0 THEN 2370
@@ -263,7 +271,7 @@
 3110 NEXT: :PRINT "Richting niet duidelijk.": GOTO 1190
 3129 rem: is de panter gevoerd?
 3130 IF V = 0 AND L = 18 THEN 6200
-3130 IF NOT (V = 0 AND L = 18) THEN 1990
+3131 IF NOT (V = 0 AND L = 18) THEN 1990
 3150 IF V = 1 THEN 1990
 3159 rem: Kan ik de panter voeren?
 3160 IF L <> 18 THEN 1990
@@ -427,9 +435,9 @@
 7615 PRINT " Druk op een willekeurige toets;";
 7790 gosub 210
 7800 GOTO 1040
-8000 DATA ballon,neergestorte weerballon,3,kachel,kleine houtkachel,1,mand,grote rieten mand,12,houtblokken,houtblokken,40,koord,rol koord,17,lucifers,doosje lucifers,15,tas,grote tas,16,rubberboot,rubberboot,1,bord,bord,8
-8100 DATA visnet,visnet,7,sportschoenen,sportschoenen,10,bijl,bijl,10,zwembril,zwembril,40,zalm,zalm,29,beker,kristallen beker,19,fles,lege champagnefles,33,boek,boek,14,schilderij,schilderij van Oom Wout,16,snorkel,snorkel,40,landhuis,"Korenvliet",9
-8110 DATA landhuis,Korenvliet,1,schuur,oude verlaten schuur,36,tafel,houten tafel,37,klok,Friese staartklok,14,kluis,kluis,40,kist,kist Chablis,18,bomen,bomen,2,deur,deur,20,deur,deur,16,panter,een geimporteerde panter,18,winkel,supermarkt,9
+8000 DATA ballon,"neergestorte weerballon",3,kachel,"kleine houtkachel",1,mand,"grote rieten mand",12,houtblokken,houtblokken,40,koord,"rol koord",17,lucifers,"doosje lucifers",15,tas,"grote tas",16,rubberboot,rubberboot,1,bord,bord,8
+8100 DATA visnet,visnet,7,sportschoenen,sportschoenen,10,bijl,bijl,10,zwembril,zwembril,40,zalm,zalm,29,beker,"kristallen beker",19,fles,"lege champagnefles",33,boek,boek,14,schilderij,"schilderij van Oom Wout",16,snorkel,snorkel,40,landhuis,"Korenvliet",9
+8110 DATA landhuis,"Korenvliet",1,schuur,"oude verlaten schuur",36,tafel,"houten tafel",37,klok,"Friese staartklok",14,kluis,kluis,40,kist,"kist Chablis",18,bomen,bomen,2,deur,deur,20,deur,deur,16,panter,"een geimporteerde panter",18,winkel,supermarkt,9
 8120 DATA trap,trap,19,ziekenhuis,ziekenhuis,9,op het binnenplein,in een bos,in een weiland,een glibberige kanaalkant,de oever van een vijver,op een braakliggend terrein,op een rotspaadje
 8125 DATA de rand van een afgraving,op de hoofdstraat,in de supermarkt
 8130 DATA in het ziekenhuis,in de foyer,in de huiskamer,in de studeerkamer,in een tuinkamer,op de overloop,in het atrium,westvleugel van wijnkelder,oostvleugel van wijnkelder,boven aan een trap,een uitlaat van een riool
