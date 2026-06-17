@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 830" width="100%" height="100%">
+<rect width="1000" height="830" fill="#1a1a2e"/>
+<rect x="120" y="50" width="700" height="250" fill="#0f3460" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="130" y="68" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Buiten / Natuur</text>
+<rect x="250" y="230" width="300" height="70" fill="#16213e" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="260" y="248" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Binnenstad</text>
+<rect x="290" y="325" width="450" height="220" fill="#1a1a3e" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="300" y="343" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Landhuis</text>
+<rect x="470" y="555" width="310" height="60" fill="#0a0a2e" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="480" y="573" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Wijnkelder &amp; Trap</text>
+<rect x="250" y="595" width="420" height="210" fill="#0d0d1a" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="260" y="613" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Riool</text>
+<rect x="40" y="320" width="300" height="235" fill="#0a1628" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="50" y="338" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Water / Grot</text>
+<rect x="700" y="70" width="190" height="640" fill="#1a0a2e" rx="10" opacity="0.35" stroke="#2a2a55" stroke-width="1"/>
+<text x="710" y="88" fill="#5555aa" font-family="monospace" font-size="12" font-weight="bold">Ballon / Plateau</text>
+<line x1="180" y1="80" x2="320" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="250.0" y="98.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="180" y1="80" x2="180" y2="175" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="166.0" y="131.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="320" y1="80" x2="180" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="250.0" y="70.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="320" y1="80" x2="320" y2="175" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="306.0" y="131.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="320" y1="80" x2="400" y2="250" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="347.3325381691861" y="174.96115850861833" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="320" y1="175" x2="320" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="334.0" y="131.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="320" y1="175" x2="180" y2="175" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="250.0" y="165.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="180" y1="175" x2="180" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="194.0" y="131.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="180" y1="175" x2="320" y2="175" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="250.0" y="193.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="180" y1="175" x2="130" y2="270" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="142.61114488665226" y="219.97954994034328" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="130" y1="270" x2="180" y2="175" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="167.38885511334774" y="233.02045005965672" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="480" y1="80" x2="600" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="540.0" y="98.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="480" y1="80" x2="400" y2="250" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="427.3325381691861" y="163.03884149138167" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="600" y1="80" x2="480" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="540.0" y="70.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="600" y1="80" x2="720" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="660.0" y="98.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="720" y1="80" x2="600" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="660.0" y="70.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="400" y1="250" x2="320" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="372.6674618308139" y="163.03884149138167" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="400" y1="250" x2="480" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="452.6674618308139" y="174.96115850861833" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="300" y1="260" x2="400" y2="250" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="351.393052066294" y="272.93052066293984" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="500" y1="260" x2="400" y2="250" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="451.393052066294" y="245.06947933706016" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="340" y1="350" x2="400" y2="250" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="382.0049009599756" y="311.2029405759854" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="340" y1="350" x2="430" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="376.80313224617896" y="397.8495091975983" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="430" y1="415" x2="340" y2="350" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="393.19686775382104" y="375.1504908024017" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="430" y1="415" x2="550" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="490.0" y="433.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="430" y1="415" x2="340" y2="505" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="375.1005050633883" y="454.1005050633883" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="550" y1="415" x2="430" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="490.0" y="405.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="550" y1="415" x2="670" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="610.0" y="433.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="550" y1="415" x2="550" y2="505" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="536.0" y="464.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="670" y1="415" x2="550" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="610.0" y="405.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="550" y1="505" x2="550" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="564.0" y="464.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="550" y1="505" x2="340" y2="505" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="445.0" y="495.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="340" y1="505" x2="180" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="273.1022629056078" y="291.56738337671237" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="340" y1="505" x2="430" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="394.8994949366117" y="473.8994949366117" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="340" y1="505" x2="550" y2="505" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="445.0" y="523.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="500" y1="580" x2="620" y2="580" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="560.0" y="598.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="620" y1="580" x2="500" y2="580" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="560.0" y="570.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="620" y1="580" x2="740" y2="580" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="680.0" y="598.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">H</text>
+<line x1="740" y1="580" x2="620" y2="580" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="680.0" y="570.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">L</text>
+<line x1="380" y1="620" x2="430" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="418.6012847429638" y="524.8173865226742" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="380" y1="620" x2="380" y2="695" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="366.0" y="661.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="380" y1="695" x2="380" y2="620" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="394.0" y="661.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="380" y1="695" x2="500" y2="695" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="440.0" y="713.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="500" y1="695" x2="380" y2="695" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="440.0" y="685.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="500" y1="695" x2="620" y2="695" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="560.0" y="713.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="500" y1="695" x2="500" y2="770" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="486.0" y="736.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="620" y1="695" x2="550" y2="415" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="598.5819950020347" y="555.6045012494914" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="620" y1="695" x2="500" y2="695" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="560.0" y="685.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="500" y1="770" x2="500" y2="695" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="514.0" y="736.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="500" y1="770" x2="380" y2="770" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="440.0" y="760.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="380" y1="770" x2="340" y2="505" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="373.8431872136122" y="639.4104623073792" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="380" y1="770" x2="500" y2="770" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="440.0" y="788.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="380" y1="770" x2="280" y2="770" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="330.0" y="760.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">L</text>
+<line x1="280" y1="770" x2="500" y2="580" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="399.1506781848453" y="689.5955221087683" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="280" y1="770" x2="380" y2="770" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="330.0" y="788.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">H</text>
+<line x1="80" y1="350" x2="130" y2="270" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="116.87197625607124" y="321.4199851600445" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="80" y1="350" x2="80" y2="435" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="66.0" y="396.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="80" y1="435" x2="80" y2="350" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="94.0" y="396.5" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="80" y1="520" x2="80" y2="350" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="94.0" y="439.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="80" y1="520" x2="200" y2="520" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="140.0" y="538.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">Z</text>
+<line x1="200" y1="520" x2="80" y2="520" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="140.0" y="510.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">N</text>
+<line x1="200" y1="520" x2="80" y2="435" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="148.09224277092474" y="470.0756572645768" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">H</text>
+<line x1="320" y1="520" x2="200" y2="520" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="260.0" y="510.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="320" y1="520" x2="440" y2="520" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="380.0" y="538.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">W</text>
+<line x1="440" y1="520" x2="320" y2="520" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="380.0" y="510.0" fill="#88bbff" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">O</text>
+<line x1="850" y1="100" x2="720" y2="80" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="787.1288005795552" y="80.16279623289137" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="850" y1="600" x2="730" y2="600" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="790.0" y="590.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<line x1="730" y1="680" x2="730" y2="600" stroke="#3a3a6a" stroke-width="2" stroke-dasharray="4,3"/>
+<text x="744.0" y="644.0" fill="#ff9944" font-family="monospace" font-size="11" text-anchor="middle" font-weight="bold">UIT</text>
+<circle cx="180" cy="80" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="180" y="85" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">1</text>
+<text x="200" y="84" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Binnenplein</text>
+<circle cx="320" cy="80" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="320" y="85" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">2</text>
+<text x="340" y="84" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Bos</text>
+<circle cx="320" cy="175" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="320" y="180" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">3</text>
+<text x="340" y="179" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Weiland</text>
+<circle cx="180" cy="175" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="180" y="180" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">4</text>
+<text x="200" y="179" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Kanaalkant</text>
+<circle cx="130" cy="270" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="130" y="275" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">5</text>
+<text x="150" y="274" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Vijveroever</text>
+<circle cx="480" cy="80" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="480" y="85" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">6</text>
+<text x="500" y="84" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Terrein</text>
+<circle cx="600" cy="80" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="600" y="85" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">7</text>
+<text x="620" y="84" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Rotspaadje</text>
+<circle cx="720" cy="80" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="720" y="85" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">8</text>
+<text x="740" y="84" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Afgraving</text>
+<circle cx="400" cy="250" r="14" fill="#004400" stroke="#44dd44" stroke-width="2"/>
+<text x="400" y="255" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">9</text>
+<text x="420" y="254" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Hoofdstraat</text>
+<circle cx="300" cy="260" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="300" y="265" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">10</text>
+<text x="320" y="264" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Supermarkt</text>
+<circle cx="500" cy="260" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="500" y="265" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">11</text>
+<text x="520" y="264" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Ziekenhuis</text>
+<circle cx="340" cy="350" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="340" y="355" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">12</text>
+<text x="360" y="354" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Foyer</text>
+<circle cx="430" cy="415" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="430" y="420" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">13</text>
+<text x="450" y="419" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Huiskamer</text>
+<circle cx="550" cy="415" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="550" y="420" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">14</text>
+<text x="570" y="419" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Studeerkamer</text>
+<circle cx="670" cy="415" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="670" y="420" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">15</text>
+<text x="690" y="419" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Tuinkamer</text>
+<circle cx="550" cy="505" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="550" y="510" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">16</text>
+<text x="570" y="509" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Overloop</text>
+<circle cx="340" cy="505" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="340" y="510" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">17</text>
+<text x="360" y="509" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Atrium</text>
+<circle cx="500" cy="580" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="500" y="585" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">18</text>
+<text x="520" y="584" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Wijnkelder W</text>
+<circle cx="620" cy="580" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="620" y="585" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">19</text>
+<text x="640" y="584" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Wijnkelder O</text>
+<circle cx="740" cy="580" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="740" y="585" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">20</text>
+<text x="760" y="584" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Trap</text>
+<circle cx="380" cy="620" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="380" y="625" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">21</text>
+<text x="400" y="624" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Riooluitlaat</text>
+<circle cx="380" cy="695" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="380" y="700" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">22</text>
+<text x="400" y="699" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Rioolbocht</text>
+<circle cx="500" cy="695" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="500" y="700" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">23</text>
+<text x="520" y="699" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Vertakking</text>
+<circle cx="620" cy="695" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="620" y="700" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">24</text>
+<text x="640" y="699" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Riooluitlaat</text>
+<circle cx="500" cy="770" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="500" y="775" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">25</text>
+<text x="520" y="774" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Rioolbocht</text>
+<circle cx="380" cy="770" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="380" y="775" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">26</text>
+<text x="400" y="774" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Riooluitlaat</text>
+<circle cx="280" cy="770" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="280" y="775" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">27</text>
+<text x="300" y="774" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Riooluitlaat</text>
+<circle cx="80" cy="350" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="80" y="355" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">28</text>
+<text x="100" y="354" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Vijver</text>
+<circle cx="80" cy="435" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="80" y="440" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">29</text>
+<text x="100" y="439" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Zuidbaai</text>
+<circle cx="80" cy="520" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="80" y="525" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">30</text>
+<text x="100" y="524" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Water</text>
+<circle cx="200" cy="520" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="200" y="525" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">31</text>
+<text x="220" y="524" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Water</text>
+<circle cx="320" cy="520" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="320" y="525" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">32</text>
+<text x="340" y="524" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Ondergr.stroom</text>
+<circle cx="440" cy="520" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="440" y="525" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">33</text>
+<text x="460" y="524" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Grot</text>
+<circle cx="850" cy="100" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="850" y="105" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">34</text>
+<text x="870" y="104" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Ballon</text>
+<circle cx="850" cy="600" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="850" y="605" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">35</text>
+<text x="870" y="604" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Ballon</text>
+<circle cx="730" cy="600" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="730" y="605" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">36</text>
+<text x="750" y="604" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Plateau</text>
+<circle cx="730" cy="680" r="14" fill="#1a3366" stroke="#4488ff" stroke-width="2"/>
+<text x="730" y="685" fill="#ffffff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">37</text>
+<text x="750" y="684" fill="#cccccc" font-family="monospace" font-size="11" text-anchor="start">Schuur</text>
+<rect x="20" y="795" width="960" height="30" fill="#111122" rx="4" opacity="0.6"/>
+<text x="30" y="815" fill="#888888" font-family="monospace" font-size="12">Start: locatie 9 (Hoofdstraat)  |  W=west O=oost N=noord Z=zuid U=uit H=omhoog L=omlaag  |  Blauw=richting Oranje=verticaal</text>
+</svg>
