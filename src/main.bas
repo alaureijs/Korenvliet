@@ -113,7 +113,7 @@
 1010 rem korenvliet
 1020 goto 9610
 1030 sd = 10:gosub 450: rem wacht een seconde
-1040 gosub 100 : print "Plaats    : ";::print l$(l)"."
+1040 gosub 100 : print "Plaats    : ";:print l$(l)"."
 1050 print : print "Uitgangen : ";: for x = 1 to 3: gosub 5000:print " ";:next : print
 1060 print : print "U ziet    : ";:
 1070 if o(13) <> 0 and (l = 30 or l = 31) then 1190
@@ -191,7 +191,7 @@
 2160 goto 1990: rem EINDE NEEM
 2189 rem: "leg" 2190 for x =1 to 19: h = instr(5,c$," "): if h <> 0 then g = h-5 else g = len(c$)-4
 2190 for x =1 to 19
-2191   h=0: print x
+2191   h=0
 2192   for g = 5 to len(c$)
 2193     if mid$(c$,g,1) = " " then h=g
 2194   next g
@@ -268,7 +268,7 @@
 2980 :print "Niets bijzonders.":goto 1190
 3000 if o(11) <> 0 then :print "Ik heb schoenen nodig.":goto 1190
 3010 if l > 9 then :print "Ik kan hier niet joggen.":goto 1190
-3015 w = 1::print "Pfff... Klaar!":goto 1190
+3015 w = 1:print "Pfff... Klaar!":goto 1190
 3020 if l = 28 then l = 5:goto 1040
 3021 goto 1990 : rem else replacement
 3030 if s = 1 then :print "Ik voel me niet goed.":goto 1190
@@ -357,7 +357,7 @@
 5370 if l = 2 and z = 8 then print "Een aapachtig figuur kijkt op U neer."
 5390 return
 5999 rem: wordt beter ?
-6000 if c$ = "gezondheid" or c$ = "wordt beter" or c$ = "beterschap" then s = 0::print "genezen.":goto 1190
+6000 if c$ = "gezondheid" or c$ = "wordt beter" or c$ = "beterschap" then s = 0:print "genezen.":goto 1190
 6010 goto 1200
 6100 if o(19) = 0 then :print "U heeft het al.":goto 1190
 6115 if o(19) = 40 and (o(7) = 0 or o(7) = l) then o(19) = 0:i = i+1:goto 1040
@@ -386,7 +386,7 @@
 6499 rem fancy wachtlus?? iets met geluid op de p2000
 6500 sd = 2:gosub 450:return
 6549 rem lees boek
-6550 :gosub 100:"   Zo bouwt U een heteluchtballon:"
+6550 :gosub 100:print "   Zo bouwt U een heteluchtballon:"
 6570 print :print :print tab(8)"1   ballon": print tab(8)"2   kachel":print tab(8)"3   brandstof":print tab(8)"4   gondel of schuit":print tab(8)"5   kabel of touw":print tab(8)"6   lucifers of aansteker"
 6600 print :print :print "   Bouw op een geschikte plaats!":gosub 10000:goto 1040
 6999 rem open kluis
