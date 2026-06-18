@@ -73,7 +73,7 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 /* ------------------------------------------------------------------ */
 #define MAX_OBJ   33
 #define MAX_LOC   37
-#define MAX_INV   19       /* only objects 1..19 can be items_carried */
+#define MAX_INV   19       /* only objects 1..19 can be inventory_count */
 #define MAX_EXITS  3
 #define LOC_GONE  40      /* object is used/destroyed/gone */
 #define WRAP_W    38      /* display column width for word-wrap */
@@ -85,7 +85,7 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define SEWER_NEED 4      /* objects 1..4 required for sewer entry */
 #define JOG_BOUND 9       /* rooms 1..9 are outdoors for jogging */
 #define WOOD_SPAWN 2      /* room where houtblokken appear after cutting */
-#define BALLOON_PARTS 6   /* objects 1..6 needed to build balloon */
+#define BALLOON_PARTS 6   /* objects 1..6 needed to build balloon_built */
 #define SAFE_DIGITS 3     /* number of safe-code digits */
 #define SAFE_MIN 10       /* safe code lower bound */
 #define SAFE_MAX 99       /* safe code upper bound */
@@ -187,7 +187,7 @@ enum {
 typedef struct {
     const char *short_name;
     const char *desc;
-    unsigned char loc;      /* 0 = items_carried, 1..37 = location, LOC_GONE = gone */
+    unsigned char loc;      /* 0 = inventory_count, 1..37 = location, LOC_GONE = gone */
 } Object;
 
 /* ------------------------------------------------------------------ */
@@ -213,17 +213,17 @@ static Object  obj[MAX_OBJ + 1];      /* 1-indexed */
 static Location loc[MAX_LOC + 1];     /* 1-indexed */
 
 static unsigned char player_location = 9;   /* current location */
-static unsigned char items_carried = 0;   /* # items items_carried */
-static unsigned char balloon = 0;   /* balloon built */
+static unsigned char inventory_count = 0;   /* # items inventory_count */
+static unsigned char balloon_built = 0;   /* balloon_built built */
 static unsigned char boat = 0;   /* rubber boat inflated */
-static unsigned char jogged = 0;   /* jogging done (weight loss) */
-static unsigned char unlocked = 0;   /* door unlocked */
+static unsigned char has_jogged = 0;   /* jogging done (weight loss) */
+static unsigned char door_unlocked = 0;   /* door door_unlocked */
 static unsigned char fed = 0;   /* panther fed */
 static unsigned char safe_open = 0;   /* safe opened, testament readable */
 static unsigned char painting_examined = 0;   /* painting examined, safe revealed */
 static unsigned char grate1 = 0, grate2 = 0, grate3 = 0, grate4 = 0;
 static unsigned char sick = 0;   /* sick / injured */
-static unsigned char part_cnt = 0;   /* balloon part counter */
+static unsigned char balloon_parts_count = 0;   /* balloon_built part counter */
 
 static const char * const pref[3] = {
     "uitlaat is afgedekt",
@@ -356,7 +356,7 @@ static void display_location(void)
         printf("putdeksel. ");
     if (player_location == LOCATION_HUISKAMER || player_location == LOCATION_STUDEERKAMER || player_location == LOCATION_ATRIUM || player_location == LOCATION_WIJNKELDER_WEST)
         printf("afvoer.\n");
-    if (balloon && (player_location == LOCATION_AFGRAVING || player_location == LOCATION_PLATEAU))
+    if (balloon_built && (player_location == LOCATION_AFGRAVING || player_location == LOCATION_PLATEAU))
         printf("hetelucht ballon.\n");
 
     /* Random atmospheric descriptions */
@@ -433,7 +433,7 @@ static int generic_take_item(int idx)
 {
     if (idx == 0) return RET_EXIT;
     if (obj[idx].loc == 0) { printf("Dat heeft U al.\n"); return RET_KEEP; }
-    if (obj[idx].loc == player_location) { obj[idx].loc = 0; items_carried++; return RET_REDRAW; }
+    if (obj[idx].loc == player_location) { obj[idx].loc = 0; inventory_count++; return RET_REDRAW; }
     return RET_EXIT;
 }
 
@@ -461,7 +461,7 @@ static int cmd_take(char *arg)
         printf("Die zit vastgespijkerd.\n");
         return RET_KEEP;
     }
-    if (items_carried >= 4) {
+    if (inventory_count >= 4) {
         printf("U draagt teveel bij U.\n");
         return RET_KEEP;
     }
@@ -469,8 +469,8 @@ static int cmd_take(char *arg)
     /* Bril (zwembril, obj 13) */
     if (strcasecmp(arg, "bril") == 0) {
         if (obj[OBJ_ZWEMBRIL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
-        if (obj[OBJ_ZWEMBRIL].loc == LOC_GONE && player_location == LOCATION_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; items_carried++; return RET_REDRAW; }
-        if (obj[OBJ_ZWEMBRIL].loc == player_location) { obj[OBJ_ZWEMBRIL].loc = 0; items_carried++; return RET_REDRAW; }
+        if (obj[OBJ_ZWEMBRIL].loc == LOC_GONE && player_location == LOCATION_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
+        if (obj[OBJ_ZWEMBRIL].loc == player_location) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
         return fail();
     }
 
@@ -478,9 +478,9 @@ static int cmd_take(char *arg)
     if (strcasecmp(arg, "snorkel") == 0) {
         if (obj[OBJ_SNORKEL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
         if (obj[OBJ_SNORKEL].loc == LOC_GONE && (obj[OBJ_TAS].loc == 0 || obj[OBJ_TAS].loc == player_location)) {
-            obj[OBJ_SNORKEL].loc = 0; items_carried++; return RET_REDRAW;
+            obj[OBJ_SNORKEL].loc = 0; inventory_count++; return RET_REDRAW;
         }
-        if (obj[OBJ_SNORKEL].loc == player_location) { obj[OBJ_SNORKEL].loc = 0; items_carried++; return RET_REDRAW; }
+        if (obj[OBJ_SNORKEL].loc == player_location) { obj[OBJ_SNORKEL].loc = 0; inventory_count++; return RET_REDRAW; }
         return fail();
     }
 
@@ -517,7 +517,7 @@ static int cmd_drop(char *arg)
     if (strncasecmp(arg, "leg snorkel", 11) == 0) {
         if (obj[OBJ_SNORKEL].loc != 0) { printf("Heeft U niet.\n"); return RET_KEEP; }
         if (player_location > LOCATION_RIOOL_27 && player_location < LOCATION_STROOM) { printf("Neem het snel terug!\n"); return RET_KEEP; }
-        obj[OBJ_SNORKEL].loc = player_location; items_carried--; return RET_REDRAW;
+        obj[OBJ_SNORKEL].loc = player_location; inventory_count--; return RET_REDRAW;
     }
 
     if (strncasecmp(arg, "leg ", 4) == 0)
@@ -530,11 +530,11 @@ static int cmd_drop(char *arg)
             if (g > (int)slen) g = (int)slen;
             if (g > 0 && strcasecmp(arg + arglen - g, obj[x].short_name + slen - g) == 0 && obj[x].loc == 0) {
                 if (x == 8 && (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI)) {
-                    obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; items_carried--;
+                    obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; inventory_count--;
                     printf("De boot drijft weg.....\n");
                     return RET_REDRAW;
                 }
-                items_carried--;
+                inventory_count--;
                 obj[x].loc = (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI) ? player_location + WATER_OFF : player_location;
                 return RET_REDRAW;
             }
@@ -610,7 +610,7 @@ static int cmd_enter(const char *arg)
             (player_location == LOCATION_ATRIUM && grate3 == 0) || (player_location == LOCATION_WIJNKELDER_WEST && grate4 == 0)) {
             printf("%s\n", pref[0]); return RET_KEEP;
         }
-        if (jogged == 0) { printf("U bent te dik.\n"); return RET_KEEP; }
+        if (has_jogged == 0) { printf("U bent te dik.\n"); return RET_KEEP; }
         if (player_location == LOCATION_HUISKAMER && grate1) { player_location = LOCATION_RIOOL_21; return RET_REDRAW; }
         if (player_location == LOCATION_STUDEERKAMER && grate2) { player_location = LOCATION_RIOOL_24; return RET_REDRAW; }
         if (player_location == LOCATION_ATRIUM && grate3) { player_location = LOCATION_RIOOL_26; return RET_REDRAW; }
@@ -619,7 +619,7 @@ static int cmd_enter(const char *arg)
     }
 
     if (strcasecmp(place, "ballon") == 0) {
-        if (balloon == 0) { printf("Nog niet klaar.\n"); return RET_KEEP; }
+        if (balloon_built == 0) { printf("Nog niet klaar.\n"); return RET_KEEP; }
         if (player_location == LOCATION_AFGRAVING)  { player_location = LOCATION_BALLON_STRAAT; return RET_REDRAW; }
         if (player_location == LOCATION_PLATEAU) { player_location = LOCATION_BALLON_PLATEAU; return RET_REDRAW; }
         printf("Ik kan het niet vinden.\n");
@@ -762,7 +762,7 @@ static int cmd_jog(void)
 {
     if (obj[OBJ_SPORTSCHOENEN].loc != 0) { printf("Ik heb schoenen nodig.\n"); return RET_KEEP; }
     if (player_location > LOCATION_HOOFDSTRAAT) { printf("Ik kan hier niet joggen.\n"); return RET_KEEP; }
-    jogged = 1;
+    has_jogged = 1;
     printf("Pfff... Klaar!\n");
     return RET_KEEP;
 }
@@ -791,7 +791,7 @@ static int cmd_panther(void)
     if (player_location != LOCATION_WIJNKELDER_WEST) return fail();
     if (obj[OBJ_ZALM].loc != 0) { printf("U hebt voedsel nodig.\n"); return RET_KEEP; }
     printf("Panter ontsnapte met de zalm.\n");
-    if (obj[OBJ_ZALM].loc == 0) items_carried--;
+    if (obj[OBJ_ZALM].loc == 0) inventory_count--;
     fed = 1;
     obj[OBJ_ZALM].loc = LOC_GONE;
     obj[OBJ_PANTER].loc = LOC_GONE;
@@ -840,7 +840,7 @@ static int cmd_remove_cover(void)
 static int cmd_open_door(void)
 {
     if (player_location == LOCATION_OVERLOOP || player_location == LOCATION_TRAP) {
-        if (player_location == LOCATION_OVERLOOP && unlocked == 0) {
+        if (player_location == LOCATION_OVERLOOP && door_unlocked == 0) {
             printf("Gaat niet. De deur is aan de andere kant vergrendeld.\n");
             return RET_KEEP;
         }
@@ -892,27 +892,27 @@ static int cmd_inflate_boat(void)
     printf("OK.\n"); boat = 1; return RET_KEEP;
 }
 
-static int cmd_build_balloon(void)
+static int cmd_build_balloon_built(void)
 {
     int x;
     if (player_location != LOCATION_AFGRAVING) { printf("Niet hier.\n"); return RET_KEEP; }
-    part_cnt = 0;
+    balloon_parts_count = 0;
     for (x = 1; x <= BALLOON_PARTS; x++) {
-        if (obj[x].loc == 0 || obj[x].loc == LOCATION_AFGRAVING) part_cnt++;
+        if (obj[x].loc == 0 || obj[x].loc == LOCATION_AFGRAVING) balloon_parts_count++;
     }
-    if (part_cnt != 6) { printf("Niet klaar.\n"); part_cnt = 0; return RET_KEEP; }
+    if (balloon_parts_count != 6) { printf("Niet klaar.\n"); balloon_parts_count = 0; return RET_KEEP; }
     for (x = 1; x <= BALLOON_PARTS; x++) {
-        if (obj[x].loc == 0) items_carried--;
+        if (obj[x].loc == 0) inventory_count--;
         obj[x].loc = LOC_GONE;
     }
-    balloon = 1;
+    balloon_built = 1;
     return RET_REDRAW;
 }
 
-static int cmd_fly_balloon(void)
+static int cmd_fly_balloon_built(void)
 {
     int y, z;
-    if (balloon == 0) { printf("Niet klaar.\n"); return RET_KEEP; }
+    if (balloon_built == 0) { printf("Niet klaar.\n"); return RET_KEEP; }
     if (player_location == LOCATION_AFGRAVING || player_location == LOCATION_PLATEAU) { printf("U moet er eerst in.\n"); return RET_KEEP; }
 
     if (player_location == LOCATION_BALLON_PLATEAU) {
@@ -961,8 +961,8 @@ static int cmd_read_sign(void)
 
 static int cmd_door(void)
 {
-    if (player_location == LOCATION_OVERLOOP && unlocked == 0) { printf("De deur is op slot.\n"); return RET_KEEP; }
-    if (player_location == LOCATION_TRAP) { player_location = LOCATION_OVERLOOP; unlocked = 1; return RET_REDRAW; }
+    if (player_location == LOCATION_OVERLOOP && door_unlocked == 0) { printf("De deur is op slot.\n"); return RET_KEEP; }
+    if (player_location == LOCATION_TRAP) { player_location = LOCATION_OVERLOOP; door_unlocked = 1; return RET_REDRAW; }
     if (player_location == LOCATION_OVERLOOP) { player_location = LOCATION_TRAP; return RET_REDRAW; }
     return fail();
 }
@@ -1010,10 +1010,10 @@ static const CmdEntry cmd_table[] = {
     {"maak kluis open", cmd_open_safe},
     {"open kluis",      cmd_open_safe},
     {"blaas boot op",   cmd_inflate_boat},
-    {"blaas ballon op", cmd_build_balloon},
-    {"bouw ballon",     cmd_build_balloon},
-    {"vlieg met ballon", cmd_fly_balloon},
-    {"zeil met ballon", cmd_fly_balloon},
+    {"blaas ballon op", cmd_build_balloon_built},
+    {"bouw ballon",     cmd_build_balloon_built},
+    {"vlieg met ballon", cmd_fly_balloon_built},
+    {"zeil met ballon", cmd_fly_balloon_built},
     {"lees testament",  cmd_read_will},
     {"lees boek",       cmd_read_book},
     {"lees bord",       cmd_read_sign},

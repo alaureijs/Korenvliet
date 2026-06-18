@@ -56,10 +56,10 @@
   `-Wconversion`, `-Wshadow`, `-Wfloat-equal`, `-fanalyzer`,
   `-fsanitize=undefined` to `Makefile`
 - Renamed all single-letter global variables to descriptive names:
-  `l`→`player_location`, `i`→`items_carried`, `h`→`balloon`, `r`→`boat`,
-  `w`→`jogged`, `k`→`unlocked`, `v`→`fed`, `f`→`safe_open`,
-  `e`→`painting_examined`, `s`→`sick`, `c1`-`c4`→`grate1`-`grate4`,
-  `hb`→`part_cnt`, `p`→`pref`
+  `l`→`player_location`, `i`→`inventory_count`, `h`→`balloon_built`,
+  `r`→`boat`, `w`→`has_jogged`, `k`→`door_unlocked`, `v`→`fed`,
+  `f`→`safe_open`, `e`→`painting_examined`, `s`→`sick`,
+  `c1`-`c4`→`grate1`-`grate4`, `hb`→`balloon_parts_count`, `p`→`pref`
 
 ## 2026-06-17
 
