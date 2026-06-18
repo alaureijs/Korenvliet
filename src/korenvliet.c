@@ -58,6 +58,20 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define MAX_LOC   37
 #define MAX_INV   19       /* only objects 1..19 can be carried */
 #define MAX_EXITS  3
+#define LOC_GONE  40      /* object is used/destroyed/gone */
+#define WRAP_W    38      /* display column width for word-wrap */
+#define SUFFIX_LEN 2      /* strlen of ". " appended to object names */
+#define MAX_CARRY 4       /* max items player can carry */
+#define BOAT_DROP 5       /* location 5 (vijveroever) when boat drops */
+#define WATER_OFF 2       /* room offset: surface (28/29) -> underwater (30/31) */
+#define SEWER_MAX 8       /* number of sewer entrance locations */
+#define SEWER_NEED 4      /* objects 1..4 required for sewer entry */
+#define JOG_BOUND 9       /* rooms 1..9 are outdoors for jogging */
+#define WOOD_SPAWN 2      /* room where houtblokken appear after cutting */
+#define BALLOON_PARTS 6   /* objects 1..6 needed to build balloon */
+#define SAFE_DIGITS 3     /* number of safe-code digits */
+#define SAFE_MIN 10       /* safe code lower bound */
+#define SAFE_MAX 99       /* safe code upper bound */
 
 /* ------------------------------------------------------------------ */
 /*  Object                                                             */
@@ -464,7 +478,7 @@ static int cmd_enter(const char *arg)
 
     if (strcasecmp(place, "afvoer") == 0) {
         int x, found = 0;
-        for (x = 1; x <= 8; x++) {
+        for (x = 1; x <= SEWER_MAX; x++) {
             if (ve[x] == l) { found = 1; break; }
         }
         if (!found) { printf("Ik begrijp U niet.\n"); return 1; }
@@ -473,7 +487,7 @@ static int cmd_enter(const char *arg)
         }
         {
             int y;
-            for (y = 1; y <= 4; y++) {
+            for (y = 1; y <= SEWER_NEED; y++) {
                 if (obj[y].loc == 0) { printf("%s\n", p[1]); return 1; }
             }
         }
@@ -779,11 +793,11 @@ static int cmd_build_balloon(void)
     int x;
     if (l != 8) { printf("Niet hier.\n"); return 1; }
     hb = 0;
-    for (x = 1; x <= 6; x++) {
+    for (x = 1; x <= BALLOON_PARTS; x++) {
         if (obj[x].loc == 0 || obj[x].loc == 8) hb++;
     }
     if (hb != 6) { printf("Niet klaar.\n"); hb = 0; return 1; }
-    for (x = 1; x <= 6; x++) {
+    for (x = 1; x <= BALLOON_PARTS; x++) {
         if (obj[x].loc == 0) i--;
         obj[x].loc = 40;
     }
@@ -1131,7 +1145,7 @@ static void init_data(void)
             {36, '-', 0,  '-', 0,  '-', 0},
             {37, 'u', 36, '-', 0,  '-', 0},
         };
-        for (x = 0; x < 37; x++) {
+        for (x = 0; x < MAX_LOC; x++) {
             int lx = exit_data[x].loc;
             loc[lx].exits[0].dir = exit_data[x].d1;
             loc[lx].exits[0].dest = exit_data[x].n1;
