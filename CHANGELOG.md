@@ -57,8 +57,8 @@
   `-fsanitize=undefined` to `Makefile`
 - Renamed all single-letter global variables to descriptive names:
   `l`→`player_location`, `i`→`inventory_count`, `h`→`balloon_built`,
-  `r`→`boat`, `w`→`has_jogged`, `k`→`door_unlocked`, `v`→`fed`,
-  `f`→`safe_open`, `e`→`painting_examined`, `s`→`sick`,
+  `r`→`boat_inflated`, `w`→`has_jogged`, `k`→`door_unlocked`, `v`→`panther_fed`,
+  `f`→`safe_open`,   `e`→`painting_examined`, `s`→`health_status`,
   `c1`-`c4`→`grate1`-`grate4`, `hb`→`balloon_parts_count`, `p`→`pref`
 
 ## 2026-06-17

@@ -215,14 +215,14 @@ static Location loc[MAX_LOC + 1];     /* 1-indexed */
 static unsigned char player_location = 9;   /* current location */
 static unsigned char inventory_count = 0;   /* # items inventory_count */
 static unsigned char balloon_built = 0;   /* balloon_built built */
-static unsigned char boat = 0;   /* rubber boat inflated */
+static unsigned char boat_inflated = 0;   /* rubber boat inflated */
 static unsigned char has_jogged = 0;   /* jogging done (weight loss) */
 static unsigned char door_unlocked = 0;   /* door door_unlocked */
-static unsigned char fed = 0;   /* panther fed */
+static unsigned char panther_fed = 0;   /* panther fed */
 static unsigned char safe_open = 0;   /* safe opened, testament readable */
 static unsigned char painting_examined = 0;   /* painting examined, safe revealed */
 static unsigned char grate1 = 0, grate2 = 0, grate3 = 0, grate4 = 0;
-static unsigned char sick = 0;   /* sick / injured */
+static unsigned char health_status = 0;   /* sick / injured */
 static unsigned char balloon_parts_count = 0;   /* balloon_built part counter */
 
 static const char * const pref[3] = {
@@ -490,7 +490,7 @@ static int cmd_take(char *arg)
         if (idx == 0) {
             if (strcasecmp(arg, "panter") == 0 && obj[OBJ_PANTER].loc == player_location) {
                 printf("U had nog net genoeg kracht om\nweg te komen.\n");
-                sick = 1; player_location = LOCATION_ZIEKENHUIS;
+                health_status = 1; player_location = LOCATION_ZIEKENHUIS;
                 return RET_REDRAW;
             }
             if (strcasecmp(arg, "klok") == 0 && player_location == LOCATION_STUDEERKAMER) {
@@ -564,7 +564,7 @@ static int cmd_go(const char *arg)
     else if (strncasecmp(arg, "omlaag", 6) == 0) dir = 'l';
 
     if (dir == 'o' && player_location == LOCATION_WIJNKELDER_WEST) {
-        if (fed == 0) { printf("Panter laat dat niet toe.\n"); return RET_KEEP; }
+        if (panther_fed == 0) { printf("Panter laat dat niet toe.\n"); return RET_KEEP; }
         player_location = LOCATION_WIJNKELDER_OOST; return RET_REDRAW;
     }
 
@@ -597,7 +597,7 @@ static int cmd_enter(const char *arg)
             if (ve[x] == player_location) { found = 1; break; }
         }
         if (!found) return fail();
-        if (obj[OBJ_RUBBERBOOT].loc == 0 && boat == 1) {
+        if (obj[OBJ_RUBBERBOOT].loc == 0 && boat_inflated == 1) {
             printf("%s\n", pref[1]); return RET_KEEP;
         }
         {
@@ -629,7 +629,7 @@ static int cmd_enter(const char *arg)
     if (strcasecmp(place, "vijver") == 0) {
         if (player_location != LOCATION_VIJVEROEVER) return fail();
         if (obj[OBJ_RUBBERBOOT].loc != 0) { printf("Ik moet ergens op kunnen drijven.\n"); return RET_KEEP; }
-        if (boat == 0) { printf("Rubberboot is te slap.\n"); return RET_KEEP; }
+        if (boat_inflated == 0) { printf("Rubberboot is te slap.\n"); return RET_KEEP; }
         player_location = LOCATION_VIJVER; return RET_REDRAW;
     }
 
@@ -666,7 +666,7 @@ static int cmd_enter(const char *arg)
     if (strcasecmp(place, "kanaal") == 0) {
         if (player_location == LOCATION_KANAALKANT) {
             printf("U gleed uit en viel.\n");
-            sick = 1; player_location = LOCATION_ZIEKENHUIS;
+            health_status = 1; player_location = LOCATION_ZIEKENHUIS;
             return RET_REDRAW;
         }
         return fail();
@@ -770,7 +770,7 @@ static int cmd_jog(void)
 static int cmd_go_up(void)
 {
     int x;
-    if (sick == 1) { printf("Ik voel me niet goed.\n"); return RET_KEEP; }
+    if (health_status == 1) { printf("Ik voel me niet goed.\n"); return RET_KEEP; }
     if ((player_location == LOCATION_RIOOL_21 && grate1 == 0) || (player_location == LOCATION_RIOOL_24 && grate2 == 0) ||
         (player_location == LOCATION_RIOOL_26 && grate3 == 0) || (player_location == LOCATION_RIOOL_27 && grate4 == 0)) {
         printf("%s\n", pref[0]); return RET_KEEP;
@@ -787,12 +787,12 @@ static int cmd_go_up(void)
 
 static int cmd_panther(void)
 {
-    if (fed == 1) return fail();
+    if (panther_fed == 1) return fail();
     if (player_location != LOCATION_WIJNKELDER_WEST) return fail();
     if (obj[OBJ_ZALM].loc != 0) { printf("U hebt voedsel nodig.\n"); return RET_KEEP; }
     printf("Panter ontsnapte met de zalm.\n");
     if (obj[OBJ_ZALM].loc == 0) inventory_count--;
-    fed = 1;
+    panther_fed = 1;
     obj[OBJ_ZALM].loc = LOC_GONE;
     obj[OBJ_PANTER].loc = LOC_GONE;
     return RET_REDRAW;
@@ -811,7 +811,7 @@ static int cmd_climb_tree(void)
 {
     if (player_location != LOCATION_BOS) return fail();
     printf("U viel eraf.\n");
-    sick = 1; player_location = LOCATION_ZIEKENHUIS;
+    health_status = 1; player_location = LOCATION_ZIEKENHUIS;
     return RET_REDRAW;
 }
 
@@ -888,8 +888,8 @@ static int cmd_open_safe(void)
 static int cmd_inflate_boat(void)
 {
     if (player_location != LOCATION_VIJVEROEVER) { printf("Niet hier.\n"); return RET_KEEP; }
-    if (boat == 1) { printf("Is al opgeblazen.\n"); return RET_KEEP; }
-    printf("OK.\n"); boat = 1; return RET_KEEP;
+    if (boat_inflated == 1) { printf("Is al opgeblazen.\n"); return RET_KEEP; }
+    printf("OK.\n"); boat_inflated = 1; return RET_KEEP;
 }
 
 static int cmd_build_balloon_built(void)
@@ -979,8 +979,8 @@ static int cmd_help(void) {
 }
 
 static int cmd_cure(void) {
-    if (sick != 1) return fail();
-    sick = 0; printf("Genezen.\n"); return RET_KEEP;
+    if (health_status != 1) return fail();
+    health_status = 0; printf("Genezen.\n"); return RET_KEEP;
 }
 
 static int cmd_read_book(void) {
