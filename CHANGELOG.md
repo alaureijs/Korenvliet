@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-06-18
+
+- Removed sentinel `-2` pattern: `cmd_enter`/`cmd_examine` no longer return `-2`
+  for "not my command"; callers strip prefixes before calling
+- Replaced 26 remaining inline `printf("Ik begrijp U niet.\n"); return 1;`
+  with `return fail()` — only 1 copy remains (inside `fail()` itself)
+- Replaced all bare numeric returns with named constants (`RET_EXIT`, `RET_REDRAW`,
+  `RET_KEEP`) — fixed `generic_take_item` returning `-1` (would exit game)
+- Fixed buffer overflow in `cmd_open_safe`: truncate input to 15 chars before
+  `strcpy` into the 16-byte `f1`/`f2`/`f3` buffers
+- Fixed `xsnprintf` to respect `size` parameter: format into temp buffer, then
+  bounded `memcpy` with null termination
+- Replaced magic numbers in atmospheric probability thresholds with named constants
+  (`ATMOS_R6_ADRIAAN`, `ATMOS_R3_ZOETE`, `ATMOS_R7_BEREND`, `ATMOS_R33_BAT`,
+  `ATMOS_R27_SPINRAG`, `ATMOS_R25_RAT`, `ATMOS_R4_PAD`, `ATMOS_R28_GULL`,
+  `ATMOS_R2_APEN`) — also replaced `rand_range(1, 10)` with `ATMOS_RNG_MAX`
+- Replaced balloon altitude animation magic numbers with named constants
+  (`BALLOON_Y_START`, `BALLOON_Y_END`, `BALLOON_Y_STEP`, `BALLOON_MIN_ALT`,
+  `BALLOON_ASCENT`, `BALLOON_MID_Y`, `BALLOON_DIVISOR`)
+- Replaced all bare room numbers (1–37) with named `ROOM_*` constants in game
+  logic, `obj_data` table, `exit_data` table, and `ve_data` table
+- Replaced all remaining bare `40` in game logic with `LOC_GONE`
+- Fixed `l == 80` dead branch: original P2000T BASIC had `L=8`, the C64
+  conversion mistakenly tokenized `8ORL` as `80` — now `l == ROOM_AFGRAVING`
+- Removed `cmd_open_thing` sub-dispatcher: all "open ..." commands now go
+  through the dispatch table — "open afvoer/kluis" no longer shadowed
+
 ## 2026-06-17
 
 - Ported the game from BASIC to C (`src/korenvliet.c`)
@@ -27,7 +54,15 @@
 - Refactored `cmd_enter` from 113 lines to table-driven dispatch with separate place handlers
 - Replaced `handle_command` 140-line if-chain with compact table-driven dispatch (32 entries)
   - Extracted `cmd_read_book`, `cmd_help`, `cmd_cure`, `cmd_koop`, `cmd_open_thing` helpers
-   - Unified all handler signatures to `int handler(char *)`
+  - Unified all handler signatures to `int handler(char *)`
 - Moved all remaining mutable globals (`obj[]`, `loc[]`, `p[][]`, `ve[]`, `n[][]`) into `struct GameState`
   - Removed fragile positional initializer; replaced with explicit `gs.room = 9` in `init_data()`
 - Renumbered safe-code storage to 0-indexed (`n[0]`–`n[2]`); resized from `n[4][4]` to `n[3][4]`
+- Removed dead safe-code shuffle logic (`ss[]`, `sflags[]`, debug prints)
+- Removed debug print of safe code at startup
+- Fixed snorkel guard to catch `"ga oost"` and bare `"o"` (was only `"ga o"`)
+- Fixed `cmd_koop`: added missing room-10 and capacity checks
+- Replaced magic numbers with named constants (`MAX_CARRY`, `BOAT_DROP`, `WATER_OFF`, `SEWER_MAX`, `SEWER_NEED`, `JOG_BOUND`, `WOOD_SPAWN`, `BALLOON_PARTS`, `SAFE_DIGITS`, `SAFE_MIN`, `SAFE_MAX`, `WRAP_W`, `SUFFIX_LEN`)
+- Replaced all remaining bare `40` in code with `LOC_GONE`
+- Fixed unreachable `"ga jog"`/`"ga trim"`/`"ga door deur"` (intercepted by generic `"ga "` prefix handler)
+- Removed dead code after `generic_take_item` in `cmd_take`
