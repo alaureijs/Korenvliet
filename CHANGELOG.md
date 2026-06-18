@@ -2,7 +2,7 @@
 
 ## 2026-06-18
 
-- Replaced 37 `#define ROOM_*` with an `enum`
+- Replaced 37 `#define LOCATION_*` with an `enum`
 - Replaced `p[3][64]` buffer + 3 `strcpy` calls with `static const char * const p[3]`
 - Replaced `ve[9]` + temp array + loop with `static const int ve[9]`
 - Replaced 8 atmospheric-description `if` blocks with a data table
@@ -31,22 +31,24 @@
 - Replaced balloon altitude animation magic numbers with named constants
   (`BALLOON_Y_START`, `BALLOON_Y_END`, `BALLOON_Y_STEP`, `BALLOON_MIN_ALT`,
   `BALLOON_ASCENT`, `BALLOON_MID_Y`, `BALLOON_DIVISOR`)
-- Replaced all bare room numbers (1–37) with named `ROOM_*` constants in game
-  logic, `obj_data` table, `exit_data` table, and `ve_data` table
+- Replaced all bare location numbers (1–37) with named `LOCATION_*` constants in
+  game logic, `obj_data` table, `exit_data` table, and `ve_data` table
 - Replaced all remaining bare `40` in game logic with `LOC_GONE`
 - Fixed `l == 80` dead branch: original P2000T BASIC had `L=8`, the C64
-  conversion mistakenly tokenized `8ORL` as `80` — now `l == ROOM_AFGRAVING`
+  conversion mistakenly tokenized `8ORL` as `80` — now `l == LOCATION_AFGRAVING`
 - Removed `cmd_open_thing` sub-dispatcher: all "open ..." commands now go
   through the dispatch table — "open afvoer/kluis" no longer shadowed
 - Replaced `rand()`/`srand()` with xorshift32 PRNG (portable, no library
   dependency, deterministic)
 - Replaced remaining bare `38` with `WRAP_W` in `look` and `cmd_inventory`
 - Replaced `l + 2`/`l += 2` with `l + WATER_OFF`/`l += WATER_OFF` in cmd_drop/cmd_dive
-- Replaced bare `8` with `ROOM_AFGRAVING` in cmd_build (balloon part location check)
+- Replaced bare `8` with `LOCATION_AFGRAVING` in cmd_build (balloon part location check)
 - Replaced `rand_range(10, 99)` with `rand_range(SAFE_MIN, SAFE_MAX)` in safe code init
 - Replaced bare `z < 5` in atmospheric descriptions with `GULL_THRESH`
 - Added `OBJ_*` enum (33 entries, 1‑indexed) and replaced all bare
   `obj[4/7/8/9/10/11/12/13/14/19/25/26/30]` references with named constants
+- Renamed `ROOM_*` enum to `LOCATION_*` (locations include rooms, streets,
+  sewer tunnels, underwater areas, and balloon altitudes)
 
 ## 2026-06-17
 

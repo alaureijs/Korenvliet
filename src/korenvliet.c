@@ -103,45 +103,45 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define BALLOON_MID_Y     17   /* midpoint y = (START+END)/2 */
 #define BALLOON_DIVISOR    6   /* altitude slope divisor (== Y_STEP) */
 
-/* Room number constants */
+/* Location number constants */
 enum {
-    ROOM_BINNENPLEIN = 1,
-    ROOM_BOS,
-    ROOM_WEILAND,
-    ROOM_KANAALKANT,
-    ROOM_VIJVEROEVER,
-    ROOM_TERREIN,
-    ROOM_ROTSPAD,
-    ROOM_AFGRAVING,
-    ROOM_HOOFDSTRAAT,
-    ROOM_SUPERMARKT,
-    ROOM_ZIEKENHUIS,
-    ROOM_FOYER,
-    ROOM_HUISKAMER,
-    ROOM_STUDEERKAMER,
-    ROOM_TUINKAMER,
-    ROOM_OVERLOOP,
-    ROOM_ATRIUM,
-    ROOM_WIJNKELDER_WEST,
-    ROOM_WIJNKELDER_OOST,
-    ROOM_TRAP,
-    ROOM_RIOOL_21,
-    ROOM_RIOOL_22,
-    ROOM_RIOOL_23,
-    ROOM_RIOOL_24,
-    ROOM_RIOOL_25,
-    ROOM_RIOOL_26,
-    ROOM_RIOOL_27,
-    ROOM_VIJVER,
-    ROOM_ZUIDBAAI,
-    ROOM_ONDERWATER_30,
-    ROOM_ONDERWATER_31,
-    ROOM_STROOM,
-    ROOM_GROT,
-    ROOM_BALLON_STRAAT,
-    ROOM_BALLON_PLATEAU,
-    ROOM_PLATEAU,
-    ROOM_SCHUUR
+    LOCATION_BINNENPLEIN = 1,
+    LOCATION_BOS,
+    LOCATION_WEILAND,
+    LOCATION_KANAALKANT,
+    LOCATION_VIJVEROEVER,
+    LOCATION_TERREIN,
+    LOCATION_ROTSPAD,
+    LOCATION_AFGRAVING,
+    LOCATION_HOOFDSTRAAT,
+    LOCATION_SUPERMARKT,
+    LOCATION_ZIEKENHUIS,
+    LOCATION_FOYER,
+    LOCATION_HUISKAMER,
+    LOCATION_STUDEERKAMER,
+    LOCATION_TUINKAMER,
+    LOCATION_OVERLOOP,
+    LOCATION_ATRIUM,
+    LOCATION_WIJNKELDER_WEST,
+    LOCATION_WIJNKELDER_OOST,
+    LOCATION_TRAP,
+    LOCATION_RIOOL_21,
+    LOCATION_RIOOL_22,
+    LOCATION_RIOOL_23,
+    LOCATION_RIOOL_24,
+    LOCATION_RIOOL_25,
+    LOCATION_RIOOL_26,
+    LOCATION_RIOOL_27,
+    LOCATION_VIJVER,
+    LOCATION_ZUIDBAAI,
+    LOCATION_ONDERWATER_30,
+    LOCATION_ONDERWATER_31,
+    LOCATION_STROOM,
+    LOCATION_GROT,
+    LOCATION_BALLON_STRAAT,
+    LOCATION_BALLON_PLATEAU,
+    LOCATION_PLATEAU,
+    LOCATION_SCHUUR
 };
 
 /* Object number constants */
@@ -231,9 +231,9 @@ static const char * const p[3] = {
     "binnenin is een briefje met nummer"
 };
 static const int ve[9] = {
-    0, ROOM_HUISKAMER, ROOM_STUDEERKAMER, ROOM_ATRIUM,
-    ROOM_WIJNKELDER_WEST, ROOM_RIOOL_21, ROOM_RIOOL_24,
-    ROOM_RIOOL_26, ROOM_RIOOL_27
+    0, LOCATION_HUISKAMER, LOCATION_STUDEERKAMER, LOCATION_ATRIUM,
+    LOCATION_WIJNKELDER_WEST, LOCATION_RIOOL_21, LOCATION_RIOOL_24,
+    LOCATION_RIOOL_26, LOCATION_RIOOL_27
 };
 static char n[3][3];             /* random numbers (2-digit strings) */
 
@@ -329,7 +329,7 @@ static void display_location(void)
     printf("\n");
 
     printf("U ziet    : ");
-    if (obj[OBJ_ZWEMBRIL].loc != 0 && (l == ROOM_ONDERWATER_30 || l == ROOM_ONDERWATER_31)) {
+    if (obj[OBJ_ZWEMBRIL].loc != 0 && (l == LOCATION_ONDERWATER_30 || l == LOCATION_ONDERWATER_31)) {
         printf("Niets bijzonders.\n");
         printf("\n");
         return;
@@ -350,27 +350,27 @@ static void display_location(void)
     printf("\n");
 
     /* Special location descriptions */
-    if (obj[OBJ_ZWEMBRIL].loc == 0 && l == ROOM_ONDERWATER_31)
+    if (obj[OBJ_ZWEMBRIL].loc == 0 && l == LOCATION_ONDERWATER_31)
         printf("Een tunnel onder water.\n");
-    if ((l == ROOM_HUISKAMER && c1) || (l == ROOM_STUDEERKAMER && c2) || (l == ROOM_ATRIUM && c3) || (l == ROOM_WIJNKELDER_WEST && c4))
+    if ((l == LOCATION_HUISKAMER && c1) || (l == LOCATION_STUDEERKAMER && c2) || (l == LOCATION_ATRIUM && c3) || (l == LOCATION_WIJNKELDER_WEST && c4))
         printf("putdeksel. ");
-    if (l == ROOM_HUISKAMER || l == ROOM_STUDEERKAMER || l == ROOM_ATRIUM || l == ROOM_WIJNKELDER_WEST)
+    if (l == LOCATION_HUISKAMER || l == LOCATION_STUDEERKAMER || l == LOCATION_ATRIUM || l == LOCATION_WIJNKELDER_WEST)
         printf("afvoer.\n");
-    if (h && (l == ROOM_AFGRAVING || l == ROOM_PLATEAU))
+    if (h && (l == LOCATION_AFGRAVING || l == LOCATION_PLATEAU))
         printf("hetelucht ballon.\n");
 
     /* Random atmospheric descriptions */
     {
         int i, z = rand_range(1, ATMOS_RNG_MAX);
         static const struct { int room; int zval; char cmp; const char *text; } at[] = {
-            {ROOM_TERREIN,   1, '=', "Adriaan met twee staven dynamiet."},
-            {ROOM_WEILAND,   3, '=', "Zoete met een koppel bloedhonden."},
-            {ROOM_ROTSPAD,   5, '=', "Berend met een bulldozer."},
-            {ROOM_GROT,      5, '<', "Er vliegt een vleermuis langs."},
-            {ROOM_RIOOL_27,  3, '<', "Er zit spinrag in Uw haar."},
-            {ROOM_RIOOL_25,  3, '<', "Een rat strijkt langs Uw been."},
-            {ROOM_KANAALKANT,7, '=', "Een pad springt in het kanaal."},
-            {ROOM_BOS,       8, '=', "Een aapachtig figuur kijkt op U neer."},
+            {LOCATION_TERREIN,   1, '=', "Adriaan met twee staven dynamiet."},
+            {LOCATION_WEILAND,   3, '=', "Zoete met een koppel bloedhonden."},
+            {LOCATION_ROTSPAD,   5, '=', "Berend met een bulldozer."},
+            {LOCATION_GROT,      5, '<', "Er vliegt een vleermuis langs."},
+            {LOCATION_RIOOL_27,  3, '<', "Er zit spinrag in Uw haar."},
+            {LOCATION_RIOOL_25,  3, '<', "Een rat strijkt langs Uw been."},
+            {LOCATION_KANAALKANT,7, '=', "Een pad springt in het kanaal."},
+            {LOCATION_BOS,       8, '=', "Een aapachtig figuur kijkt op U neer."},
         };
         for (i = 0; i < (int)(sizeof(at)/sizeof(at[0])); i++) {
             if (l == at[i].room &&
@@ -378,7 +378,7 @@ static void display_location(void)
                  (at[i].cmp == '<' && z < at[i].zval)))
                 printf("%s\n", at[i].text);
         }
-        if (l == ROOM_VIJVER && obj[OBJ_ZALM].loc == 0 && z < GULL_THRESH)
+        if (l == LOCATION_VIJVER && obj[OBJ_ZALM].loc == 0 && z < GULL_THRESH)
             printf("Een hongerige meeuw cirkelt rond.\n");
     }
 }
@@ -445,19 +445,19 @@ static int cmd_take(char *arg)
         memmove(arg, arg + 5, strlen(arg) - 4);
 
     /* Specific checks before generic handling */
-    if (strcasecmp(arg, "zalm") == 0 && l == ROOM_ZUIDBAAI && obj[OBJ_VISNET].loc != 0) {
+    if (strcasecmp(arg, "zalm") == 0 && l == LOCATION_ZUIDBAAI && obj[OBJ_VISNET].loc != 0) {
         printf("Die glipte uit Uw vingers.\n");
         return RET_KEEP;
     }
-    if (strcasecmp(arg, "schilderij") == 0 && l == ROOM_OVERLOOP) {
+    if (strcasecmp(arg, "schilderij") == 0 && l == LOCATION_OVERLOOP) {
         printf("Te kostbaar.\n");
         return RET_KEEP;
     }
-    if (l == ROOM_SUPERMARKT) {
+    if (l == LOCATION_SUPERMARKT) {
         printf("Pleeg geen winkeldiefstal!\n");
         return RET_KEEP;
     }
-    if (strcasecmp(arg, "tafel") == 0 && l == ROOM_SCHUUR) {
+    if (strcasecmp(arg, "tafel") == 0 && l == LOCATION_SCHUUR) {
         printf("Die zit vastgespijkerd.\n");
         return RET_KEEP;
     }
@@ -469,7 +469,7 @@ static int cmd_take(char *arg)
     /* Bril (zwembril, obj 13) */
     if (strcasecmp(arg, "bril") == 0) {
         if (obj[OBJ_ZWEMBRIL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
-        if (obj[OBJ_ZWEMBRIL].loc == LOC_GONE && l == ROOM_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; i++; return RET_REDRAW; }
+        if (obj[OBJ_ZWEMBRIL].loc == LOC_GONE && l == LOCATION_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; i++; return RET_REDRAW; }
         if (obj[OBJ_ZWEMBRIL].loc == l) { obj[OBJ_ZWEMBRIL].loc = 0; i++; return RET_REDRAW; }
         return fail();
     }
@@ -490,10 +490,10 @@ static int cmd_take(char *arg)
         if (idx == 0) {
             if (strcasecmp(arg, "panter") == 0 && obj[OBJ_PANTER].loc == l) {
                 printf("U had nog net genoeg kracht om\nweg te komen.\n");
-                s = 1; l = ROOM_ZIEKENHUIS;
+                s = 1; l = LOCATION_ZIEKENHUIS;
                 return RET_REDRAW;
             }
-            if (strcasecmp(arg, "klok") == 0 && l == ROOM_STUDEERKAMER) {
+            if (strcasecmp(arg, "klok") == 0 && l == LOCATION_STUDEERKAMER) {
                 printf("Te zwaar.\n"); return RET_KEEP;
             }
             if (strcasecmp(arg, "kist") == 0 && obj[OBJ_KIST].loc == l) {
@@ -516,7 +516,7 @@ static int cmd_drop(char *arg)
     /* "leg snorkel" special */
     if (strncasecmp(arg, "leg snorkel", 11) == 0) {
         if (obj[OBJ_SNORKEL].loc != 0) { printf("Heeft U niet.\n"); return RET_KEEP; }
-        if (l > ROOM_RIOOL_27 && l < ROOM_STROOM) { printf("Neem het snel terug!\n"); return RET_KEEP; }
+        if (l > LOCATION_RIOOL_27 && l < LOCATION_STROOM) { printf("Neem het snel terug!\n"); return RET_KEEP; }
         obj[OBJ_SNORKEL].loc = l; i--; return RET_REDRAW;
     }
 
@@ -529,13 +529,13 @@ static int cmd_drop(char *arg)
             int g = (int)arglen;
             if (g > (int)slen) g = (int)slen;
             if (g > 0 && strcasecmp(arg + arglen - g, obj[x].short_name + slen - g) == 0 && obj[x].loc == 0) {
-                if (x == 8 && (l == ROOM_VIJVER || l == ROOM_ZUIDBAAI)) {
-                    obj[OBJ_RUBBERBOOT].loc = ROOM_VIJVEROEVER; i--;
+                if (x == 8 && (l == LOCATION_VIJVER || l == LOCATION_ZUIDBAAI)) {
+                    obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; i--;
                     printf("De boot drijft weg.....\n");
                     return RET_REDRAW;
                 }
                 i--;
-                obj[x].loc = (l == ROOM_VIJVER || l == ROOM_ZUIDBAAI) ? l + WATER_OFF : l;
+                obj[x].loc = (l == LOCATION_VIJVER || l == LOCATION_ZUIDBAAI) ? l + WATER_OFF : l;
                 return RET_REDRAW;
             }
         }
@@ -563,9 +563,9 @@ static int cmd_go(const char *arg)
     else if (strncasecmp(arg, "omhoog", 6) == 0) dir = 'h';
     else if (strncasecmp(arg, "omlaag", 6) == 0) dir = 'l';
 
-    if (dir == 'o' && l == ROOM_WIJNKELDER_WEST) {
+    if (dir == 'o' && l == LOCATION_WIJNKELDER_WEST) {
         if (v == 0) { printf("Panter laat dat niet toe.\n"); return RET_KEEP; }
-        l = ROOM_WIJNKELDER_OOST; return RET_REDRAW;
+        l = LOCATION_WIJNKELDER_OOST; return RET_REDRAW;
     }
 
     for (x = 0; x < MAX_EXITS; x++) {
@@ -606,35 +606,35 @@ static int cmd_enter(const char *arg)
                 if (obj[y].loc == 0) { printf("%s\n", p[1]); return RET_KEEP; }
             }
         }
-        if ((l == ROOM_HUISKAMER && c1 == 0) || (l == ROOM_STUDEERKAMER && c2 == 0) ||
-            (l == ROOM_ATRIUM && c3 == 0) || (l == ROOM_WIJNKELDER_WEST && c4 == 0)) {
+        if ((l == LOCATION_HUISKAMER && c1 == 0) || (l == LOCATION_STUDEERKAMER && c2 == 0) ||
+            (l == LOCATION_ATRIUM && c3 == 0) || (l == LOCATION_WIJNKELDER_WEST && c4 == 0)) {
             printf("%s\n", p[0]); return RET_KEEP;
         }
         if (w == 0) { printf("U bent te dik.\n"); return RET_KEEP; }
-        if (l == ROOM_HUISKAMER && c1) { l = ROOM_RIOOL_21; return RET_REDRAW; }
-        if (l == ROOM_STUDEERKAMER && c2) { l = ROOM_RIOOL_24; return RET_REDRAW; }
-        if (l == ROOM_ATRIUM && c3) { l = ROOM_RIOOL_26; return RET_REDRAW; }
-        if (l == ROOM_WIJNKELDER_WEST && c4) { l = ROOM_RIOOL_27; return RET_REDRAW; }
+        if (l == LOCATION_HUISKAMER && c1) { l = LOCATION_RIOOL_21; return RET_REDRAW; }
+        if (l == LOCATION_STUDEERKAMER && c2) { l = LOCATION_RIOOL_24; return RET_REDRAW; }
+        if (l == LOCATION_ATRIUM && c3) { l = LOCATION_RIOOL_26; return RET_REDRAW; }
+        if (l == LOCATION_WIJNKELDER_WEST && c4) { l = LOCATION_RIOOL_27; return RET_REDRAW; }
         return fail();
     }
 
     if (strcasecmp(place, "ballon") == 0) {
         if (h == 0) { printf("Nog niet klaar.\n"); return RET_KEEP; }
-        if (l == ROOM_AFGRAVING)  { l = ROOM_BALLON_STRAAT; return RET_REDRAW; }
-        if (l == ROOM_PLATEAU) { l = ROOM_BALLON_PLATEAU; return RET_REDRAW; }
+        if (l == LOCATION_AFGRAVING)  { l = LOCATION_BALLON_STRAAT; return RET_REDRAW; }
+        if (l == LOCATION_PLATEAU) { l = LOCATION_BALLON_PLATEAU; return RET_REDRAW; }
         printf("Ik kan het niet vinden.\n");
         return RET_KEEP;
     }
 
     if (strcasecmp(place, "vijver") == 0) {
-        if (l != ROOM_VIJVEROEVER) return fail();
+        if (l != LOCATION_VIJVEROEVER) return fail();
         if (obj[OBJ_RUBBERBOOT].loc != 0) { printf("Ik moet ergens op kunnen drijven.\n"); return RET_KEEP; }
         if (r == 0) { printf("Rubberboot is te slap.\n"); return RET_KEEP; }
-        l = ROOM_VIJVER; return RET_REDRAW;
+        l = LOCATION_VIJVER; return RET_REDRAW;
     }
 
     if (strcasecmp(place, "winkel") == 0 || strcasecmp(place, "supermarkt") == 0) {
-        if (l != ROOM_HOOFDSTRAAT) return fail();
+        if (l != LOCATION_HOOFDSTRAAT) return fail();
         {
             int x;
             for (x = 1; x <= MAX_INV; x++) {
@@ -644,41 +644,41 @@ static int cmd_enter(const char *arg)
                 }
             }
         }
-        l = ROOM_SUPERMARKT; return RET_REDRAW;
+        l = LOCATION_SUPERMARKT; return RET_REDRAW;
     }
 
     if (strcasecmp(place, "landhuis") == 0 || strcasecmp(place, "korenvliet") == 0) {
-        if (l == ROOM_HOOFDSTRAAT)  { l = ROOM_FOYER; return RET_REDRAW; }
-        if (l == ROOM_BINNENPLEIN)  { l = ROOM_ATRIUM; return RET_REDRAW; }
+        if (l == LOCATION_HOOFDSTRAAT)  { l = LOCATION_FOYER; return RET_REDRAW; }
+        if (l == LOCATION_BINNENPLEIN)  { l = LOCATION_ATRIUM; return RET_REDRAW; }
         return fail();
     }
 
     if (strcasecmp(place, "ziekenhuis") == 0) {
-        if (l == ROOM_HOOFDSTRAAT) { l = ROOM_ZIEKENHUIS; return RET_REDRAW; }
+        if (l == LOCATION_HOOFDSTRAAT) { l = LOCATION_ZIEKENHUIS; return RET_REDRAW; }
         return fail();
     }
 
     if (strcasecmp(place, "tunnel") == 0) {
-        if (l == ROOM_ONDERWATER_31 && obj[OBJ_ZWEMBRIL].loc == 0) { l = ROOM_STROOM; return RET_REDRAW; }
+        if (l == LOCATION_ONDERWATER_31 && obj[OBJ_ZWEMBRIL].loc == 0) { l = LOCATION_STROOM; return RET_REDRAW; }
         return fail();
     }
 
     if (strcasecmp(place, "kanaal") == 0) {
-        if (l == ROOM_KANAALKANT) {
+        if (l == LOCATION_KANAALKANT) {
             printf("U gleed uit en viel.\n");
-            s = 1; l = ROOM_ZIEKENHUIS;
+            s = 1; l = LOCATION_ZIEKENHUIS;
             return RET_REDRAW;
         }
         return fail();
     }
 
     if (strcasecmp(place, "afgraving") == 0) {
-        if (l == ROOM_AFGRAVING) { printf("Te steil.\n"); return RET_KEEP; }
+        if (l == LOCATION_AFGRAVING) { printf("Te steil.\n"); return RET_KEEP; }
         return fail();
     }
 
     if (strcasecmp(place, "schuur") == 0) {
-        if (l == ROOM_PLATEAU) { l = ROOM_SCHUUR; return RET_REDRAW; }
+        if (l == LOCATION_PLATEAU) { l = LOCATION_SCHUUR; return RET_REDRAW; }
         return fail();
     }
 
@@ -761,7 +761,7 @@ static int cmd_examine(const char *arg)
 static int cmd_jog(void)
 {
     if (obj[OBJ_SPORTSCHOENEN].loc != 0) { printf("Ik heb schoenen nodig.\n"); return RET_KEEP; }
-    if (l > ROOM_HOOFDSTRAAT) { printf("Ik kan hier niet joggen.\n"); return RET_KEEP; }
+    if (l > LOCATION_HOOFDSTRAAT) { printf("Ik kan hier niet joggen.\n"); return RET_KEEP; }
     w = 1;
     printf("Pfff... Klaar!\n");
     return RET_KEEP;
@@ -771,8 +771,8 @@ static int cmd_go_up(void)
 {
     int x;
     if (s == 1) { printf("Ik voel me niet goed.\n"); return RET_KEEP; }
-    if ((l == ROOM_RIOOL_21 && c1 == 0) || (l == ROOM_RIOOL_24 && c2 == 0) ||
-        (l == ROOM_RIOOL_26 && c3 == 0) || (l == ROOM_RIOOL_27 && c4 == 0)) {
+    if ((l == LOCATION_RIOOL_21 && c1 == 0) || (l == LOCATION_RIOOL_24 && c2 == 0) ||
+        (l == LOCATION_RIOOL_26 && c3 == 0) || (l == LOCATION_RIOOL_27 && c4 == 0)) {
         printf("%s\n", p[0]); return RET_KEEP;
     }
     for (x = 0; x < MAX_EXITS; x++) {
@@ -788,7 +788,7 @@ static int cmd_go_up(void)
 static int cmd_panther(void)
 {
     if (v == 1) return fail();
-    if (l != ROOM_WIJNKELDER_WEST) return fail();
+    if (l != LOCATION_WIJNKELDER_WEST) return fail();
     if (obj[OBJ_ZALM].loc != 0) { printf("U hebt voedsel nodig.\n"); return RET_KEEP; }
     printf("Panter ontsnapte met de zalm.\n");
     if (obj[OBJ_ZALM].loc == 0) i--;
@@ -800,8 +800,8 @@ static int cmd_panther(void)
 
 static int cmd_cut_tree(void)
 {
-    if (l == ROOM_BOS && (obj[OBJ_BIJL].loc == 0 || obj[OBJ_BIJL].loc == l)) {
-        obj[OBJ_HOUTBLOKKEN].loc = ROOM_BOS;
+    if (l == LOCATION_BOS && (obj[OBJ_BIJL].loc == 0 || obj[OBJ_BIJL].loc == l)) {
+        obj[OBJ_HOUTBLOKKEN].loc = LOCATION_BOS;
         return RET_REDRAW;
     }
     return fail();
@@ -809,15 +809,15 @@ static int cmd_cut_tree(void)
 
 static int cmd_climb_tree(void)
 {
-    if (l != ROOM_BOS) return fail();
+    if (l != LOCATION_BOS) return fail();
     printf("U viel eraf.\n");
-    s = 1; l = ROOM_ZIEKENHUIS;
+    s = 1; l = LOCATION_ZIEKENHUIS;
     return RET_REDRAW;
 }
 
 static int cmd_dive(void)
 {
-    if (l == ROOM_VIJVER || l == ROOM_ZUIDBAAI) {
+    if (l == LOCATION_VIJVER || l == LOCATION_ZUIDBAAI) {
         if (obj[OBJ_SNORKEL].loc == 0) {
             l += WATER_OFF;
             return RET_REDRAW;
@@ -830,17 +830,17 @@ static int cmd_dive(void)
 
 static int cmd_remove_cover(void)
 {
-    if (l == ROOM_HUISKAMER || l == ROOM_RIOOL_21) { c1 = 1; return RET_REDRAW; }
-    if (l == ROOM_STUDEERKAMER || l == ROOM_RIOOL_24) { c2 = 1; return RET_REDRAW; }
-    if (l == ROOM_ATRIUM || l == ROOM_RIOOL_26) { c3 = 1; return RET_REDRAW; }
-    if (l == ROOM_WIJNKELDER_WEST || l == ROOM_RIOOL_27) { c4 = 1; return RET_REDRAW; }
+    if (l == LOCATION_HUISKAMER || l == LOCATION_RIOOL_21) { c1 = 1; return RET_REDRAW; }
+    if (l == LOCATION_STUDEERKAMER || l == LOCATION_RIOOL_24) { c2 = 1; return RET_REDRAW; }
+    if (l == LOCATION_ATRIUM || l == LOCATION_RIOOL_26) { c3 = 1; return RET_REDRAW; }
+    if (l == LOCATION_WIJNKELDER_WEST || l == LOCATION_RIOOL_27) { c4 = 1; return RET_REDRAW; }
     return fail();
 }
 
 static int cmd_open_door(void)
 {
-    if (l == ROOM_OVERLOOP || l == ROOM_TRAP) {
-        if (l == ROOM_OVERLOOP && k == 0) {
+    if (l == LOCATION_OVERLOOP || l == LOCATION_TRAP) {
+        if (l == LOCATION_OVERLOOP && k == 0) {
             printf("Gaat niet. De deur is aan de andere kant vergrendeld.\n");
             return RET_KEEP;
         }
@@ -856,7 +856,7 @@ static int cmd_open_safe(void)
     char sum1[64], sum2[64];
 
     if (e == 0) { printf("U kunt het niet vinden.\n"); return RET_KEEP; }
-    if (l != ROOM_OVERLOOP) { printf("Is hier niet.\n"); return RET_KEEP; }
+    if (l != LOCATION_OVERLOOP) { printf("Is hier niet.\n"); return RET_KEEP; }
 
     printf("Combinatieslot.\n");
     printf("Type het eerste getal  - ");
@@ -887,7 +887,7 @@ static int cmd_open_safe(void)
 
 static int cmd_inflate_boat(void)
 {
-    if (l != ROOM_VIJVEROEVER) { printf("Niet hier.\n"); return RET_KEEP; }
+    if (l != LOCATION_VIJVEROEVER) { printf("Niet hier.\n"); return RET_KEEP; }
     if (r == 1) { printf("Is al opgeblazen.\n"); return RET_KEEP; }
     printf("OK.\n"); r = 1; return RET_KEEP;
 }
@@ -895,10 +895,10 @@ static int cmd_inflate_boat(void)
 static int cmd_build_balloon(void)
 {
     int x;
-    if (l != ROOM_AFGRAVING) { printf("Niet hier.\n"); return RET_KEEP; }
+    if (l != LOCATION_AFGRAVING) { printf("Niet hier.\n"); return RET_KEEP; }
     hb = 0;
     for (x = 1; x <= BALLOON_PARTS; x++) {
-        if (obj[x].loc == 0 || obj[x].loc == ROOM_AFGRAVING) hb++;
+        if (obj[x].loc == 0 || obj[x].loc == LOCATION_AFGRAVING) hb++;
     }
     if (hb != 6) { printf("Niet klaar.\n"); hb = 0; return RET_KEEP; }
     for (x = 1; x <= BALLOON_PARTS; x++) {
@@ -913,21 +913,21 @@ static int cmd_fly_balloon(void)
 {
     int y, z;
     if (h == 0) { printf("Niet klaar.\n"); return RET_KEEP; }
-    if (l == ROOM_AFGRAVING || l == ROOM_PLATEAU) { printf("U moet er eerst in.\n"); return RET_KEEP; }
+    if (l == LOCATION_AFGRAVING || l == LOCATION_PLATEAU) { printf("U moet er eerst in.\n"); return RET_KEEP; }
 
-    if (l == ROOM_BALLON_PLATEAU) {
+    if (l == LOCATION_BALLON_PLATEAU) {
         for (y = BALLOON_Y_END; y >= BALLOON_Y_START; y -= BALLOON_Y_STEP) {
             z = BALLOON_MIN_ALT + abs(BALLOON_ASCENT * y - BALLOON_MID_Y * BALLOON_ASCENT) / BALLOON_DIVISOR;
             printf("Ballon op hoogte %d...\n", z);
         }
-        l = ROOM_BALLON_STRAAT; return RET_REDRAW;
+        l = LOCATION_BALLON_STRAAT; return RET_REDRAW;
     }
-    if (l == ROOM_BALLON_STRAAT) {
+    if (l == LOCATION_BALLON_STRAAT) {
         for (y = BALLOON_Y_START; y <= BALLOON_Y_END; y += BALLOON_Y_STEP) {
             z = BALLOON_MIN_ALT + abs(BALLOON_ASCENT * y - BALLOON_MID_Y * BALLOON_ASCENT) / BALLOON_DIVISOR;
             printf("Ballon op hoogte %d...\n", z);
         }
-        l = ROOM_BALLON_PLATEAU; return RET_REDRAW;
+        l = LOCATION_BALLON_PLATEAU; return RET_REDRAW;
     }
     return fail();
 }
@@ -961,9 +961,9 @@ static int cmd_read_sign(void)
 
 static int cmd_door(void)
 {
-    if (l == ROOM_OVERLOOP && k == 0) { printf("De deur is op slot.\n"); return RET_KEEP; }
-    if (l == ROOM_TRAP) { l = ROOM_OVERLOOP; k = 1; return RET_REDRAW; }
-    if (l == ROOM_OVERLOOP) { l = ROOM_TRAP; return RET_REDRAW; }
+    if (l == LOCATION_OVERLOOP && k == 0) { printf("De deur is op slot.\n"); return RET_KEEP; }
+    if (l == LOCATION_TRAP) { l = LOCATION_OVERLOOP; k = 1; return RET_REDRAW; }
+    if (l == LOCATION_OVERLOOP) { l = LOCATION_TRAP; return RET_REDRAW; }
     return fail();
 }
 
@@ -1062,7 +1062,7 @@ static int handle_command(const char *cmd)
     if (ret != -2) return ret;
 
     /* Snorkel check before generic "ga o" */
-    if (strcmp(p, "ga o") == 0 && l == ROOM_STROOM) {
+    if (strcmp(p, "ga o") == 0 && l == LOCATION_STROOM) {
         if (obj[OBJ_SNORKEL].loc != 0) {
             printf("U heeft een snorkel nodig.\n");
             return RET_KEEP;
@@ -1088,7 +1088,7 @@ static int handle_command(const char *cmd)
         return cmd_drop(p);
 
     /* "koop " at supermarkt */
-    if (strncmp(p, "koop ", 5) == 0 && l == ROOM_SUPERMARKT) {
+    if (strncmp(p, "koop ", 5) == 0 && l == LOCATION_SUPERMARKT) {
         char *item = p + 5;
         while (*item == ' ') item++;
         ret = find_obj_by_name(item, MAX_INV);
@@ -1140,39 +1140,39 @@ static void init_data(void)
 
     {
         struct { const char *sn, *desc; int loc; } obj_data[] = {
-            {"ballon",      "neergestorte weerballon",     ROOM_WEILAND},
-            {"kachel",      "kleine houtkachel",           ROOM_BINNENPLEIN},
-            {"mand",        "grote rieten mand",          ROOM_FOYER},
+            {"ballon",      "neergestorte weerballon",     LOCATION_WEILAND},
+            {"kachel",      "kleine houtkachel",           LOCATION_BINNENPLEIN},
+            {"mand",        "grote rieten mand",          LOCATION_FOYER},
             {"houtblokken", "houtblokken",                LOC_GONE},
-            {"koord",       "rol koord",                  ROOM_ATRIUM},
-            {"lucifers",    "doosje lucifers",            ROOM_TUINKAMER},
-            {"tas",         "grote tas",                  ROOM_OVERLOOP},
-            {"rubberboot",  "rubberboot",                  ROOM_BINNENPLEIN},
-            {"bord",        "bord",                        ROOM_AFGRAVING},
-            {"visnet",      "visnet",                      ROOM_ROTSPAD},
-            {"sportschoenen","sportschoenen",             ROOM_SUPERMARKT},
-            {"bijl",        "bijl",                       ROOM_SUPERMARKT},
+            {"koord",       "rol koord",                  LOCATION_ATRIUM},
+            {"lucifers",    "doosje lucifers",            LOCATION_TUINKAMER},
+            {"tas",         "grote tas",                  LOCATION_OVERLOOP},
+            {"rubberboot",  "rubberboot",                  LOCATION_BINNENPLEIN},
+            {"bord",        "bord",                        LOCATION_AFGRAVING},
+            {"visnet",      "visnet",                      LOCATION_ROTSPAD},
+            {"sportschoenen","sportschoenen",             LOCATION_SUPERMARKT},
+            {"bijl",        "bijl",                       LOCATION_SUPERMARKT},
             {"zwembril",    "zwembril",                   LOC_GONE},
-            {"zalm",        "zalm",                       ROOM_ZUIDBAAI},
-            {"beker",       "kristallen beker",           ROOM_WIJNKELDER_OOST},
-            {"fles",        "lege champagnefles",         ROOM_GROT},
-            {"boek",        "boek",                       ROOM_STUDEERKAMER},
-            {"schilderij",  "schilderij van Oom Wout",    ROOM_OVERLOOP},
+            {"zalm",        "zalm",                       LOCATION_ZUIDBAAI},
+            {"beker",       "kristallen beker",           LOCATION_WIJNKELDER_OOST},
+            {"fles",        "lege champagnefles",         LOCATION_GROT},
+            {"boek",        "boek",                       LOCATION_STUDEERKAMER},
+            {"schilderij",  "schilderij van Oom Wout",    LOCATION_OVERLOOP},
             {"snorkel",     "snorkel",                    LOC_GONE},
-            {"landhuis",    "Korenvliet",                  ROOM_HOOFDSTRAAT},
-            {"landhuis",    "Korenvliet",                  ROOM_BINNENPLEIN},
-            {"schuur",      "oude verlaten schuur",       ROOM_PLATEAU},
-            {"tafel",       "houten tafel",               ROOM_SCHUUR},
-            {"klok",        "Friese staartklok",          ROOM_STUDEERKAMER},
+            {"landhuis",    "Korenvliet",                  LOCATION_HOOFDSTRAAT},
+            {"landhuis",    "Korenvliet",                  LOCATION_BINNENPLEIN},
+            {"schuur",      "oude verlaten schuur",       LOCATION_PLATEAU},
+            {"tafel",       "houten tafel",               LOCATION_SCHUUR},
+            {"klok",        "Friese staartklok",          LOCATION_STUDEERKAMER},
             {"kluis",       "kluis",                      LOC_GONE},
-            {"kist",        "kist Chablis",               ROOM_WIJNKELDER_WEST},
-            {"bomen",       "bomen",                       ROOM_BOS},
-            {"deur",        "deur",                       ROOM_TRAP},
-            {"deur",        "deur",                       ROOM_OVERLOOP},
-            {"panter",      "een geimporteerde panter",   ROOM_WIJNKELDER_WEST},
-            {"winkel",      "supermarkt",                  ROOM_HOOFDSTRAAT},
-            {"trap",        "trap",                       ROOM_WIJNKELDER_OOST},
-            {"ziekenhuis",  "ziekenhuis",                  ROOM_HOOFDSTRAAT},
+            {"kist",        "kist Chablis",               LOCATION_WIJNKELDER_WEST},
+            {"bomen",       "bomen",                       LOCATION_BOS},
+            {"deur",        "deur",                       LOCATION_TRAP},
+            {"deur",        "deur",                       LOCATION_OVERLOOP},
+            {"panter",      "een geimporteerde panter",   LOCATION_WIJNKELDER_WEST},
+            {"winkel",      "supermarkt",                  LOCATION_HOOFDSTRAAT},
+            {"trap",        "trap",                       LOCATION_WIJNKELDER_OOST},
+            {"ziekenhuis",  "ziekenhuis",                  LOCATION_HOOFDSTRAAT},
         };
         for (x = 1; x <= MAX_OBJ; x++) {
             obj[x].short_name = obj_data[x-1].sn;
@@ -1227,43 +1227,43 @@ static void init_data(void)
 
     {
         struct { int loc; char d1; int n1; char d2; int n2; char d3; int n3; } exit_data[] = {
-            {ROOM_BINNENPLEIN,  'w', ROOM_BOS,  'z', ROOM_KANAALKANT,  '-', 0},
-            {ROOM_BOS,  'o', ROOM_BINNENPLEIN,  'z', ROOM_WEILAND,  'n', ROOM_HOOFDSTRAAT},
-            {ROOM_WEILAND,  'n', ROOM_BOS,  'o', ROOM_KANAALKANT,  '-', 0},
-            {ROOM_KANAALKANT,  'w', ROOM_WEILAND,  'o', ROOM_VIJVEROEVER,  'n', ROOM_BINNENPLEIN},
-            {ROOM_VIJVEROEVER,  'w', ROOM_KANAALKANT,  '-', 0,  '-', 0},
-            {ROOM_TERREIN,  'z', ROOM_HOOFDSTRAAT,  'o', ROOM_ROTSPAD,  '-', 0},
-            {ROOM_ROTSPAD,  'w', ROOM_TERREIN,  'o', ROOM_AFGRAVING,  '-', 0},
-            {ROOM_AFGRAVING,  'w', ROOM_ROTSPAD,  '-', 0,  '-', 0},
-            {ROOM_HOOFDSTRAAT,  'z', ROOM_BOS,  'n', ROOM_TERREIN,  '-', 0},
-            {ROOM_SUPERMARKT, 'u', ROOM_HOOFDSTRAAT,  '-', 0,  '-', 0},
-            {ROOM_ZIEKENHUIS, 'u', ROOM_HOOFDSTRAAT,  '-', 0,  '-', 0},
-            {ROOM_FOYER, 'u', ROOM_HOOFDSTRAAT,  'z', ROOM_HUISKAMER, '-', 0},
-            {ROOM_HUISKAMER, 'n', ROOM_FOYER, 'o', ROOM_STUDEERKAMER, 'z', ROOM_ATRIUM},
-            {ROOM_STUDEERKAMER, 'w', ROOM_HUISKAMER, 'o', ROOM_TUINKAMER, 'z', ROOM_OVERLOOP},
-            {ROOM_TUINKAMER, 'w', ROOM_STUDEERKAMER, '-', 0,  '-', 0},
-            {ROOM_OVERLOOP, 'n', ROOM_STUDEERKAMER, 'w', ROOM_ATRIUM, '-', 0},
-            {ROOM_ATRIUM, 'u', ROOM_BINNENPLEIN,  'n', ROOM_HUISKAMER, 'o', ROOM_OVERLOOP},
-            {ROOM_WIJNKELDER_WEST, 'o', ROOM_WIJNKELDER_OOST, '-', 0,  '-', 0},
-            {ROOM_WIJNKELDER_OOST, 'w', ROOM_WIJNKELDER_WEST, 'h', ROOM_TRAP, '-', 0},
-            {ROOM_TRAP, 'l', ROOM_WIJNKELDER_OOST, '-', 0,  '-', 0},
-            {ROOM_RIOOL_21, 'u', ROOM_HUISKAMER, 'z', ROOM_RIOOL_22, '-', 0},
-            {ROOM_RIOOL_22, 'n', ROOM_RIOOL_21, 'o', ROOM_RIOOL_23, '-', 0},
-            {ROOM_RIOOL_23, 'w', ROOM_RIOOL_22, 'n', ROOM_RIOOL_24, 'z', ROOM_RIOOL_25},
-            {ROOM_RIOOL_24, 'u', ROOM_STUDEERKAMER, 'z', ROOM_RIOOL_23, '-', 0},
-            {ROOM_RIOOL_25, 'n', ROOM_RIOOL_23, 'w', ROOM_RIOOL_26, '-', 0},
-            {ROOM_RIOOL_26, 'u', ROOM_ATRIUM, 'l', ROOM_RIOOL_27, 'o', ROOM_RIOOL_25},
-            {ROOM_RIOOL_27, 'u', ROOM_WIJNKELDER_WEST, 'h', ROOM_RIOOL_26, '-', 0},
-            {ROOM_VIJVER, 'u', ROOM_VIJVEROEVER,  'z', ROOM_ZUIDBAAI, '-', 0},
-            {ROOM_ZUIDBAAI, 'n', ROOM_VIJVER, '-', 0,  '-', 0},
-            {ROOM_ONDERWATER_30, 'u', ROOM_VIJVER, 'z', ROOM_ONDERWATER_31, '-', 0},
-            {ROOM_ONDERWATER_31, 'h', ROOM_ZUIDBAAI, 'n', ROOM_ONDERWATER_30, '-', 0},
-            {ROOM_STROOM, 'o', ROOM_ONDERWATER_31, 'w', ROOM_GROT, '-', 0},
-            {ROOM_GROT, 'o', ROOM_STROOM, '-', 0,  '-', 0},
-            {ROOM_BALLON_STRAAT, 'u', ROOM_AFGRAVING,  '-', 0,  '-', 0},
-            {ROOM_BALLON_PLATEAU, 'u', ROOM_PLATEAU, '-', 0,  '-', 0},
-            {ROOM_PLATEAU, '-', 0,  '-', 0,  '-', 0},
-            {ROOM_SCHUUR, 'u', ROOM_PLATEAU, '-', 0,  '-', 0},
+            {LOCATION_BINNENPLEIN,  'w', LOCATION_BOS,  'z', LOCATION_KANAALKANT,  '-', 0},
+            {LOCATION_BOS,  'o', LOCATION_BINNENPLEIN,  'z', LOCATION_WEILAND,  'n', LOCATION_HOOFDSTRAAT},
+            {LOCATION_WEILAND,  'n', LOCATION_BOS,  'o', LOCATION_KANAALKANT,  '-', 0},
+            {LOCATION_KANAALKANT,  'w', LOCATION_WEILAND,  'o', LOCATION_VIJVEROEVER,  'n', LOCATION_BINNENPLEIN},
+            {LOCATION_VIJVEROEVER,  'w', LOCATION_KANAALKANT,  '-', 0,  '-', 0},
+            {LOCATION_TERREIN,  'z', LOCATION_HOOFDSTRAAT,  'o', LOCATION_ROTSPAD,  '-', 0},
+            {LOCATION_ROTSPAD,  'w', LOCATION_TERREIN,  'o', LOCATION_AFGRAVING,  '-', 0},
+            {LOCATION_AFGRAVING,  'w', LOCATION_ROTSPAD,  '-', 0,  '-', 0},
+            {LOCATION_HOOFDSTRAAT,  'z', LOCATION_BOS,  'n', LOCATION_TERREIN,  '-', 0},
+            {LOCATION_SUPERMARKT, 'u', LOCATION_HOOFDSTRAAT,  '-', 0,  '-', 0},
+            {LOCATION_ZIEKENHUIS, 'u', LOCATION_HOOFDSTRAAT,  '-', 0,  '-', 0},
+            {LOCATION_FOYER, 'u', LOCATION_HOOFDSTRAAT,  'z', LOCATION_HUISKAMER, '-', 0},
+            {LOCATION_HUISKAMER, 'n', LOCATION_FOYER, 'o', LOCATION_STUDEERKAMER, 'z', LOCATION_ATRIUM},
+            {LOCATION_STUDEERKAMER, 'w', LOCATION_HUISKAMER, 'o', LOCATION_TUINKAMER, 'z', LOCATION_OVERLOOP},
+            {LOCATION_TUINKAMER, 'w', LOCATION_STUDEERKAMER, '-', 0,  '-', 0},
+            {LOCATION_OVERLOOP, 'n', LOCATION_STUDEERKAMER, 'w', LOCATION_ATRIUM, '-', 0},
+            {LOCATION_ATRIUM, 'u', LOCATION_BINNENPLEIN,  'n', LOCATION_HUISKAMER, 'o', LOCATION_OVERLOOP},
+            {LOCATION_WIJNKELDER_WEST, 'o', LOCATION_WIJNKELDER_OOST, '-', 0,  '-', 0},
+            {LOCATION_WIJNKELDER_OOST, 'w', LOCATION_WIJNKELDER_WEST, 'h', LOCATION_TRAP, '-', 0},
+            {LOCATION_TRAP, 'l', LOCATION_WIJNKELDER_OOST, '-', 0,  '-', 0},
+            {LOCATION_RIOOL_21, 'u', LOCATION_HUISKAMER, 'z', LOCATION_RIOOL_22, '-', 0},
+            {LOCATION_RIOOL_22, 'n', LOCATION_RIOOL_21, 'o', LOCATION_RIOOL_23, '-', 0},
+            {LOCATION_RIOOL_23, 'w', LOCATION_RIOOL_22, 'n', LOCATION_RIOOL_24, 'z', LOCATION_RIOOL_25},
+            {LOCATION_RIOOL_24, 'u', LOCATION_STUDEERKAMER, 'z', LOCATION_RIOOL_23, '-', 0},
+            {LOCATION_RIOOL_25, 'n', LOCATION_RIOOL_23, 'w', LOCATION_RIOOL_26, '-', 0},
+            {LOCATION_RIOOL_26, 'u', LOCATION_ATRIUM, 'l', LOCATION_RIOOL_27, 'o', LOCATION_RIOOL_25},
+            {LOCATION_RIOOL_27, 'u', LOCATION_WIJNKELDER_WEST, 'h', LOCATION_RIOOL_26, '-', 0},
+            {LOCATION_VIJVER, 'u', LOCATION_VIJVEROEVER,  'z', LOCATION_ZUIDBAAI, '-', 0},
+            {LOCATION_ZUIDBAAI, 'n', LOCATION_VIJVER, '-', 0,  '-', 0},
+            {LOCATION_ONDERWATER_30, 'u', LOCATION_VIJVER, 'z', LOCATION_ONDERWATER_31, '-', 0},
+            {LOCATION_ONDERWATER_31, 'h', LOCATION_ZUIDBAAI, 'n', LOCATION_ONDERWATER_30, '-', 0},
+            {LOCATION_STROOM, 'o', LOCATION_ONDERWATER_31, 'w', LOCATION_GROT, '-', 0},
+            {LOCATION_GROT, 'o', LOCATION_STROOM, '-', 0,  '-', 0},
+            {LOCATION_BALLON_STRAAT, 'u', LOCATION_AFGRAVING,  '-', 0,  '-', 0},
+            {LOCATION_BALLON_PLATEAU, 'u', LOCATION_PLATEAU, '-', 0,  '-', 0},
+            {LOCATION_PLATEAU, '-', 0,  '-', 0,  '-', 0},
+            {LOCATION_SCHUUR, 'u', LOCATION_PLATEAU, '-', 0,  '-', 0},
         };
         for (x = 0; x < MAX_LOC; x++) {
             int lx = exit_data[x].loc;
