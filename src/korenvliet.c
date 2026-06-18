@@ -92,15 +92,6 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 
 /* Atmospheric description probability thresholds */
 #define ATMOS_RNG_MAX    10
-#define ATMOS_R6_ADRIAAN  1
-#define ATMOS_R3_ZOETE    3
-#define ATMOS_R7_BEREND   5
-#define ATMOS_R33_BAT     5
-#define ATMOS_R27_SPINRAG 3
-#define ATMOS_R25_RAT     3
-#define ATMOS_R4_PAD      7
-#define ATMOS_R28_GULL    5
-#define ATMOS_R2_APEN     8
 
 /* Balloon altitude animation parameters */
 #define BALLOON_Y_START    5   /* loop start */
@@ -112,43 +103,45 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define BALLOON_DIVISOR    6   /* altitude slope divisor (== Y_STEP) */
 
 /* Room number constants */
-#define ROOM_BINNENPLEIN      1
-#define ROOM_BOS             2
-#define ROOM_WEILAND          3
-#define ROOM_KANAALKANT       4
-#define ROOM_VIJVEROEVER      5
-#define ROOM_TERREIN          6
-#define ROOM_ROTSPAD          7
-#define ROOM_AFGRAVING        8
-#define ROOM_HOOFDSTRAAT      9
-#define ROOM_SUPERMARKT      10
-#define ROOM_ZIEKENHUIS      11
-#define ROOM_FOYER           12
-#define ROOM_HUISKAMER       13
-#define ROOM_STUDEERKAMER    14
-#define ROOM_TUINKAMER       15
-#define ROOM_OVERLOOP        16
-#define ROOM_ATRIUM          17
-#define ROOM_WIJNKELDER_WEST 18
-#define ROOM_WIJNKELDER_OOST 19
-#define ROOM_TRAP            20
-#define ROOM_RIOOL_21        21
-#define ROOM_RIOOL_22        22
-#define ROOM_RIOOL_23        23
-#define ROOM_RIOOL_24        24
-#define ROOM_RIOOL_25        25
-#define ROOM_RIOOL_26        26
-#define ROOM_RIOOL_27        27
-#define ROOM_VIJVER          28
-#define ROOM_ZUIDBAAI        29
-#define ROOM_ONDERWATER_30   30
-#define ROOM_ONDERWATER_31   31
-#define ROOM_STROOM          32
-#define ROOM_GROT            33
-#define ROOM_BALLON_STRAAT   34
-#define ROOM_BALLON_PLATEAU  35
-#define ROOM_PLATEAU         36
-#define ROOM_SCHUUR          37
+enum {
+    ROOM_BINNENPLEIN = 1,
+    ROOM_BOS,
+    ROOM_WEILAND,
+    ROOM_KANAALKANT,
+    ROOM_VIJVEROEVER,
+    ROOM_TERREIN,
+    ROOM_ROTSPAD,
+    ROOM_AFGRAVING,
+    ROOM_HOOFDSTRAAT,
+    ROOM_SUPERMARKT,
+    ROOM_ZIEKENHUIS,
+    ROOM_FOYER,
+    ROOM_HUISKAMER,
+    ROOM_STUDEERKAMER,
+    ROOM_TUINKAMER,
+    ROOM_OVERLOOP,
+    ROOM_ATRIUM,
+    ROOM_WIJNKELDER_WEST,
+    ROOM_WIJNKELDER_OOST,
+    ROOM_TRAP,
+    ROOM_RIOOL_21,
+    ROOM_RIOOL_22,
+    ROOM_RIOOL_23,
+    ROOM_RIOOL_24,
+    ROOM_RIOOL_25,
+    ROOM_RIOOL_26,
+    ROOM_RIOOL_27,
+    ROOM_VIJVER,
+    ROOM_ZUIDBAAI,
+    ROOM_ONDERWATER_30,
+    ROOM_ONDERWATER_31,
+    ROOM_STROOM,
+    ROOM_GROT,
+    ROOM_BALLON_STRAAT,
+    ROOM_BALLON_PLATEAU,
+    ROOM_PLATEAU,
+    ROOM_SCHUUR
+};
 
 /* ------------------------------------------------------------------ */
 /*  Object                                                             */
@@ -194,9 +187,17 @@ static int  c1 = 0, c2 = 0, c3 = 0, c4 = 0;
 static int  s  = 0;   /* sick / injured */
 static int  hb = 0;   /* balloon part counter */
 
-static char p[3][64];            /* misc messages */
-static int  ve[9];               /* sewer locations */
-static char n[4][4];             /* random numbers (strings) */
+static const char * const p[3] = {
+    "uitlaat is afgedekt",
+    "er past iets niet",
+    "binnenin is een briefje met nummer"
+};
+static const int ve[9] = {
+    0, ROOM_HUISKAMER, ROOM_STUDEERKAMER, ROOM_ATRIUM,
+    ROOM_WIJNKELDER_WEST, ROOM_RIOOL_21, ROOM_RIOOL_24,
+    ROOM_RIOOL_26, ROOM_RIOOL_27
+};
+static char n[3][3];             /* random numbers (2-digit strings) */
 
 /* ------------------------------------------------------------------ */
 /*  Help text                                                          */
@@ -233,18 +234,13 @@ static const char *help_text[] = {
 /* xorshift32 PRNG state */
 static unsigned int rng_state;
 
-static unsigned int xorshift32(void)
+/* Return random integer in [lo, hi] */
+static int rand_range(int lo, int hi)
 {
     rng_state ^= rng_state << 13;
     rng_state ^= rng_state >> 17;
     rng_state ^= rng_state << 5;
-    return rng_state;
-}
-
-/* Return random integer in [lo, hi] */
-static int rand_range(int lo, int hi)
-{
-    return lo + (int)(xorshift32() % (unsigned int)(hi - lo + 1));
+    return lo + (int)(rng_state % (unsigned int)(hi - lo + 1));
 }
 
 /* Remove trailing newline from a string */
@@ -327,25 +323,25 @@ static void display_location(void)
 
     /* Random atmospheric descriptions */
     {
-        int z = rand_range(1, ATMOS_RNG_MAX);
-        if (l == ROOM_TERREIN && z == ATMOS_R6_ADRIAAN)
-            printf("Adriaan met twee staven dynamiet.\n");
-        if (l == ROOM_WEILAND && z == ATMOS_R3_ZOETE)
-            printf("Zoete met een koppel bloedhonden.\n");
-        if (l == ROOM_ROTSPAD && z == ATMOS_R7_BEREND)
-            printf("Berend met een bulldozer.\n");
-        if (l == ROOM_GROT && z < ATMOS_R33_BAT)
-            printf("Er vliegt een vleermuis langs.\n");
-        if (l == ROOM_RIOOL_27 && z < ATMOS_R27_SPINRAG)
-            printf("Er zit spinrag in Uw haar.\n");
-        if (l == ROOM_RIOOL_25 && z < ATMOS_R25_RAT)
-            printf("Een rat strijkt langs Uw been.\n");
-        if (l == ROOM_KANAALKANT && z == ATMOS_R4_PAD)
-            printf("Een pad springt in het kanaal.\n");
-        if (l == ROOM_VIJVER && obj[14].loc == 0 && z < ATMOS_R28_GULL)
+        int i, z = rand_range(1, ATMOS_RNG_MAX);
+        static const struct { int room; int zval; char cmp; const char *text; } at[] = {
+            {ROOM_TERREIN,   1, '=', "Adriaan met twee staven dynamiet."},
+            {ROOM_WEILAND,   3, '=', "Zoete met een koppel bloedhonden."},
+            {ROOM_ROTSPAD,   5, '=', "Berend met een bulldozer."},
+            {ROOM_GROT,      5, '<', "Er vliegt een vleermuis langs."},
+            {ROOM_RIOOL_27,  3, '<', "Er zit spinrag in Uw haar."},
+            {ROOM_RIOOL_25,  3, '<', "Een rat strijkt langs Uw been."},
+            {ROOM_KANAALKANT,7, '=', "Een pad springt in het kanaal."},
+            {ROOM_BOS,       8, '=', "Een aapachtig figuur kijkt op U neer."},
+        };
+        for (i = 0; i < (int)(sizeof(at)/sizeof(at[0])); i++) {
+            if (l == at[i].room &&
+                ((at[i].cmp == '=' && z == at[i].zval) ||
+                 (at[i].cmp == '<' && z < at[i].zval)))
+                printf("%s\n", at[i].text);
+        }
+        if (l == ROOM_VIJVER && obj[14].loc == 0 && z < 5)
             printf("Een hongerige meeuw cirkelt rond.\n");
-        if (l == ROOM_BOS && z == ATMOS_R2_APEN)
-            printf("Een aapachtig figuur kijkt op U neer.\n");
     }
 }
 
@@ -686,13 +682,13 @@ static int cmd_examine(const char *arg)
     if (x == 0) return fail();
 
     if (strcasecmp(obj[x].short_name, "fles") == 0) {
-        printf("%s %s\n", p[2], n[1]); return RET_KEEP;
+        printf("%s %s\n", p[2], n[0]); return RET_KEEP;
     }
     if (strcasecmp(obj[x].short_name, "beker") == 0) {
-        printf("%s %s\n", p[2], n[2]); return RET_KEEP;
+        printf("%s %s\n", p[2], n[1]); return RET_KEEP;
     }
     if (strcasecmp(obj[x].short_name, "tafel") == 0) {
-        printf("Er ligt een briefje met het nummer %s\n", n[3]); return RET_KEEP;
+        printf("Er ligt een briefje met het nummer %s\n", n[2]); return RET_KEEP;
     }
     if (strcasecmp(obj[x].short_name, "kist") == 0) {
         printf("Er ontbreekt een fles.\n"); return RET_KEEP;
@@ -828,20 +824,20 @@ static int cmd_open_safe(void)
     printf("Type het eerste getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
     chomp(input); input[15] = '\0'; strcpy(f1, input);
-    if (strcmp(f1, n[1]) != 0) { printf("Fout.\n"); return RET_KEEP; }
+    if (strcmp(f1, n[0]) != 0) { printf("Fout.\n"); return RET_KEEP; }
 
     printf("Type tweede getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
     chomp(input); input[15] = '\0'; strcpy(f2, input);
     snprintf(sum1, sizeof(sum1), "%s%s", f1, f2);
-    snprintf(sum2, sizeof(sum2), "%s%s", n[1], n[2]);
+    snprintf(sum2, sizeof(sum2), "%s%s", n[0], n[1]);
     if (strcmp(sum1, sum2) != 0) { printf("Fout.\n"); return RET_KEEP; }
 
     printf("Type het laatste getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
     chomp(input); input[15] = '\0'; strcpy(f3, input);
     snprintf(sum1, sizeof(sum1), "%s%s%s", f1, f2, f3);
-    snprintf(sum2, sizeof(sum2), "%s%s%s", n[1], n[2], n[3]);
+    snprintf(sum2, sizeof(sum2), "%s%s%s", n[0], n[1], n[2]);
     if (strcmp(sum1, sum2) == 0) {
         f = 1;
         printf("\nKlik........ Er zit een testament in.\n");
@@ -936,12 +932,69 @@ static int cmd_door(void)
 /* ------------------------------------------------------------------ */
 /*  Main command dispatcher                                            */
 /* ------------------------------------------------------------------ */
+
+static int cmd_help(void) {
+    int h;
+    for (h = 0; help_text[h] != NULL; h++)
+        printf("%s\n", help_text[h]);
+    return RET_REDRAW;
+}
+
+static int cmd_cure(void) {
+    if (s != 1) return fail();
+    s = 0; printf("Genezen.\n"); return RET_KEEP;
+}
+
+static int cmd_read_book(void) {
+    return cmd_examine("bekijk boek");
+}
+
+static int cmd_kijk(void) {
+    return RET_REDRAW;
+}
+
+typedef struct {
+    const char *cmd;
+    int (*handler)(void);
+} CmdEntry;
+
+static const CmdEntry cmd_table[] = {
+    {"stop",            cmd_stop},
+    {"halt",            cmd_stop},
+    {"help",            cmd_help},
+    {"inventaris",      cmd_inventory},
+    {"ga door deur",    cmd_door},
+    {"ga u",            cmd_go_up},
+    {"ga uit",          cmd_go_up},
+    {"verwijder deksel", cmd_remove_cover},
+    {"open afvoer",     cmd_remove_cover},
+    {"open deur",       cmd_open_door},
+    {"maak kluis open", cmd_open_safe},
+    {"open kluis",      cmd_open_safe},
+    {"blaas boot op",   cmd_inflate_boat},
+    {"blaas ballon op", cmd_build_balloon},
+    {"bouw ballon",     cmd_build_balloon},
+    {"vlieg met ballon", cmd_fly_balloon},
+    {"zeil met ballon", cmd_fly_balloon},
+    {"lees testament",  cmd_read_will},
+    {"lees boek",       cmd_read_book},
+    {"lees bord",       cmd_read_sign},
+    {"voer panter",     cmd_panther},
+    {"geef zalm",       cmd_panther},
+    {"gezondheid",      cmd_cure},
+    {"wordt beter",     cmd_cure},
+    {"beterschap",      cmd_cure},
+    {"kijk",            cmd_kijk},
+    {NULL, NULL}
+};
+
 static int handle_command(const char *cmd)
 {
     char buf[128];
     char *p;
     size_t ci;
     int ret;
+    const CmdEntry *entry;
 
     for (ci = 0; ci < sizeof(buf) - 1 && cmd[ci]; ci++)
         buf[ci] = tolower((unsigned char)cmd[ci]);
@@ -957,35 +1010,20 @@ static int handle_command(const char *cmd)
         p[3] = 'i'; p[4] = 'n'; p[5] = ' ';
     }
 
-    if (strcmp(p, "stop") == 0 || strcmp(p, "halt") == 0)
-        return cmd_stop();
+    /* Dispatch exact-match commands */
+    for (entry = cmd_table; entry->cmd; entry++)
+        if (strcmp(p, entry->cmd) == 0)
+            return entry->handler();
 
-    if (strcmp(p, "help") == 0) {
-        int h;
-        for (h = 0; help_text[h] != NULL; h++)
-            printf("%s\n", help_text[h]);
-        return RET_REDRAW;
-    }
-
-    if (strcmp(p, "inventaris") == 0)
-        return cmd_inventory();
-
-    if (s == 1 && (strcmp(p, "gezondheid") == 0 || strcmp(p, "wordt beter") == 0 || strcmp(p, "beterschap") == 0)) {
-        s = 0; printf("Genezen.\n"); return RET_KEEP;
-    }
-
+    /* "ga jog"/"ga trim" prefix (allows "ga joggen", "ga trimmen") */
     if (strncmp(p, "ga jog", 6) == 0 || strncmp(p, "ga trim", 7) == 0)
         return cmd_jog();
 
-    if (strcmp(p, "ga door deur") == 0)
-        return cmd_door();
-
+    /* "ga in X" place entry */
     ret = cmd_enter(p);
     if (ret != -2) return ret;
 
-    if (strcmp(p, "ga u") == 0 || strcmp(p, "ga uit") == 0)
-        return cmd_go_up();
-
+    /* Snorkel check before generic "ga o" */
     if (strcmp(p, "ga o") == 0 && l == ROOM_STROOM) {
         if (obj[19].loc != 0) {
             printf("U heeft een snorkel nodig.\n");
@@ -993,6 +1031,7 @@ static int handle_command(const char *cmd)
         }
     }
 
+    /* "ga " / single-letter direction */
     if (strncmp(p, "ga ", 3) == 0 || (strlen(p) == 1 && strchr("nozwulh", *p))) {
         char tmp[16];
         if (strlen(p) == 1 && strchr("nozwulh", *p)) {
@@ -1002,67 +1041,43 @@ static int handle_command(const char *cmd)
         return cmd_go(p);
     }
 
+    /* "neem " / "pak " */
     if (strncmp(p, "neem ", 5) == 0 || strncmp(p, "pak ", 4) == 0)
         return cmd_take(p);
 
+    /* "leg " */
     if (strncmp(p, "leg ", 4) == 0)
         return cmd_drop(p);
 
+    /* "koop " at supermarkt */
     if (strncmp(p, "koop ", 5) == 0 && l == ROOM_SUPERMARKT) {
-        int idx;
         char *item = p + 5;
         while (*item == ' ') item++;
-        idx = find_obj_by_name(item, MAX_INV);
-        if (idx == 0) return fail();
-        return generic_take_item(idx);
+        ret = find_obj_by_name(item, MAX_INV);
+        if (ret == 0) return fail();
+        return generic_take_item(ret);
     }
 
-    if (strcmp(p, "verwijder deksel") == 0 || strcmp(p, "open afvoer") == 0)
-        return cmd_remove_cover();
-
-    if (strcmp(p, "open deur") == 0)
-        return cmd_open_door();
-
-    if (strcmp(p, "maak kluis open") == 0 || strcmp(p, "open kluis") == 0)
-        return cmd_open_safe();
-
-    if (strcmp(p, "blaas boot op") == 0)
-        return cmd_inflate_boat();
-
-    if (strcmp(p, "blaas ballon op") == 0 || strcmp(p, "bouw ballon") == 0)
-        return cmd_build_balloon();
-
-    if (strcmp(p, "vlieg met ballon") == 0 || strcmp(p, "zeil met ballon") == 0)
-        return cmd_fly_balloon();
-
-    if (strcmp(p, "lees testament") == 0 && f == 1)
-        return cmd_read_will();
-
-    if (strcmp(p, "lees boek") == 0)
-        return cmd_examine("bekijk boek");
-
-    if (strcmp(p, "lees bord") == 0)
-        return cmd_read_sign();
-
-    if (strcmp(p, "voer panter") == 0 || strcmp(p, "geef zalm") == 0)
-        return cmd_panther();
-
-    if (strstr(p, "boom") || strstr(p, "bomen")) {
+    /* "hak"/"snij" + boom/bomen */
+    if (strstr(p, "boom") || strstr(p, "bomen"))
         if (strncmp(p, "hak", 3) == 0 || strncmp(p, "snij", 4) == 0)
             return cmd_cut_tree();
-    }
 
+    /* "klim" */
     if (strncmp(p, "klim", 4) == 0)
         return cmd_climb_tree();
 
+    /* "duik" */
     if (strncmp(p, "duik", 4) == 0)
         return cmd_dive();
 
+    /* "onderzoek " / "bekijk " */
     if (strncmp(p, "onderzoek ", 10) == 0 || strncmp(p, "bekijk ", 7) == 0) {
         ret = cmd_examine(p);
         if (ret != -2) return ret;
     }
 
+    /* "open " (boek/klok/tas → examine, deur → open) */
     if (strncmp(p, "open ", 5) == 0) {
         const char *what = p + 5;
         while (*what == ' ') what++;
@@ -1073,9 +1088,6 @@ static int handle_command(const char *cmd)
         if (strcmp(what, "deur") == 0)
             return cmd_open_door();
     }
-
-    if (strcmp(p, "kijk") == 0)
-        return RET_REDRAW;
 
     return fail();
 }
@@ -1226,18 +1238,8 @@ static void init_data(void)
         }
     }
 
-    strcpy(p[0], "uitlaat is afgedekt");
-    strcpy(p[1], "er past iets niet");
-    strcpy(p[2], "binnenin is een briefje met nummer");
-
-    {
-        int ve_data[] = { 0, ROOM_HUISKAMER, ROOM_STUDEERKAMER, ROOM_ATRIUM, ROOM_WIJNKELDER_WEST, ROOM_RIOOL_21, ROOM_RIOOL_24, ROOM_RIOOL_26, ROOM_RIOOL_27 };
-        for (x = 1; x <= 8; x++)
-            ve[x] = ve_data[x];
-    }
-
     /* Safe combination */
-    for (x = 1; x <= 3; x++) {
+    for (x = 0; x < 3; x++) {
         int z = rand_range(10, 99);
         snprintf(n[x], sizeof(n[x]), "%02d", z);
     }

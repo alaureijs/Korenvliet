@@ -2,6 +2,13 @@
 
 ## 2026-06-18
 
+- Replaced 37 `#define ROOM_*` with an `enum`
+- Replaced `p[3][64]` buffer + 3 `strcpy` calls with `static const char * const p[3]`
+- Replaced `ve[9]` + temp array + loop with `static const int ve[9]`
+- Replaced 8 atmospheric-description `if` blocks with a data table
+- Replaced 30+ if-chain in `handle_command` with dispatch table + prefix handlers
+- Inlined `xorshift32` into `rand_range` (only caller)
+- Resized `n[4][4]` → `n[3][3]` with 0-based indexing (`n[0]`–`n[2]`)
 - Restored "kijk" command (redisplays current location, reverting the earlier removal)
 - Fixed grammar in room 21 description: "van een riool" → "van het riool" (matches original)
 - Simplified safe code generation: removed dead `ss[]`/`sflags[]` shuffling and debug prints
