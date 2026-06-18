@@ -91,7 +91,6 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define SAFE_MAX 99       /* safe code upper bound */
 
 /* Health status values */
-#define HEALTHY 0
 #define SICK    1
 
 /* Atmospheric description probability thresholds */
@@ -226,7 +225,7 @@ static unsigned char panther_fed = 0;   /* panther fed */
 static unsigned char safe_open = 0;   /* safe opened, testament readable */
 static unsigned char painting_examined = 0;   /* painting examined, safe revealed */
 static unsigned char grate1 = 0, grate2 = 0, grate3 = 0, grate4 = 0;
-static unsigned char health_status = HEALTHY;   /* sick / injured */
+static unsigned char health_status = !SICK;   /* sick / injured */
 static unsigned char balloon_parts_count = 0;   /* balloon_built part counter */
 
 static const char * const pref[3] = {
@@ -984,7 +983,7 @@ static int cmd_help(void) {
 
 static int cmd_cure(void) {
     if (health_status != SICK) return fail();
-    health_status = HEALTHY; printf("Genezen.\n"); return RET_KEEP;
+    health_status = !SICK; printf("Genezen.\n"); return RET_KEEP;
 }
 
 static int cmd_read_book(void) {
