@@ -49,6 +49,9 @@
   `obj[4/7/8/9/10/11/12/13/14/19/25/26/30]` references with named constants
 - Renamed `ROOM_*` enum to `LOCATION_*` (locations include rooms, streets,
   sewer tunnels, underwater areas, and balloon altitudes)
+- Reduced runtime memory footprint: `Exit.dest` `int` → `unsigned char`
+  (saves ~608 bytes BSS), all game state flags from `int` → `unsigned char`
+  (saves ~38 bytes BSS), total BSS reduced ~31%
 
 ## 2026-06-17
 

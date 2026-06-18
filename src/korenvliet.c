@@ -187,7 +187,7 @@ enum {
 typedef struct {
     const char *short_name;
     const char *desc;
-    int  loc;               /* 0 = carried, 1..37 = location, LOC_GONE = gone */
+    unsigned char loc;      /* 0 = carried, 1..37 = location, LOC_GONE = gone */
 } Object;
 
 /* ------------------------------------------------------------------ */
@@ -195,7 +195,7 @@ typedef struct {
 /* ------------------------------------------------------------------ */
 typedef struct {
     char dir;               /* n,o,z,w,u,l,h,- */
-    int  dest;
+    unsigned char dest;
 } Exit;
 
 /* ------------------------------------------------------------------ */
@@ -212,18 +212,18 @@ typedef struct {
 static Object  obj[MAX_OBJ + 1];      /* 1-indexed */
 static Location loc[MAX_LOC + 1];     /* 1-indexed */
 
-static int  l  = 9;   /* current location */
-static int  i  = 0;   /* # items carried */
-static int  h  = 0;   /* balloon built */
-static int  r  = 0;   /* rubber boat inflated */
-static int  w  = 0;   /* jogging done (weight loss) */
-static int  k  = 0;   /* door unlocked */
-static int  v  = 0;   /* panther fed */
-static int  f  = 0;   /* safe opened, testament readable */
-static int  e  = 0;   /* painting examined, safe revealed */
-static int  c1 = 0, c2 = 0, c3 = 0, c4 = 0;
-static int  s  = 0;   /* sick / injured */
-static int  hb = 0;   /* balloon part counter */
+static unsigned char l  = 9;   /* current location */
+static unsigned char i  = 0;   /* # items carried */
+static unsigned char h  = 0;   /* balloon built */
+static unsigned char r  = 0;   /* rubber boat inflated */
+static unsigned char w  = 0;   /* jogging done (weight loss) */
+static unsigned char k  = 0;   /* door unlocked */
+static unsigned char v  = 0;   /* panther fed */
+static unsigned char f  = 0;   /* safe opened, testament readable */
+static unsigned char e  = 0;   /* painting examined, safe revealed */
+static unsigned char c1 = 0, c2 = 0, c3 = 0, c4 = 0;
+static unsigned char s  = 0;   /* sick / injured */
+static unsigned char hb = 0;   /* balloon part counter */
 
 static const char * const p[3] = {
     "uitlaat is afgedekt",
