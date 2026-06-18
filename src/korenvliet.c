@@ -75,7 +75,7 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define MAX_LOC   37
 #define MAX_INV   19       /* only objects 1..19 can be inventory_count */
 #define MAX_EXITS  3
-#define LOC_GONE  40      /* object is used/destroyed/gone */
+#define OBJECT_GONE  40      /* object is used/destroyed/gone */
 #define WRAP_W    38      /* display column width for word-wrap */
 #define SUFFIX_LEN 2      /* strlen of ". " appended to object names */
 #define MAX_CARRY 4       /* max items player can carry */
@@ -190,7 +190,7 @@ enum {
 typedef struct {
     const char *short_name;
     const char *desc;
-    unsigned char loc;      /* 0 = inventory_count, 1..37 = location, LOC_GONE = gone */
+    unsigned char loc;      /* 0 = inventory_count, 1..37 = location, OBJECT_GONE = gone */
 } Object;
 
 /* ------------------------------------------------------------------ */
@@ -472,7 +472,7 @@ static int cmd_take(char *arg)
     /* Bril (zwembril, obj 13) */
     if (strcasecmp(arg, "bril") == 0) {
         if (obj[OBJ_ZWEMBRIL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
-        if (obj[OBJ_ZWEMBRIL].loc == LOC_GONE && player_location == LOCATION_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
+        if (obj[OBJ_ZWEMBRIL].loc == OBJECT_GONE && player_location == LOCATION_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
         if (obj[OBJ_ZWEMBRIL].loc == player_location) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
         return fail();
     }
@@ -480,7 +480,7 @@ static int cmd_take(char *arg)
     /* Snorkel (obj 19) */
     if (strcasecmp(arg, "snorkel") == 0) {
         if (obj[OBJ_SNORKEL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
-        if (obj[OBJ_SNORKEL].loc == LOC_GONE && (obj[OBJ_TAS].loc == 0 || obj[OBJ_TAS].loc == player_location)) {
+        if (obj[OBJ_SNORKEL].loc == OBJECT_GONE && (obj[OBJ_TAS].loc == 0 || obj[OBJ_TAS].loc == player_location)) {
             obj[OBJ_SNORKEL].loc = 0; inventory_count++; return RET_REDRAW;
         }
         if (obj[OBJ_SNORKEL].loc == player_location) { obj[OBJ_SNORKEL].loc = 0; inventory_count++; return RET_REDRAW; }
@@ -745,10 +745,10 @@ static int cmd_examine(const char *arg)
         printf("   Bouw op een geschikte plaats!\n");
         return RET_REDRAW;
     }
-    if (strcasecmp(obj[x].short_name, "klok") == 0 && obj[OBJ_ZWEMBRIL].loc == LOC_GONE) {
+    if (strcasecmp(obj[x].short_name, "klok") == 0 && obj[OBJ_ZWEMBRIL].loc == OBJECT_GONE) {
         printf("Er zit een duikbril in.\n"); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "tas") == 0 && obj[OBJ_SNORKEL].loc == LOC_GONE) {
+    if (strcasecmp(obj[x].short_name, "tas") == 0 && obj[OBJ_SNORKEL].loc == OBJECT_GONE) {
         printf("Er zit een snorkel in.\n"); return RET_KEEP;
     }
     if (strcasecmp(obj[x].short_name, "schilderij") == 0) {
@@ -796,8 +796,8 @@ static int cmd_panther(void)
     printf("Panter ontsnapte met de zalm.\n");
     if (obj[OBJ_ZALM].loc == 0) inventory_count--;
     panther_fed = 1;
-    obj[OBJ_ZALM].loc = LOC_GONE;
-    obj[OBJ_PANTER].loc = LOC_GONE;
+    obj[OBJ_ZALM].loc = OBJECT_GONE;
+    obj[OBJ_PANTER].loc = OBJECT_GONE;
     return RET_REDRAW;
 }
 
@@ -906,7 +906,7 @@ static int cmd_build_balloon_built(void)
     if (balloon_parts_count != 6) { printf("Niet klaar.\n"); balloon_parts_count = 0; return RET_KEEP; }
     for (x = 1; x <= BALLOON_PARTS; x++) {
         if (obj[x].loc == 0) inventory_count--;
-        obj[x].loc = LOC_GONE;
+        obj[x].loc = OBJECT_GONE;
     }
     balloon_built = 1;
     return RET_REDRAW;
@@ -1146,7 +1146,7 @@ static void init_data(void)
             {"ballon",      "neergestorte weerballon",     LOCATION_WEILAND},
             {"kachel",      "kleine houtkachel",           LOCATION_BINNENPLEIN},
             {"mand",        "grote rieten mand",          LOCATION_FOYER},
-            {"houtblokken", "houtblokken",                LOC_GONE},
+            {"houtblokken", "houtblokken",                OBJECT_GONE},
             {"koord",       "rol koord",                  LOCATION_ATRIUM},
             {"lucifers",    "doosje lucifers",            LOCATION_TUINKAMER},
             {"tas",         "grote tas",                  LOCATION_OVERLOOP},
@@ -1155,19 +1155,19 @@ static void init_data(void)
             {"visnet",      "visnet",                      LOCATION_ROTSPAD},
             {"sportschoenen","sportschoenen",             LOCATION_SUPERMARKT},
             {"bijl",        "bijl",                       LOCATION_SUPERMARKT},
-            {"zwembril",    "zwembril",                   LOC_GONE},
+            {"zwembril",    "zwembril",                   OBJECT_GONE},
             {"zalm",        "zalm",                       LOCATION_ZUIDBAAI},
             {"beker",       "kristallen beker",           LOCATION_WIJNKELDER_OOST},
             {"fles",        "lege champagnefles",         LOCATION_GROT},
             {"boek",        "boek",                       LOCATION_STUDEERKAMER},
             {"schilderij",  "schilderij van Oom Wout",    LOCATION_OVERLOOP},
-            {"snorkel",     "snorkel",                    LOC_GONE},
+            {"snorkel",     "snorkel",                    OBJECT_GONE},
             {"landhuis",    "Korenvliet",                  LOCATION_HOOFDSTRAAT},
             {"landhuis",    "Korenvliet",                  LOCATION_BINNENPLEIN},
             {"schuur",      "oude verlaten schuur",       LOCATION_PLATEAU},
             {"tafel",       "houten tafel",               LOCATION_SCHUUR},
             {"klok",        "Friese staartklok",          LOCATION_STUDEERKAMER},
-            {"kluis",       "kluis",                      LOC_GONE},
+            {"kluis",       "kluis",                      OBJECT_GONE},
             {"kist",        "kist Chablis",               LOCATION_WIJNKELDER_WEST},
             {"bomen",       "bomen",                       LOCATION_BOS},
             {"deur",        "deur",                       LOCATION_TRAP},

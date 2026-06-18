@@ -33,7 +33,7 @@
   `BALLOON_ASCENT`, `BALLOON_MID_Y`, `BALLOON_DIVISOR`)
 - Replaced all bare location numbers (1–37) with named `LOCATION_*` constants in
   game logic, `obj_data` table, `exit_data` table, and `ve_data` table
-- Replaced all remaining bare `40` in game logic with `LOC_GONE`
+- Replaced all remaining bare `40` in game logic with `OBJECT_GONE`
 - Fixed `l == 80` dead branch: original P2000T BASIC had `L=8`, the C64
   conversion mistakenly tokenized `8ORL` as `80` — now `l == LOCATION_AFGRAVING`
 - Removed `cmd_open_thing` sub-dispatcher: all "open ..." commands now go
@@ -79,7 +79,7 @@
 - Created `Makefile` with C89 flags
 - Updated `.gitignore` to exclude the `korenvliet` binary
 - Grouped all 15 global state variables into `struct GameState`
-- Replaced magic number `40` with named constant `LOC_GONE`
+- Replaced magic number `40` with named constant `OBJECT_GONE`
 - Simplified safe combination generation (removed dead shuffle, removed `ss[]`)
 - Fixed safe number range to 10–99 (was 10–100, could produce 3 digits)
 - Documented all location numbers (1–37) in source comment
@@ -98,6 +98,6 @@
 - Fixed snorkel guard to catch `"ga oost"` and bare `"o"` (was only `"ga o"`)
 - Fixed `cmd_koop`: added missing room-10 and capacity checks
 - Replaced magic numbers with named constants (`MAX_CARRY`, `BOAT_DROP`, `WATER_OFF`, `SEWER_MAX`, `SEWER_NEED`, `JOG_BOUND`, `WOOD_SPAWN`, `BALLOON_PARTS`, `SAFE_DIGITS`, `SAFE_MIN`, `SAFE_MAX`, `WRAP_W`, `SUFFIX_LEN`)
-- Replaced all remaining bare `40` in code with `LOC_GONE`
+- Replaced all remaining bare `40` in code with `OBJECT_GONE`
 - Fixed unreachable `"ga jog"`/`"ga trim"`/`"ga door deur"` (intercepted by generic `"ga "` prefix handler)
 - Removed dead code after `generic_take_item` in `cmd_take`
