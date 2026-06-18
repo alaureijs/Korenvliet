@@ -55,6 +55,10 @@
 - Fixed all `-Wshadow` and `-Wconversion` warnings; added `-Werror`,
   `-Wconversion`, `-Wshadow`, `-Wfloat-equal`, `-fanalyzer`,
   `-fsanitize=undefined` to `Makefile`
+- Renamed all single-letter global variables to descriptive names:
+  `l`→`ploc`, `i`→`carried`, `h`→`balloon`, `r`→`boat`, `w`→`jogged`,
+  `k`→`unlocked`, `v`→`fed`, `f`→`safe_open`, `e`→`seen`, `s`→`sick`,
+  `c1`-`c4`→`grate1`-`grate4`, `hb`→`part_cnt`, `p`→`pref`
 
 ## 2026-06-17
 
