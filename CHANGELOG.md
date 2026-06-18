@@ -40,6 +40,13 @@
   through the dispatch table — "open afvoer/kluis" no longer shadowed
 - Replaced `rand()`/`srand()` with xorshift32 PRNG (portable, no library
   dependency, deterministic)
+- Replaced remaining bare `38` with `WRAP_W` in `look` and `cmd_inventory`
+- Replaced `l + 2`/`l += 2` with `l + WATER_OFF`/`l += WATER_OFF` in cmd_drop/cmd_dive
+- Replaced bare `8` with `ROOM_AFGRAVING` in cmd_build (balloon part location check)
+- Replaced `rand_range(10, 99)` with `rand_range(SAFE_MIN, SAFE_MAX)` in safe code init
+- Replaced bare `z < 5` in atmospheric descriptions with `GULL_THRESH`
+- Added `OBJ_*` enum (33 entries, 1‑indexed) and replaced all bare
+  `obj[4/7/8/9/10/11/12/13/14/19/25/26/30]` references with named constants
 
 ## 2026-06-17
 
