@@ -6,3 +6,4 @@ build
 src/GWBASIC.EXE
 src/*.prg
 korenvliet
+*.prg

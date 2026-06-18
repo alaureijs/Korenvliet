@@ -7,7 +7,15 @@ SRC      = src/korenvliet.c
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
-clean:
-	rm -f $(TARGET)
+PRG      = korenvliet.prg
+BAS_SRC  = src/korenvliet.bas
 
-.PHONY: clean
+$(PRG): $(BAS_SRC)
+	petcat -w2 -o $@ -- $^
+
+prg: $(PRG)
+
+clean:
+	rm -f $(TARGET) $(PRG)
+
+.PHONY: clean prg
