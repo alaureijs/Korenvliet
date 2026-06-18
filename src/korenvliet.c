@@ -282,11 +282,11 @@ static int rand_range(int lo, int hi)
 }
 
 /* Remove trailing newline from a string */
-static void chomp(char *s)
+static void chomp(char *str)
 {
-    size_t len = strlen(s);
-    while (len > 0 && (s[len-1] == '\n' || s[len-1] == '\r'))
-        s[--len] = '\0';
+    size_t len = strlen(str);
+    while (len > 0 && (str[len-1] == '\n' || str[len-1] == '\r'))
+        str[--len] = '\0';
 }
 
 /* ------------------------------------------------------------------ */
@@ -361,7 +361,7 @@ static void display_location(void)
 
     /* Random atmospheric descriptions */
     {
-        int i, z = rand_range(1, ATMOS_RNG_MAX);
+        int ai, z = rand_range(1, ATMOS_RNG_MAX);
         static const struct { int room; int zval; char cmp; const char *text; } at[] = {
             {LOCATION_TERREIN,   1, '=', "Adriaan met twee staven dynamiet."},
             {LOCATION_WEILAND,   3, '=', "Zoete met een koppel bloedhonden."},
@@ -372,11 +372,11 @@ static void display_location(void)
             {LOCATION_KANAALKANT,7, '=', "Een pad springt in het kanaal."},
             {LOCATION_BOS,       8, '=', "Een aapachtig figuur kijkt op U neer."},
         };
-        for (i = 0; i < (int)(sizeof(at)/sizeof(at[0])); i++) {
-            if (l == at[i].room &&
-                ((at[i].cmp == '=' && z == at[i].zval) ||
-                 (at[i].cmp == '<' && z < at[i].zval)))
-                printf("%s\n", at[i].text);
+        for (ai = 0; ai < (int)(sizeof(at)/sizeof(at[0])); ai++) {
+            if (l == at[ai].room &&
+                ((at[ai].cmp == '=' && z == at[ai].zval) ||
+                 (at[ai].cmp == '<' && z < at[ai].zval)))
+                printf("%s\n", at[ai].text);
         }
         if (l == LOCATION_VIJVER && obj[OBJ_ZALM].loc == 0 && z < GULL_THRESH)
             printf("Een hongerige meeuw cirkelt rond.\n");
@@ -553,7 +553,7 @@ static int cmd_go(const char *arg)
     else if (strncasecmp(arg, "ga", 2) == 0)
         arg += 2;
 
-    dir = tolower((unsigned char)*arg);
+    dir = (char)tolower((unsigned char)*arg);
 
     if (strncasecmp(arg, "noord", 5) == 0) dir = 'n';
     else if (strncasecmp(arg, "oost", 4) == 0) dir = 'o';
@@ -972,9 +972,9 @@ static int cmd_door(void)
 /* ------------------------------------------------------------------ */
 
 static int cmd_help(void) {
-    int h;
-    for (h = 0; help_text[h] != NULL; h++)
-        printf("%s\n", help_text[h]);
+    int line;
+    for (line = 0; help_text[line] != NULL; line++)
+        printf("%s\n", help_text[line]);
     return RET_REDRAW;
 }
 
@@ -1029,40 +1029,40 @@ static const CmdEntry cmd_table[] = {
 static int handle_command(const char *cmd)
 {
     char buf[128];
-    char *p;
+    char *cp;
     size_t ci;
     int ret;
     const CmdEntry *entry;
 
     for (ci = 0; ci < sizeof(buf) - 1 && cmd[ci]; ci++)
-        buf[ci] = tolower((unsigned char)cmd[ci]);
+        buf[ci] = (char)tolower((unsigned char)cmd[ci]);
     buf[ci] = '\0';
 
-    p = buf;
-    while (*p == ' ') p++;
-    if (*p == '\0') return RET_KEEP;
+    cp = buf;
+    while (*cp == ' ') cp++;
+    if (*cp == '\0') return RET_KEEP;
 
     /* Convert "ga naar X" to "ga in X" */
-    if (strncmp(p, "ga naar ", 8) == 0) {
-        memmove(p + 6, p + 8, strlen(p + 8) + 1);
-        p[3] = 'i'; p[4] = 'n'; p[5] = ' ';
+    if (strncmp(cp, "ga naar ", 8) == 0) {
+        memmove(cp + 6, cp + 8, strlen(cp + 8) + 1);
+        cp[3] = 'i'; cp[4] = 'n'; cp[5] = ' ';
     }
 
     /* Dispatch exact-match commands */
     for (entry = cmd_table; entry->cmd; entry++)
-        if (strcmp(p, entry->cmd) == 0)
+        if (strcmp(cp, entry->cmd) == 0)
             return entry->handler();
 
     /* "ga jog"/"ga trim" prefix (allows "ga joggen", "ga trimmen") */
-    if (strncmp(p, "ga jog", 6) == 0 || strncmp(p, "ga trim", 7) == 0)
+    if (strncmp(cp, "ga jog", 6) == 0 || strncmp(cp, "ga trim", 7) == 0)
         return cmd_jog();
 
     /* "ga in X" place entry */
-    ret = cmd_enter(p);
+    ret = cmd_enter(cp);
     if (ret != -2) return ret;
 
     /* Snorkel check before generic "ga o" */
-    if (strcmp(p, "ga o") == 0 && l == LOCATION_STROOM) {
+    if (strcmp(cp, "ga o") == 0 && l == LOCATION_STROOM) {
         if (obj[OBJ_SNORKEL].loc != 0) {
             printf("U heeft een snorkel nodig.\n");
             return RET_KEEP;
@@ -1070,26 +1070,26 @@ static int handle_command(const char *cmd)
     }
 
     /* "ga " / single-letter direction */
-    if (strncmp(p, "ga ", 3) == 0 || (strlen(p) == 1 && strchr("nozwulh", *p))) {
+    if (strncmp(cp, "ga ", 3) == 0 || (strlen(cp) == 1 && strchr("nozwulh", *cp))) {
         char tmp[16];
-        if (strlen(p) == 1 && strchr("nozwulh", *p)) {
-            snprintf(tmp, sizeof(tmp), "ga %c", *p);
+        if (strlen(cp) == 1 && strchr("nozwulh", *cp)) {
+            snprintf(tmp, sizeof(tmp), "ga %c", *cp);
             return cmd_go(tmp);
         }
-        return cmd_go(p);
+        return cmd_go(cp);
     }
 
     /* "neem " / "pak " */
-    if (strncmp(p, "neem ", 5) == 0 || strncmp(p, "pak ", 4) == 0)
-        return cmd_take(p);
+    if (strncmp(cp, "neem ", 5) == 0 || strncmp(cp, "pak ", 4) == 0)
+        return cmd_take(cp);
 
     /* "leg " */
-    if (strncmp(p, "leg ", 4) == 0)
-        return cmd_drop(p);
+    if (strncmp(cp, "leg ", 4) == 0)
+        return cmd_drop(cp);
 
     /* "koop " at supermarkt */
-    if (strncmp(p, "koop ", 5) == 0 && l == LOCATION_SUPERMARKT) {
-        char *item = p + 5;
+    if (strncmp(cp, "koop ", 5) == 0 && l == LOCATION_SUPERMARKT) {
+        char *item = cp + 5;
         while (*item == ' ') item++;
         ret = find_obj_by_name(item, MAX_INV);
         if (ret == 0) return fail();
@@ -1097,30 +1097,30 @@ static int handle_command(const char *cmd)
     }
 
     /* "hak"/"snij" + boom/bomen */
-    if (strstr(p, "boom") || strstr(p, "bomen"))
-        if (strncmp(p, "hak", 3) == 0 || strncmp(p, "snij", 4) == 0)
+    if (strstr(cp, "boom") || strstr(cp, "bomen"))
+        if (strncmp(cp, "hak", 3) == 0 || strncmp(cp, "snij", 4) == 0)
             return cmd_cut_tree();
 
     /* "klim" */
-    if (strncmp(p, "klim", 4) == 0)
+    if (strncmp(cp, "klim", 4) == 0)
         return cmd_climb_tree();
 
     /* "duik" */
-    if (strncmp(p, "duik", 4) == 0)
+    if (strncmp(cp, "duik", 4) == 0)
         return cmd_dive();
 
     /* "onderzoek " / "bekijk " */
-    if (strncmp(p, "onderzoek ", 10) == 0 || strncmp(p, "bekijk ", 7) == 0) {
-        ret = cmd_examine(p);
+    if (strncmp(cp, "onderzoek ", 10) == 0 || strncmp(cp, "bekijk ", 7) == 0) {
+        ret = cmd_examine(cp);
         if (ret != -2) return ret;
     }
 
     /* "open " (boek/klok/tas → examine, deur → open) */
-    if (strncmp(p, "open ", 5) == 0) {
-        const char *what = p + 5;
+    if (strncmp(cp, "open ", 5) == 0) {
+        const char *what = cp + 5;
         while (*what == ' ') what++;
         if (strcmp(what, "boek") == 0 || strcmp(what, "klok") == 0 || strcmp(what, "tas") == 0) {
-            ret = cmd_examine(p);
+            ret = cmd_examine(cp);
             if (ret != -2) return ret;
         }
         if (strcmp(what, "deur") == 0)
@@ -1177,7 +1177,7 @@ static void init_data(void)
         for (x = 1; x <= MAX_OBJ; x++) {
             obj[x].short_name = obj_data[x-1].sn;
             obj[x].desc = obj_data[x-1].desc;
-            obj[x].loc = obj_data[x-1].loc;
+            obj[x].loc = (unsigned char)obj_data[x-1].loc;
         }
     }
 
@@ -1268,11 +1268,11 @@ static void init_data(void)
         for (x = 0; x < MAX_LOC; x++) {
             int lx = exit_data[x].loc;
             loc[lx].exits[0].dir = exit_data[x].d1;
-            loc[lx].exits[0].dest = exit_data[x].n1;
+            loc[lx].exits[0].dest = (unsigned char)exit_data[x].n1;
             loc[lx].exits[1].dir = exit_data[x].d2;
-            loc[lx].exits[1].dest = exit_data[x].n2;
+            loc[lx].exits[1].dest = (unsigned char)exit_data[x].n2;
             loc[lx].exits[2].dir = exit_data[x].d3;
-            loc[lx].exits[2].dest = exit_data[x].n3;
+            loc[lx].exits[2].dest = (unsigned char)exit_data[x].n3;
         }
     }
 
@@ -1289,7 +1289,7 @@ static void init_data(void)
 int main(void)
 {
     char input[128];
-    int h, result;
+    int line, result;
 
     setbuf(stdout, NULL);
     rng_state = 1;
@@ -1299,8 +1299,8 @@ int main(void)
     printf("\n     K O R E N V L I E T\n\n");
     init_data();
 
-    for (h = 0; help_text[h] != NULL; h++)
-        printf("%s\n", help_text[h]);
+    for (line = 0; help_text[line] != NULL; line++)
+        printf("%s\n", help_text[line]);
 
     while (1) {
         display_location();

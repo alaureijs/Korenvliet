@@ -52,6 +52,9 @@
 - Reduced runtime memory footprint: `Exit.dest` `int` → `unsigned char`
   (saves ~608 bytes BSS), all game state flags from `int` → `unsigned char`
   (saves ~38 bytes BSS), total BSS reduced ~31%
+- Fixed all `-Wshadow` and `-Wconversion` warnings; added `-Werror`,
+  `-Wconversion`, `-Wshadow`, `-Wfloat-equal`, `-fanalyzer`,
+  `-fsanitize=undefined` to `Makefile`
 
 ## 2026-06-17
 
