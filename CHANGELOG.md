@@ -2,6 +2,11 @@
 
 ## 2026-06-18
 
+- Restored "kijk" command (redisplays current location, reverting the earlier removal)
+- Fixed grammar in room 21 description: "van een riool" → "van het riool" (matches original)
+- Simplified safe code generation: removed dead `ss[]`/`sflags[]` shuffling and debug prints
+- Fixed "open boek"/"open klok"/"open tas" — original P2000 had a bug where
+  `G = LEN(C$)+2` made `RIGHT$` return the whole command, never matching an object
 - Removed sentinel `-2` pattern: `cmd_enter`/`cmd_examine` no longer return `-2`
   for "not my command"; callers strip prefixes before calling
 - Replaced 26 remaining inline `printf("Ik begrijp U niet.\n"); return 1;`
@@ -26,6 +31,8 @@
   conversion mistakenly tokenized `8ORL` as `80` — now `l == ROOM_AFGRAVING`
 - Removed `cmd_open_thing` sub-dispatcher: all "open ..." commands now go
   through the dispatch table — "open afvoer/kluis" no longer shadowed
+- Replaced `rand()`/`srand()` with xorshift32 PRNG (portable, no library
+  dependency, deterministic)
 
 ## 2026-06-17
 

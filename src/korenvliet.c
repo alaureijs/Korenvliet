@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <time.h>
 #include <stdarg.h>
 
 /* Portable case-insensitive string comparison (Amiga-safe) */
@@ -198,8 +197,6 @@ static int  hb = 0;   /* balloon part counter */
 static char p[3][64];            /* misc messages */
 static int  ve[9];               /* sewer locations */
 static char n[4][4];             /* random numbers (strings) */
-static char ss[4][4];            /* shuffled safe combo */
-static int  sflags[4];           /* shuffle tracking */
 
 /* ------------------------------------------------------------------ */
 /*  Help text                                                          */
@@ -233,10 +230,21 @@ static const char *help_text[] = {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
+/* xorshift32 PRNG state */
+static unsigned int rng_state;
+
+static unsigned int xorshift32(void)
+{
+    rng_state ^= rng_state << 13;
+    rng_state ^= rng_state >> 17;
+    rng_state ^= rng_state << 5;
+    return rng_state;
+}
+
 /* Return random integer in [lo, hi] */
 static int rand_range(int lo, int hi)
 {
-    return lo + rand() % (hi - lo + 1);
+    return lo + (int)(xorshift32() % (unsigned int)(hi - lo + 1));
 }
 
 /* Remove trailing newline from a string */
@@ -820,20 +828,20 @@ static int cmd_open_safe(void)
     printf("Type het eerste getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
     chomp(input); input[15] = '\0'; strcpy(f1, input);
-    if (strcmp(f1, ss[1]) != 0) { printf("Fout.\n"); return RET_KEEP; }
+    if (strcmp(f1, n[1]) != 0) { printf("Fout.\n"); return RET_KEEP; }
 
     printf("Type tweede getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
     chomp(input); input[15] = '\0'; strcpy(f2, input);
     snprintf(sum1, sizeof(sum1), "%s%s", f1, f2);
-    snprintf(sum2, sizeof(sum2), "%s%s", ss[1], ss[2]);
+    snprintf(sum2, sizeof(sum2), "%s%s", n[1], n[2]);
     if (strcmp(sum1, sum2) != 0) { printf("Fout.\n"); return RET_KEEP; }
 
     printf("Type het laatste getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
     chomp(input); input[15] = '\0'; strcpy(f3, input);
     snprintf(sum1, sizeof(sum1), "%s%s%s", f1, f2, f3);
-    snprintf(sum2, sizeof(sum2), "%s%s%s", ss[1], ss[2], ss[3]);
+    snprintf(sum2, sizeof(sum2), "%s%s%s", n[1], n[2], n[3]);
     if (strcmp(sum1, sum2) == 0) {
         f = 1;
         printf("\nKlik........ Er zit een testament in.\n");
@@ -1066,6 +1074,9 @@ static int handle_command(const char *cmd)
             return cmd_open_door();
     }
 
+    if (strcmp(p, "kijk") == 0)
+        return RET_REDRAW;
+
     return fail();
 }
 
@@ -1142,7 +1153,7 @@ static void init_data(void)
             "westvleugel van wijnkelder",
             "oostvleugel van wijnkelder",
             "boven aan een trap",
-            "een uitlaat van een riool",
+            "een uitlaat van het riool",
             "een bocht in het riool",
             "vertakking in het riool",
             "een uitlaat van het riool",
@@ -1227,22 +1238,8 @@ static void init_data(void)
 
     /* Safe combination */
     for (x = 1; x <= 3; x++) {
-        int z = rand_range(10, 100);
+        int z = rand_range(10, 99);
         snprintf(n[x], sizeof(n[x]), "%02d", z);
-        printf("Getal %d: %s\n", x, n[x]);
-    }
-    for (x = 1; x <= 3; x++) {
-        int z = x;
-        while (sflags[z] == z) z = x;
-        {
-            size_t nlen = strlen(n[x]);
-            if (nlen >= 2)
-                strcpy(ss[z], n[x] + nlen - 2);
-            else
-                snprintf(ss[z], sizeof(ss[z]), "%s", n[x]);
-        }
-        sflags[z] = z;
-        printf("Code %d: %s\n", z, ss[z]);
     }
 }
 
@@ -1255,7 +1252,9 @@ int main(void)
     int h, result;
 
     setbuf(stdout, NULL);
-    srand((unsigned int)time(NULL));
+    rng_state = 1;
+    { const char *t = __TIME__; while (*t) { rng_state = rng_state * 37 + (unsigned char)*t; t++; } }
+    if (rng_state == 0) rng_state = 1;
 
     printf("\n     K O R E N V L I E T\n\n");
     init_data();
