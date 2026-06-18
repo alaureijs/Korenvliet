@@ -55,6 +55,7 @@
 - Fixed all `-Wshadow` and `-Wconversion` warnings; added `-Werror`,
   `-Wconversion`, `-Wshadow`, `-Wfloat-equal`, `-fanalyzer`,
   `-fsanitize=undefined` to `Makefile`
+- Added `HEALTHY`/`SICK` constants for `health_status` magic numbers
 - Renamed all single-letter global variables to descriptive names:
   `l`→`player_location`, `i`→`inventory_count`, `h`→`balloon_built`,
   `r`→`boat_inflated`, `w`→`has_jogged`, `k`→`door_unlocked`, `v`→`panther_fed`,

@@ -90,6 +90,10 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define SAFE_MIN 10       /* safe code lower bound */
 #define SAFE_MAX 99       /* safe code upper bound */
 
+/* Health status values */
+#define HEALTHY 0
+#define SICK    1
+
 /* Atmospheric description probability thresholds */
 #define ATMOS_RNG_MAX    10
 #define GULL_THRESH       5
@@ -222,7 +226,7 @@ static unsigned char panther_fed = 0;   /* panther fed */
 static unsigned char safe_open = 0;   /* safe opened, testament readable */
 static unsigned char painting_examined = 0;   /* painting examined, safe revealed */
 static unsigned char grate1 = 0, grate2 = 0, grate3 = 0, grate4 = 0;
-static unsigned char health_status = 0;   /* sick / injured */
+static unsigned char health_status = HEALTHY;   /* sick / injured */
 static unsigned char balloon_parts_count = 0;   /* balloon_built part counter */
 
 static const char * const pref[3] = {
@@ -490,7 +494,7 @@ static int cmd_take(char *arg)
         if (idx == 0) {
             if (strcasecmp(arg, "panter") == 0 && obj[OBJ_PANTER].loc == player_location) {
                 printf("U had nog net genoeg kracht om\nweg te komen.\n");
-                health_status = 1; player_location = LOCATION_ZIEKENHUIS;
+                health_status = SICK; player_location = LOCATION_ZIEKENHUIS;
                 return RET_REDRAW;
             }
             if (strcasecmp(arg, "klok") == 0 && player_location == LOCATION_STUDEERKAMER) {
@@ -666,7 +670,7 @@ static int cmd_enter(const char *arg)
     if (strcasecmp(place, "kanaal") == 0) {
         if (player_location == LOCATION_KANAALKANT) {
             printf("U gleed uit en viel.\n");
-            health_status = 1; player_location = LOCATION_ZIEKENHUIS;
+            health_status = SICK; player_location = LOCATION_ZIEKENHUIS;
             return RET_REDRAW;
         }
         return fail();
@@ -770,7 +774,7 @@ static int cmd_jog(void)
 static int cmd_go_up(void)
 {
     int x;
-    if (health_status == 1) { printf("Ik voel me niet goed.\n"); return RET_KEEP; }
+    if (health_status == SICK) { printf("Ik voel me niet goed.\n"); return RET_KEEP; }
     if ((player_location == LOCATION_RIOOL_21 && grate1 == 0) || (player_location == LOCATION_RIOOL_24 && grate2 == 0) ||
         (player_location == LOCATION_RIOOL_26 && grate3 == 0) || (player_location == LOCATION_RIOOL_27 && grate4 == 0)) {
         printf("%s\n", pref[0]); return RET_KEEP;
@@ -811,7 +815,7 @@ static int cmd_climb_tree(void)
 {
     if (player_location != LOCATION_BOS) return fail();
     printf("U viel eraf.\n");
-    health_status = 1; player_location = LOCATION_ZIEKENHUIS;
+    health_status = SICK; player_location = LOCATION_ZIEKENHUIS;
     return RET_REDRAW;
 }
 
@@ -979,8 +983,8 @@ static int cmd_help(void) {
 }
 
 static int cmd_cure(void) {
-    if (health_status != 1) return fail();
-    health_status = 0; printf("Genezen.\n"); return RET_KEEP;
+    if (health_status != SICK) return fail();
+    health_status = HEALTHY; printf("Genezen.\n"); return RET_KEEP;
 }
 
 static int cmd_read_book(void) {
