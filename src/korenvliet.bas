@@ -104,7 +104,7 @@
 1270 if right$(c$, 4) <> "boom" and right$(c$, 5) <> "bomen" then 1290
 1275 if left$(c$, 3) = "hak" or left$(c$, 4) = "snij" then 3190
 1280 if left$(c$, 4) = "klim" then 3800
-1290 if left$(c$, 4) = "duik" then 3210
+1290 if left$(c$, 4) = "duik" then 3209
 1300 if c$ = "stop" or c$ = "halt" then gosub 1391: goto 1000
 1305 if left$(c$, 4) = "koop" and l = 10 then 2060
 1310 if c$ = "verwijder deksel" or c$ = "open afvoer" then 3250
@@ -382,7 +382,7 @@
 7245 print "**   kluis opent, wie dat ook        **"
 7250 print "**   zijn moge, zelfs olivier.       **"
 7290 for x = 1 to 39: print "*";: next
-7291 print : gosub 150: goto 9002
+7291 print : gosub 150: goto 9003
 7500 gosub 65
 7501 print "welkom in rittenburg. u hebt onlangs"
 7505 print "vernomen dat uw excentrieke oom wout"

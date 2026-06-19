@@ -202,3 +202,14 @@
   (j/n loop), 9003 (restore default colours), 9004 (farewell + end)
 - **Line 1393**: updated jump target from 9002 → 9003 to match restructured
   game-end section
+
+### Bug fixes from refactor
+
+- **"leg X" dropped into boat-drift code**: line 2197 jumped to 2240, which
+  after the split no longer had its own `x=8` guard. Changed `then 2240` →
+  `then 2239` so all drops route through the guard.
+- **"duik" jumped past dive guard**: line 1290 jumped to 3210 (unconditional
+  body) instead of 3209 (guard). Changed `then 3210` → `then 3209`.
+- **Testament jumped to wrong game-end line**: line 7291 `goto 9002` landed on
+  the STOP confirmation j/n check instead of the color-restore+farewell.
+  Changed `goto 9002` → `goto 9003`.
