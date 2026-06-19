@@ -3,7 +3,7 @@
 12 rem c64 port (c) 2026
 13 rem
 14 rem *** init ***
-15 h$ = chr$(147): j$ = chr$(18): oc = 39: ol = 24
+15 h$ = chr$(147): oc = 39: ol = 24
 16 dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37)
 17 l = 9: ic = 0
 20 print h$chr$(14): ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
@@ -58,15 +58,15 @@
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
 1000 print h$ chr$(14)
-1001 print "plaats    :" j$ l$(l) "."
+1001 print "plaats    :" l$(l) "."
 1002 print
-1003 print "uitgangen :" j$;
+1003 print "uitgangen :";
 1010 for x = 1 to 3
 1011 gosub 5000: print " ";
 1012 next
 1013 print
 1014 print
-1015 print "u ziet    :" j$;
+1015 print "u ziet    :";
 1020 if o(13) <> 0 and (l = 30 or l = 31) then 1100
 1030 for x = 1 to 33: if o(x) <> l then 1050
 1035 if pos(0) + len(o$(x)) > 38 then print: print tab(11);
