@@ -106,8 +106,13 @@
 1275 if left$(c$, 3) = "hak" or left$(c$, 4) = "snij" then 3190
 1280 if left$(c$, 4) = "klim" then 3800
 1290 if left$(c$, 4) = "duik" then 3210
-1300 if c$ = "stop" or c$ = "halt" then 9002
+1300 if c$ = "stop" or c$ = "halt" then 1301
+1301 print "echt stoppen? (j/n) ";
+1302 gosub 101
+1303 if in$="j" or in$="J" then 9002
+1304 if in$="n" or in$="N" then 1000
 1305 if left$(c$, 4) = "koop" and l = 10 then 2060
+1306 gosub 160: goto 1301
 1310 if c$ = "verwijder deksel" or c$ = "open afvoer" then 3250
 1315 if left$(c$, 4) <> "open" then 1340
 1320 if right$(c$, 4) = "boek" or right$(c$, 4) = "klok" or right$(c$, 3) = "tas" then 2845
