@@ -128,6 +128,28 @@
 - **Putdeksel OR chain**: split line 5230's long `OR` chain into 4 individual
   `IF` statements (5230-5233), each under 80 cols
 
+## 2026-06-19 (even later)
+
+- **Removed reverse video**: removed `j$ = chr$(18)` (RVS ON) from init and all
+  `j$` references in screen display (lines 1001, 1003, 1015) — not needed
+- **Black background / white text**: added `gosub 65` clear-screen subroutine
+  that sets `POKE 53280,0` (black border), `POKE 53281,0` (black background),
+  `POKE 646,1` (white text); replaced all `h$` (`chr$(147)`) calls with
+  `gosub 65` so colors are re-applied after every screen clear
+- **Default colors restored at end**: `POKE 53280,14` (light blue border),
+  `POKE 53281,6` (dark blue background), `POKE 646,14` (light blue text)
+  before "tot ziens." at lines 9002-9003
+- **STOP key fix**: added `poke 650, 0` before every `GET` (lines 75, 100-101,
+  125) to clear the STOP flag and prevent BASIC's built-in BREAK handler from
+  intercepting the key
+- **Line input fix**: restructured backspace handling (lines 131/137-138) to
+  prevent fall-through — every key was hitting `print chr$(20);: goto 125`
+  and looping forever without echoing normal characters
+- **Stop command prompt**: "stop"/"halt" now shows `echt stoppen? (j/n)` —
+  'j' exits, 'n' redraws screen, anything else beeps and waits without
+  reprinting the question; implemented as a `gosub` subroutine (lines
+  1391-1395) to avoid fall-through from other commands
+
 ### Bug fixes
 
 - **Variable `k` overloading**: changed line-input temp from `k` to `t`
