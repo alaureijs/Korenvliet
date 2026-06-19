@@ -159,7 +159,7 @@
 2194 if hp <> 0 then g = hp - 5
 2195 if hp = 0 then g = len(c$) - 4
 2196 if g > len(i$(x)) then g = len(i$(x))
-2197 if g > 0 and mid$(c$, 5, g) = right$(i$(x), g) and o(x) = 0 then 2240
+2197 if g > 0 and mid$(c$, 5, g) = right$(i$(x), g) and o(x) = 0 then 2239
 2198 next: goto 1990
 2239 if x <> 8 or (l <> 28 and l <> 29) then 2270
 2240 o(8)=5: ic=ic-1: poke 646,3: print"de boot drijft weg.....": x=19: next
