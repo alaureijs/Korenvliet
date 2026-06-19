@@ -4,7 +4,7 @@
 13 rem
 14 rem *** init ***
 15 h$ = chr$(147): j$ = chr$(18): dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37): l = 9: i = 0
-20 print chr$(147) chr$(14): print "   k o r e n v l i e t": print: print
+20 print chr$(147) chr$(14): poke 211, 11: poke 214, 12: print "K O R E N V L I E T": print: print
 30 for x = 1 to 33: read i$(x), o$(x), o(x): next
 31 for x = 1 to 37: read l$(x): next
 32 for y = 1 to 37: for x = 1 to 3: read d$(x, y), d(x, y): next: next
@@ -38,7 +38,7 @@
 150 gosub 70: return
 195 rem
 670 rem *** welcome ***
-675 print h$: print "wilt u instructies? (j/n) ";
+675 print h$: poke 211, 6: poke 214, 12: print "wilt u instructies? (j/n) ";
 680 gosub 100: if k$="j" or k$="J" then gosub 7500: goto 1000
 685 if k$<>"n" and k$<>"N" then print chr$(7);: goto 680
 688 rem *** short delay before redraw ***
