@@ -32,15 +32,26 @@
 132 if k = 20 and ll > 0 then c$ = left$(c$, ll - 1): ll = ll - 1: print chr$(20);: goto 125
 134 if k < 32 then 125
 135 if ll < 22 then c$ = c$ + chr$(k): ll = ll + 1: print chr$(k);: goto 125
-136 print chr$(7);: goto 125
+136 gosub 160: goto 125
 140 rem
 145 rem *** wait for any key (uses 70) ***
 150 gosub 70: return
+160 rem beep via sid
+161 sp=106:sd=1:sv=15:gosub 400:return
 195 rem
+400 rem sid beep
+401 f0=sp*74:if f0<1 then f0=1
+402 poke 54296,sv:poke 54277,0:poke 54278,240
+403 poke 54272,f0 and 255:poke 54273,int(f0/256)
+404 poke 54276,17
+405 for dl=1 to sd*100:next dl
+406 poke 54276,16
+407 poke 54296,0
+408 return
 670 rem *** welcome ***
 675 print h$: poke 211, 6: poke 214, 12: print "wilt u instructies? (j/n) ";
 680 gosub 100: if k$="j" or k$="J" then gosub 7500: goto 1000
-685 if k$<>"n" and k$<>"N" then print chr$(7);: goto 680
+685 if k$<>"n" and k$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
 1000 print h$ chr$(14): print "plaats    :" j$ l$(l) ".": print: print "uitgangen :" j$;
@@ -102,7 +113,7 @@
 1400 r$ = "": for i = 1 to len(c$) - 5
 1401 if mid$(c$, i, 6) = "panter" then r$ = "panter"
 1402 next: return
-1990 print chr$(7) "ik begrijp u niet.": goto 1100
+1990 gosub 160: print "ik begrijp u niet.": goto 1100
 2000 rem
 2030 if c$ = "neem zalm" and l = 29 and o(10) <> 0 then print "die glipte uit uw vingers.": goto 1100
 2035 if c$ = "neem schilderij" and l = 16 then print "te kostbaar.": goto 1100
@@ -383,5 +394,5 @@
 8994 rem vrijgegeven dd 04-07-83
 8995 rem copyright hans pennings
 9000 rem *** stop? ***
-9001 print chr$(7) "stop?";: gosub 100: if k$<>"j" and k$<>"J" then 9001
+9001 gosub 160: print "stop?";: gosub 100: if k$<>"j" and k$<>"J" then 9001
 9002 print h$: print "tot ziens.": end
