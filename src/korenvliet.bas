@@ -5,7 +5,7 @@
 14 rem *** init ***
 15 h$ = chr$(147): j$ = chr$(18): oc = 39: ol = 24
 16 dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37)
-17 l = 9: i = 0
+17 l = 9: ic = 0
 20 print h$chr$(14): ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
 30 for x = 1 to 33: read i$(x), o$(x), o(x): next
 31 for x = 1 to 37: read l$(x): next
@@ -20,17 +20,17 @@
 65 rem
 66 rem *** wait for key ***
 70 print "druk op een willekeurige toets:";
-75 get k$: if k$ = "" then 75
+75 get in$: if in$ = "" then 75
 80 return
 90 rem
-95 rem *** get single key in k$ ***
-100 get k$: if k$="" then 100: p=asc(k$) and 127: k$=chr$(p): if p=3 then 9000
+95 rem *** get single key -> in$ ***
+100 get in$: if in$="" then 100: p=asc(in$) and 127: in$=chr$(p): if p=3 then 9000
 101 return
 110 rem
 115 rem *** line input into c$ ***
 120 c$ = "": ll = 0
-125 get k$: if k$ = "" then 125
-130 t = asc(k$): if t = 13 then print: return
+125 get in$: if in$ = "" then 125
+130 t = asc(in$): if t = 13 then print: return
 132 if t = 20 and ll > 0 then c$ = left$(c$, ll - 1): ll = ll - 1
 133 print chr$(20);: goto 125
 134 if t < 32 then 125
@@ -53,8 +53,8 @@
 408 return
 670 rem *** welcome ***
 675 print h$: ho=6: ve=12: gosub 6500: print "wilt u instructies? (j/n) ";
-680 gosub 100: if k$="j" or k$="J" then gosub 7500: goto 1000
-685 if k$<>"n" and k$<>"N" then gosub 160: goto 680
+680 gosub 100: if in$="j" or in$="J" then gosub 7500: goto 1000
+685 if in$<>"n" and in$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
 1000 print h$ chr$(14)
@@ -130,14 +130,14 @@
 2035 if c$ = "neem schilderij" and l = 16 then print "te kostbaar.": goto 1100
 2040 if l = 10 then print "pleeg geen winkeldiefstal!": goto 1100
 2045 if c$ = "neem tafel" and l = 37 then print "die zit vastgespijkerd.": goto 1100
-2055 if i = 4 then print "u draagt teveel bij u.": goto 1100
+2055 if ic = 4 then print "u draagt teveel bij u.": goto 1100
 2060 if right$(c$, 4) = "bril" then 6150
 2065 if c$ = "neem snorkel" then 6100
 2070 for x = 1 to 19: g = len(c$) - 5: if g < 1 then 2110
 2075 if g > len(i$(x)) then g = len(i$(x))
 2080 if right$(c$, g) <> right$(i$(x), g) then 2110
 2085 if o(x) = 0 then print "dat hebt u al.": x = 19: next: goto 690
-2090 if o(x) = l then o(x) = 0: i = i + 1
+2090 if o(x) = l then o(x) = 0: ic = ic + 1
 2095 x = 19: next: goto 1000
 2110 next
 2120 if c$ = "neem panter" and o(30) = l then 6200
@@ -147,17 +147,17 @@
 2160 goto 1990
 2170 rem
 2190 for x = 1 to 19
-2191 h = 0: for g = 5 to len(c$)
-2192 if mid$(c$, g, 1) = " " then h = g: g = len(c$)
+2191 hp = 0: for g = 5 to len(c$)
+2192 if mid$(c$, g, 1) = " " then hp = g: g = len(c$)
 2193 next g
-2194 if h <> 0 then g = h - 5
-2195 if h = 0 then g = len(c$) - 4
+2194 if hp <> 0 then g = hp - 5
+2195 if hp = 0 then g = len(c$) - 4
 2196 if g > len(i$(x)) then g = len(i$(x))
 2197 if g > 0 and mid$(c$, 5, g) = right$(i$(x), g) and o(x) = 0 then 2240
 2198 next: goto 1990
-2240 if x = 8 and (l = 28 or l = 29) then o(8) = 5: i = i - 1: print "de boot drijft weg.....": x = 19: next: goto 690
-2270 i = i - 1
-2280 if l = 28 or l = 29 then o(x) = l + 2: goto 1000
+2240 if x = 8 and (l = 28 or l = 29) then o(8) = 5: ic = ic - 1: print "de boot drijft weg.....": x = 19: next: goto 690
+2270 ic = ic - 1
+2280 if l = 28 or l = 29 then o(x) = l + 2: x = 19: next: goto 1000
 2300 o(x) = l: x = 19: next: goto 1000
 2350 for x = 1 to 19: if o(x) <> 0 then 2370
 2355 if len(o$(x)) + pos(0) > 38 then print
@@ -200,7 +200,7 @@
 2810 if c$ = "ga in schuur" and l = 36 then l = 37: goto 1000
 2820 goto 1990
 2840 g = len(c$) - 10: goto 2860
-2845 g = len(c$) + 2
+2845 g = len(c$) - 5
 2850 g = len(c$) - 7
 2860 if g < 1 then 1990
 2861 q$ = right$(c$, g): for x = 1 to 33
@@ -229,11 +229,11 @@
 3150 if v = 1 then 1990
 3160 if l <> 18 then 1990
 3170 if o(14) <> 0 then print "u hebt voedsel nodig.": goto 1100
-3180 print "panter ontsnapte met de zalm.": if o(14) = 0 then i = i - 1
+3180 print "panter ontsnapte met de zalm.": if o(14) = 0 then ic = ic - 1
 3185 v = 1: o(14) = 40: o(30) = 40: goto 690
 3190 if l = 2 and (o(12) = 0 or o(12) = l) then o(4) = 2: goto 1000
 3200 goto 1990
-3210 if (l = 28 or l = 29) and o(8) = 0 and o(19) = 0 then o(8) = 5: i = i - 1: l = l + 2: print "de boot drijft weg...": goto 690
+3210 if (l = 28 or l = 29) and o(8) = 0 and o(19) = 0 then o(8) = 5: ic = ic - 1: l = l + 2: print "de boot drijft weg...": goto 690
 3220 if (l = 28 or l = 29) and o(19) = 0 then l = l + 2: goto 1000
 3230 if l = 28 or l = 29 then print "u hebt een snorkel nodig.": goto 1100
 3240 goto 1990
@@ -253,7 +253,7 @@
 3390 hb = 0: for x = 1 to 6: if o(x) = 0 or o(x) = 8 then hb = hb + 1
 3400 next: if hb = 6 then 3420
 3410 print "niet klaar.": goto 1100
-3420 for x = 1 to 6: if o(x) = 0 then i = i - 1
+3420 for x = 1 to 6: if o(x) = 0 then ic = ic - 1
 3430 o(x) = 40: next: h = 1: goto 1000
 3460 if h = 0 then print "niet klaar.": goto 1100
 3470 if l = 8 or l = 36 then print "u moet er eerst in.": goto 1100
@@ -263,7 +263,7 @@
 3570 for y = 29 to 5 step -6: gosub 6400: next: l = 34: goto 1000
 3640 if o(19) <> 0 then print "heeft u niet.": goto 1100
 3650 if l > 27 and l < 32 then print "neem het snel terug!": goto 1100
-3660 o(19) = l: i = i - 1: goto 1000
+3660 o(19) = l: ic = ic - 1: goto 1000
 3800 if l <> 2 then 1990
 3810 print "u viel eraf.": s = 1: l = 11: goto 690
 3900 if o(9) = 0 or o(9) = l then print "op het bord staat: een goede plaats.": goto 1100
@@ -300,12 +300,12 @@
 6000 if c$ = "gezondheid" or c$ = "wordt beter" or c$ = "beterschap" then s = 0: print "genezen.": goto 1100
 6010 goto 1115
 6100 if o(19) = 0 then print "u hebt het al.": goto 1100
-6115 if o(19) = 40 and (o(7) = 0 or o(7) = l) then o(19) = 0: i = i + 1: goto 1000
-6130 if o(19) = l then o(19) = 0: i = i + 1: goto 1000
+6115 if o(19) = 40 and (o(7) = 0 or o(7) = l) then o(19) = 0: ic = ic + 1: goto 1000
+6130 if o(19) = l then o(19) = 0: ic = ic + 1: goto 1000
 6140 goto 1990
 6150 if o(13) = 0 then print "heeft u al.": goto 1100
-6160 if o(13) = 40 and l = 14 then o(13) = 0: i = i + 1: goto 1000
-6170 if o(13) = l then o(13) = 0: i = i + 1: goto 1000
+6160 if o(13) = 40 and l = 14 then o(13) = 0: ic = ic + 1: goto 1000
+6170 if o(13) = l then o(13) = 0: ic = ic + 1: goto 1000
 6180 goto 1990
 6200 print "u had nog net genoeg kracht om weg te"
 6210 print "komen.": s = 1: l = 11: goto 690
@@ -470,5 +470,5 @@
 8994 rem vrijgegeven dd 04-07-83
 8995 rem copyright hans pennings
 9000 rem *** stop? ***
-9001 gosub 160: print "stop?";: gosub 100: if k$<>"j" and k$<>"J" then 9001
+9001 gosub 160: print "stop?";: gosub 100: if in$<>"j" and in$<>"J" then 9001
 9002 print h$: print "tot ziens.": end

@@ -136,4 +136,20 @@
   clobbered the door state and made the locked door at location 16
   permanently impassable
 - **Putdeksel spacing**: restored trailing space after "putdeksel." in lines
-  5230-5233 so "afvoer." appears on the same line
+   5230-5233 so "afvoer." appears on the same line
+- **Variable `i` overloading**: renamed inventory count from `i` to `ic`
+   (13 call sites) — `i` was used both as the inventory count and as the FOR
+   loop counter in the `INSTR` replacement subroutine (`gosub 1400`, lines
+   124-126), meaning any command containing `"panter"` would corrupt the
+   carry-capacity count
+- **Variable `h` overloading**: renamed space-position temp from `h` to `hp`
+   in the drop routine (lines 2191-2195) — `h` was used both as the
+   `balloon_built` flag and as a temp for finding the space in `"leg X"`,
+   meaning dropping any item after building the balloon would corrupt the flag
+- **Unclosed FOR loop in drop routine**: added `x = 19: next` before
+   `goto 1000` at line 2280 — dropping a non-rubberboot item at water
+   locations (28/29) leaked a FOR frame on the stack
+- **"open boek/klok/tas" broken**: changed `g = len(c$) + 2` to
+   `g = len(c$) - 5` at line 2845 — original P2000t bug where
+   `RIGHT$(c$, g)` with `g > len(c$)` returned the full command instead of
+   just the object name, never matching an object in the examine loop
