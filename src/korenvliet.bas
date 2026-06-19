@@ -31,11 +31,12 @@
 120 c$ = "": ll = 0
 125 get in$: if in$ = "" then 125
 130 t = asc(in$): if t = 13 then print: return
-132 if t = 20 and ll > 0 then c$ = left$(c$, ll - 1): ll = ll - 1
-133 print chr$(20);: goto 125
-134 if t < 32 then 125
-135 if ll < 22 then c$ = c$ + chr$(t): ll = ll + 1: print chr$(t);: goto 125
-136 gosub 160: goto 125
+131 if t = 20 then 137
+132 if t < 32 then 125
+133 if ll < 22 then c$ = c$ + chr$(t): ll = ll + 1: print chr$(t);: goto 125
+134 gosub 160: goto 125
+137 if ll = 0 then 125
+138 c$ = left$(c$, ll - 1): ll = ll - 1: print chr$(20);: goto 125
 140 rem
 145 rem *** wait for any key (uses 70) ***
 150 gosub 70: return
