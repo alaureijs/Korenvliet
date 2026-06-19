@@ -3,8 +3,8 @@
 12 rem c64 port (c) 2026
 13 rem
 14 rem *** init ***
-15 h$ = chr$(147): j$ = chr$(18): dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37): l = 9: i = 0
-20 print chr$(147) chr$(14): poke 211, 11: poke 214, 12: print "K O R E N V L I E T": print: print
+15 h$ = chr$(147): j$ = chr$(18): oc = 39: ol = 24: dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37): l = 9: i = 0
+20 print h$: ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
 30 for x = 1 to 33: read i$(x), o$(x), o(x): next
 31 for x = 1 to 37: read l$(x): next
 32 for y = 1 to 37: for x = 1 to 3: read d$(x, y), d(x, y): next: next
@@ -49,7 +49,7 @@
 407 poke 54296,0
 408 return
 670 rem *** welcome ***
-675 print h$: poke 211, 6: poke 214, 12: print "wilt u instructies? (j/n) ";
+675 print h$: ho=6: ve=12: gosub 6500: print "wilt u instructies? (j/n) ";
 680 gosub 100: if k$="j" or k$="J" then gosub 7500: goto 1000
 685 if k$<>"n" and k$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
@@ -307,7 +307,7 @@
 6480 ve = z + 7: ho = y: gosub 6500: print "***"
 6485 ve = z + 8: ho = y: gosub 6500: print "---"
 6490 for x = 1 to 500: next: return
-6500 poke 211, ho: poke 214, ve: return
+6500 if ho>oc then ho=39: if ve>ol then ve=24: poke 781, ve: poke 782, ho: poke 783, 0: sys 65520: return
 6510 rem
 6550 print h$: print "   zo bouwt u een heteluchtballon:"
 6570 print: print: print tab(8) "1   ballon"

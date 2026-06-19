@@ -84,3 +84,14 @@
   65520-65525), renumbered to 8990-8995 to fit C64 max line number 63999:
   `Nat.Lab. P2000 Computer Club`, `programma nr 48`, `KORENVLIET`,
   `versie U6 dd 02-06-83`, `vrijgegeven dd 04-07-83`, `copyright Hans Pennings`
+- **Centered title screen**: title and instructions prompt now vertically and
+  horizontally centered using cursor positioning
+- **SID beep**: replaced `chr$(7)` beeps with proper SID beep at lines 160/400-408
+  (sets frequency, gate, envelope, delay, then gate off) — 4 call sites:
+  line input overflow, invalid j/n, "ik begrijp u niet", stop prompt
+- **GOSUB target line ordering**: moved SID beep body (lines 400-408) from
+  after line 1402 to correct numeric position (between 195 and 670) to ensure
+  C64 linked-list search finds the target
+- **Cursor positioning**: switched from direct `poke 211,ho:poke 214,ve` to
+  KERNAL PLOT via `poke 781,ve:poke 782,ho:poke 783,0:sys 65520` with bounds
+  checking against `oc`/`ol`, matching `main.bas:110-114`
