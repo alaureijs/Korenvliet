@@ -471,4 +471,5 @@
 8995 rem copyright hans pennings
 9000 rem *** stop? ***
 9001 gosub 160: print "stop?";: gosub 100: if in$<>"j" and in$<>"J" then 9001
-9002 gosub 65: print: print "tot ziens.": end
+9002 poke 53280,14: poke 53281,6: poke 646,14
+9003 print chr$(147)chr$(14);: print: print "tot ziens.": end
