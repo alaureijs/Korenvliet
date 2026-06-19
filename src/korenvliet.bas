@@ -3,10 +3,10 @@
 12 rem c64 port (c) 2026
 13 rem
 14 rem *** init ***
-15 h$ = chr$(147): oc = 39: ol = 24
+15 oc = 39: ol = 24
 16 dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37)
 17 l = 9: ic = 0
-20 print h$chr$(14): ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
+20 gosub 65: ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
 30 for x = 1 to 33: read i$(x), o$(x), o(x): next
 31 for x = 1 to 37: read l$(x): next
 32 for y = 1 to 37: for x = 1 to 3: read d$(x, y), d(x, y): next: next
@@ -17,7 +17,7 @@
 45 z = int(rnd(1) * 3) + 1: if s(z) = z then 45
 50 s$(z) = right$(n$(x), 2): s(z) = z: next
 55 goto 670
-65 rem
+65 print chr$(147)chr$(14);: poke 53280,0: poke 53281,0: poke 646,1: return
 66 rem *** wait for key ***
 70 print "druk op een willekeurige toets:";
 75 get in$: if in$ = "" then 75
@@ -52,12 +52,12 @@
 407 poke 54296,0
 408 return
 670 rem *** welcome ***
-675 print h$: ho=6: ve=12: gosub 6500: print "wilt u instructies? (j/n) ";
+675 gosub 65: ho=6: ve=12: gosub 6500: print "wilt u instructies? (j/n) ";
 680 gosub 100: if in$="j" or in$="J" then gosub 7500: goto 1000
 685 if in$<>"n" and in$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
-1000 print h$ chr$(14)
+1000 gosub 65
 1001 print "plaats    :" l$(l) "."
 1002 print
 1003 print "uitgangen :";
@@ -331,7 +331,7 @@
 6505 sys 65520
 6506 return
 6510 rem
-6550 print h$: print "   zo bouwt u een heteluchtballon:"
+6550 gosub 65: print "   zo bouwt u een heteluchtballon:"
 6570 print: print: print tab(8) "1   ballon"
 6575 print tab(8) "2   kachel"
 6580 print tab(8) "3   brandstof"
@@ -359,7 +359,7 @@
 7106 print "klik ........ er zit een testament in."
 7107 goto 1100
 7120 print "fout.": goto 1100
-7200 print h$: print: print: print
+7200 gosub 65: print: print: print
 7201 for x = 1 to 39: print "*";: next
 7210 print "**     laatste wilsbeschikking       **"
 7215 print "**   ik, wout van duysz ter ghasth,  **"
@@ -372,7 +372,7 @@
 7250 print "**   zijn moge, zelfs olivier.       **"
 7290 for x = 1 to 39: print "*";: next
 7291 print : gosub 150: goto 9002
-7500 print h$
+7500 gosub 65
 7501 print "welkom in rittenburg. u hebt onlangs"
 7505 print "vernomen dat uw excentrieke oom wout"
 7506 print "is overleden. het gerucht gaat dat"
@@ -471,4 +471,4 @@
 8995 rem copyright hans pennings
 9000 rem *** stop? ***
 9001 gosub 160: print "stop?";: gosub 100: if in$<>"j" and in$<>"J" then 9001
-9002 print h$: print "tot ziens.": end
+9002 gosub 65: print: print "tot ziens.": end
