@@ -21,10 +21,9 @@
 75 get k$: if k$ = "" then 75
 80 return
 90 rem
-95 rem *** get single key in ts ***
-100 get k$: if k$ = "" then 100: k = asc(k$): if k = 3 then 9000
-102 if k > 96 and k < 123 then k = k - 32
-105 ts = k: return
+95 rem *** get single key in k$ ***
+100 get k$: if k$="" then 100: p=asc(k$) and 127: k$=chr$(p): if p=3 then 9000
+101 return
 110 rem
 115 rem *** line input into c$ ***
 120 c$ = "": ll = 0
@@ -40,8 +39,8 @@
 195 rem
 670 rem *** welcome ***
 675 print h$: print "wilt u instructies? (j/n) ";
-680 gosub 100: if k = 106 then gosub 7500
-685 if k <> 110 then print chr$(7);: goto 680
+680 gosub 100: if k$="j" or k$="J" then gosub 7500: goto 1000
+685 if k$<>"n" and k$<>"N" then print chr$(7);: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
 1000 print h$ chr$(14): print "plaats    :" j$ l$(l) ".": print: print "uitgangen :" j$;
@@ -167,7 +166,7 @@
 2660 if l = 16 then l = 20: goto 1000
 2670 goto 1990
 2680 if l <> 9 then 1990
-2690 for x = 1 to 19: if o(x) = 0 then x = 19: next: print "u kunt de winkel niet binnen met alles": "wat u zich heeft.": goto 1100
+2690 for x = 1 to 19: if o(x) = 0 then x = 19: next: print "u kunt de winkel niet binnen met alles": print "wat u zich heeft.": goto 1100
 2710 next: l = 10: goto 1000
 2750 if right$(c$, 8) <> "landhuis" and right$(c$, 10) <> "korenvliet" then 2770
 2760 if l = 9 then l = 12: goto 1000
@@ -223,7 +222,7 @@
 3290 goto 1990
 3295 if l = 16 or l = 20 then 3305
 3300 goto 1990
-3305 if l = 16 and k = 0 then print "gaat niet. de deur is aan de andere": "kant vergrendeld.": goto 1100
+3305 if l = 16 and k = 0 then print "gaat niet. de deur is aan de andere": print "kant vergrendeld.": goto 1100
 3310 print "ok.": goto 1100
 3350 if l <> 5 then print "niet hier.": goto 1100
 3360 if r = 1 then print "is al opgeblazen.": goto 1100
@@ -283,7 +282,7 @@
 6160 if o(13) = 40 and l = 14 then o(13) = 0: i = i + 1: goto 1000
 6170 if o(13) = l then o(13) = 0: i = i + 1: goto 1000
 6180 goto 1990
-6200 print "u had nog net genoeg kracht om weg te": "komen.": s = 1: l = 11: goto 690
+6200 print "u had nog net genoeg kracht om weg te": print "komen.": s = 1: l = 11: goto 690
 6300 if v = 0 then print "panter laat dat niet toe.": goto 1100
 6310 l = 19: goto 1000
 6400 z = 3 + abs(5 * y - 85) / 6: ve = z - 1: ho = y - 1: gosub 6500: print "- - -"
@@ -326,15 +325,15 @@
 7250 print spc(38) "**     zijn moge, zelfs olivier.        **"
 7290 print spc(38) string$(41, 42) chr$(147): gosub 150: goto 9002
 7500 print h$: print "welkom in rittenburg. u hebt onlangs"
-7505 print "vernomen dat uw excentrieke oom wout": "is overleden. het gerucht gaat dat"
-7510 print "deze oude zonderling het landhuis": "korenvliet heeft nagelaten aan"
-7515 print "degene die zijn kluis vindt en": "weet te openen."
-7520 print: print "om het spel te spelen moet u": "objecten en uw omgeving onderzoeken"
-7525 print "en manipuleren door het gebruik van": "eenvoudige opdrachten, zoals:"
-7530 print: print "neem mand, ga zuid, leg iets weg,": "stop, ga door deur, ga in vijver,"
-7535 print "inventaris, bekijk iets, ga uit": "landhuis, help, open deur, kijk"
-7540 print "(om u heen), verwijder deksel, ga": "naar winkel."
-7550 print: print "richtingen mogen worden afgekort:": "ga n,w,o,z; u=uit, l=omlaag,": "h=omhoog"
+7505 print "vernomen dat uw excentrieke oom wout": print "is overleden. het gerucht gaat dat"
+7510 print "deze oude zonderling het landhuis": print "korenvliet heeft nagelaten aan"
+7515 print "degene die zijn kluis vindt en": print "weet te openen."
+7520 print: print "om het spel te spelen moet u": print "objecten en uw omgeving onderzoeken"
+7525 print "en manipuleren door het gebruik van": print "eenvoudige opdrachten, zoals:"
+7530 print: print "neem mand, ga zuid, leg iets weg,": print "stop, ga door deur, ga in vijver,"
+7535 print "inventaris, bekijk iets, ga uit": print "landhuis, help, open deur, kijk"
+7540 print "(om u heen), verwijder deksel, ga": print "naar winkel."
+7550 print: print "richtingen mogen worden afgekort:": print "ga n,w,o,z; u=uit, l=omlaag,": print "h=omhoog"
 7560 print: gosub 150: return
 8000 data ballon,"neergestorte weerballon",3,kachel,"kleine houtkachel",1,mand,"grote rieten mand",12
 8005 data houtblokken,houtblokken,40,koord,"rol koord",17,lucifers,"doosje lucifers",15
@@ -377,6 +376,12 @@
 8180 data "uitlaat is afgedekt","er past iets niet"
 8182 data "binnenin is een briefje met nummer"
 8250 data 13,14,17,18,21,24,26,27
+8990 rem nat.lab. p2000 computer club
+8991 rem programma nr 48
+8992 rem korenvliet
+8993 rem versie u6 dd 02-06-83
+8994 rem vrijgegeven dd 04-07-83
+8995 rem copyright hans pennings
 9000 rem *** stop? ***
-9001 print chr$(7) "stop?";: gosub 100: if k = 106 then 9002
+9001 print chr$(7) "stop?";: gosub 100: if k$<>"j" and k$<>"J" then 9001
 9002 print h$: print "tot ziens.": end

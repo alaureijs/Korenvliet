@@ -61,3 +61,26 @@
 - `STR$()` on C64 prepends a leading space for positive numbers;
   `RIGHT$(STR$(Z),2)` correctly extracts the 2-digit safe code
 - `POS(0)` returns cursor column on C64 and is used for word-wrap at column 38
+
+## 2026-06-19
+
+- **Uppercase→lowercase conversion**: changed `k - 32` → `k + 32` (line 102)
+  since all single-key checks expect lowercase PETSCII values
+- **Instructions flow**: added `goto 1000` after `gosub 7500` (line 680) so
+  instructions proceed to main game instead of falling through to j/n check
+- **Stop prompt**: fixed line 9001 to loop until `j` is pressed instead of
+  falling through to end unconditionally
+- **Single-key input rewrite**: replaced `k = asc(k$)` / `k`-based comparisons
+  with `p = asc(k$) and 127 : k$ = chr$(p)` / `k$`-based comparisons, matching
+  the working pattern from `src/main.bas`:
+  - `gosub 100` now returns the key character in `k$` instead of numeric `k`
+  - Callers compare `k$="j" or k$="J"` etc. instead of `k=106`
+  - Uppercase/lowercase handled by dual checks at each call site
+  - Removed unused `ts` variable
+- **Bare string after colon**: fixed 11 occurrences of `print "...": "..."`
+  (valid P2000, syntax error in C64 BASIC V2) → `print "...": print "..."`
+  in lines 2690, 3305, 6200, 7505–7560
+- **Copyright message**: re-added original P2000 copyright block (lines
+  65520-65525), renumbered to 8990-8995 to fit C64 max line number 63999:
+  `Nat.Lab. P2000 Computer Club`, `programma nr 48`, `KORENVLIET`,
+  `versie U6 dd 02-06-83`, `vrijgegeven dd 04-07-83`, `copyright Hans Pennings`
