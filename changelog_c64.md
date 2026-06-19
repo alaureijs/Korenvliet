@@ -213,3 +213,6 @@
 - **Testament jumped to wrong game-end line**: line 7291 `goto 9002` landed on
   the STOP confirmation j/n check instead of the color-restore+farewell.
   Changed `goto 9002` → `goto 9003`.
+- **Labels "uitgangen" / "u ziet" in wrong color**: lines 1002/1013 inherited
+  yellow from preceding POKE 646,7. Added `poke 646,5` before each label so
+  only the values (location name, exits, objects) are yellow.

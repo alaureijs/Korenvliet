@@ -61,12 +61,12 @@
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
 1000 gosub 65: print "plaats    :";: poke 646,7: print l$(l) "."
-1002 print
+1002 poke 646,5: print
 1003 print "uitgangen :";
 1010 for x = 1 to 3
 1011 poke 646,7: gosub 5000: print " ";
 1012 next
-1013 print
+1013 poke 646,5: print
 1014 print
 1015 print "u ziet    :";: poke 646,7
 1020 if o(13) <> 0 and (l = 30 or l = 31) then poke 646,5: goto 1100
