@@ -20,16 +20,18 @@
 65 print chr$(147)chr$(14);: poke 53280,0: poke 53281,0: poke 646,1: return
 66 rem *** wait for key ***
 70 print "druk op een willekeurige toets:";
-75 get in$: if in$ = "" then 75
+75 poke 650, 0: get in$: if in$ = "" then 75
 80 return
 90 rem
 95 rem *** get single key -> in$ ***
-100 get in$: if in$="" then 100: p=asc(in$) and 127: in$=chr$(p): if p=3 then 9000
-101 return
+100 poke 650, 0
+101 get in$: if in$="" then 101: p=asc(in$) and 127: in$=chr$(p)
+102 if p=3 then 9000
+102 return
 110 rem
 115 rem *** line input into c$ ***
 120 c$ = "": ll = 0
-125 get in$: if in$ = "" then 125
+125 poke 650, 0: get in$: if in$ = "" then 125
 130 t = asc(in$): if t = 13 then print: return
 131 if t = 20 then 137
 132 if t < 32 then 125
@@ -54,7 +56,7 @@
 408 return
 670 rem *** welcome ***
 675 gosub 65: ho=6: ve=12: gosub 6500: print "wilt u instructies? (j/n) ";
-680 gosub 100: if in$="j" or in$="J" then gosub 7500: goto 1000
+680 gosub 101: if in$="j" or in$="J" then gosub 7500: goto 1000
 685 if in$<>"n" and in$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
@@ -470,7 +472,7 @@
 8993 rem versie u6 dd 02-06-83
 8994 rem vrijgegeven dd 04-07-83
 8995 rem copyright hans pennings
-9000 rem *** stop? ***
-9001 gosub 160: print "stop?";: gosub 100: if in$<>"j" and in$<>"J" then 9001
+9000 poke 650, 0: rem *** stop? ***
+9001 gosub 160: print "stop?";: gosub 101: if in$<>"j" and in$<>"J" then 9001
 9002 poke 53280,14: poke 53281,6: poke 646,14
 9003 print chr$(147)chr$(14);: print: print "tot ziens.": end
