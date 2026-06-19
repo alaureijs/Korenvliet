@@ -3,7 +3,9 @@
 12 rem c64 port (c) 2026
 13 rem
 14 rem *** init ***
-15 h$ = chr$(147): j$ = chr$(18): oc = 39: ol = 24: dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37): l = 9: i = 0
+15 h$ = chr$(147): j$ = chr$(18): oc = 39: ol = 24
+16 dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37)
+17 l = 9: i = 0
 20 print h$chr$(14): ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
 30 for x = 1 to 33: read i$(x), o$(x), o(x): next
 31 for x = 1 to 37: read l$(x): next
@@ -28,10 +30,11 @@
 115 rem *** line input into c$ ***
 120 c$ = "": ll = 0
 125 get k$: if k$ = "" then 125
-130 k = asc(k$): if k = 13 then print: return
-132 if k = 20 and ll > 0 then c$ = left$(c$, ll - 1): ll = ll - 1: print chr$(20);: goto 125
-134 if k < 32 then 125
-135 if ll < 22 then c$ = c$ + chr$(k): ll = ll + 1: print chr$(k);: goto 125
+130 t = asc(k$): if t = 13 then print: return
+132 if t = 20 and ll > 0 then c$ = left$(c$, ll - 1): ll = ll - 1
+133 print chr$(20);: goto 125
+134 if t < 32 then 125
+135 if ll < 22 then c$ = c$ + chr$(t): ll = ll + 1: print chr$(t);: goto 125
 136 gosub 160: goto 125
 140 rem
 145 rem *** wait for any key (uses 70) ***
@@ -54,11 +57,19 @@
 685 if k$<>"n" and k$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
-1000 print h$ chr$(14): print "plaats    :" j$ l$(l) ".": print: print "uitgangen :" j$;
-1010 for x = 1 to 3: gosub 5000: print " ";: next: print: print: print "u ziet    :" j$;
+1000 print h$ chr$(14)
+1001 print "plaats    :" j$ l$(l) "."
+1002 print
+1003 print "uitgangen :" j$;
+1010 for x = 1 to 3
+1011 gosub 5000: print " ";
+1012 next
+1013 print
+1014 print
+1015 print "u ziet    :" j$;
 1020 if o(13) <> 0 and (l = 30 or l = 31) then 1100
 1030 for x = 1 to 33: if o(x) <> l then 1050
-1035 if pos(0) + len(o$(x)) > 38 then print: print tab(13);
+1035 if pos(0) + len(o$(x)) > 38 then print: print tab(11);
 1040 print o$(x) ". ";
 1050 next: print: print: gosub 5200
 1095 rem
@@ -269,7 +280,10 @@
 5070 if xl$ = "l" then print "(om)laag";
 5080 print ".";: return
 5200 if o(13) = 0 and l = 31 then print "een tunnel onder water.": return
-5230 if (l = 13 and c1 = 1) or (l = 14 and c2 = 1) or (l = 17 and c3 = 1) or (l = 18 and c4 = 1) then print "putdeksel.";
+5230 if l = 13 and c1 = 1 then print "putdeksel. ";
+5231 if l = 14 and c2 = 1 then print "putdeksel. ";
+5232 if l = 17 and c3 = 1 then print "putdeksel. ";
+5233 if l = 18 and c4 = 1 then print "putdeksel. ";
 5240 if l = 13 or l = 14 or l = 17 or l = 18 then print "afvoer.": return
 5270 if h = 1 and (l = 8 or l = 36) then print "hetelucht ballon.": return
 5280 z = int(rnd(1) * 10) + 1
@@ -293,19 +307,21 @@
 6160 if o(13) = 40 and l = 14 then o(13) = 0: i = i + 1: goto 1000
 6170 if o(13) = l then o(13) = 0: i = i + 1: goto 1000
 6180 goto 1990
-6200 print "u had nog net genoeg kracht om weg te": print "komen.": s = 1: l = 11: goto 690
+6200 print "u had nog net genoeg kracht om weg te"
+6210 print "komen.": s = 1: l = 11: goto 690
 6300 if v = 0 then print "panter laat dat niet toe.": goto 1100
 6310 l = 19: goto 1000
-6400 z = 3 + abs(5 * y - 85) / 6: ve = z - 1: ho = y - 1: gosub 6500: print "- - -"
-6410 ve = z: ho = y - 2: gosub 6500: print "-     -"
+6400 z = 3 + abs(5 * y - 85) / 6
+6405 ve = z - 1: ho = y - 1: gosub 6500: print "- - -"
+6410 ve = z:     ho = y - 2: gosub 6500: print "-     -"
 6420 ve = z + 1: ho = y - 2: gosub 6500: print "======="
 6430 ve = z + 2: ho = y - 2: gosub 6500: print "-     -"
 6440 ve = z + 3: ho = y - 1: gosub 6500: print "-   -"
-6450 ve = z + 4: ho = y: gosub 6500: print ".-."
-6460 ve = z + 5: ho = y: gosub 6500: print ". ."
-6470 ve = z + 6: ho = y: gosub 6500: print "---"
-6480 ve = z + 7: ho = y: gosub 6500: print "***"
-6485 ve = z + 8: ho = y: gosub 6500: print "---"
+6450 ve = z + 4: ho = y:     gosub 6500: print ".-."
+6460 ve = z + 5: ho = y:     gosub 6500: print ". ."
+6470 ve = z + 6: ho = y:     gosub 6500: print "---"
+6480 ve = z + 7: ho = y:     gosub 6500: print "***"
+6485 ve = z + 8: ho = y:     gosub 6500: print "---"
 6490 for x = 1 to 500: next: return
 6500 if ho>oc then ho=39
 6501 if ve>ol then ve=24
@@ -326,21 +342,36 @@
 7000 if e = 0 then print "u kunt het niet vinden.": goto 1100
 7030 if l <> 16 then print "is hier niet.": goto 1100
 7040 print "combinatieslot."
-7045 print "type eerste getal  - ";: gosub 120: f$(1) = c$: if f$(1) <> s$(1) then 7120
-7070 print "type tweede getal  - ";: gosub 120: f$(2) = c$: if f$(1) + f$(2) <> s$(1) + s$(2) then 7120
-7100 print "type laatste getal - ";: gosub 120: f$(3) = c$: if f$(1) + f$(2) + f$(3) = s$(1) + s$(2) + s$(3) then f = 1: print: print "klik ........ er zit een testament in.": goto 1100
+7045 print "type eerste getal  - ";
+7046 gosub 120
+7047 f$(1) = c$
+7048 if f$(1) <> s$(1) then 7120
+7070 print "type tweede getal  - ";
+7071 gosub 120
+7072 f$(2) = c$
+7073 if f$(1) + f$(2) <> s$(1) + s$(2) then 7120
+7100 print "type laatste getal - ";
+7101 gosub 120
+7102 f$(3) = c$
+7103 if f$(1) + f$(2) + f$(3) <> s$(1) + s$(2) + s$(3) then 7120
+7104 f = 1
+7105 print
+7106 print "klik ........ er zit een testament in."
+7107 goto 1100
 7120 print "fout.": goto 1100
-7200 print h$: print: print: print: print string$(41, 42)
-7210 print spc(38) "**        laatste wilsbeschikking       **"
-7215 print spc(38) "**     ik, wout van duysz ter ghasth,   **"
-7220 print spc(38) "**     in goede gezondheid en bij       **"
-7225 print spc(38) "**     mijn volle verstand, laat        **"
-7230 print spc(38) "**     al mijn bezittingen, met         **"
-7235 print spc(38) "**     inbegrip van korenvliet,         **"
-7240 print spc(38) "**     na aan diegene die deze          **"
-7245 print spc(38) "**     kluis opent, wie dat ook         **"
-7250 print spc(38) "**     zijn moge, zelfs olivier.        **"
-7290 print spc(38) string$(41, 42) chr$(147): gosub 150: goto 9002
+7200 print h$: print: print: print
+7201 for x = 1 to 39: print "*";: next
+7210 print "**     laatste wilsbeschikking       **"
+7215 print "**   ik, wout van duysz ter ghasth,  **"
+7220 print "**   in goede gezondheid en bij      **"
+7225 print "**   mijn volle verstand, laat       **"
+7230 print "**   al mijn bezittingen, met        **"
+7235 print "**   inbegrip van korenvliet,        **"
+7240 print "**   na aan diegene die deze         **"
+7245 print "**   kluis opent, wie dat ook        **"
+7250 print "**   zijn moge, zelfs olivier.       **"
+7290 for x = 1 to 39: print "*";: next
+7291 print : gosub 150: goto 9002
 7500 print h$
 7501 print "welkom in rittenburg. u hebt onlangs"
 7505 print "vernomen dat uw excentrieke oom wout"
@@ -368,16 +399,39 @@
 7560 print
 7561 gosub 150
 7562 return
-8000 data ballon,"neergestorte weerballon",3,kachel,"kleine houtkachel",1,mand,"grote rieten mand",12
-8005 data houtblokken,houtblokken,40,koord,"rol koord",17,lucifers,"doosje lucifers",15
-8010 data tas,"grote tas",16,rubberboot,rubberboot,1,bord,bord,8
-8020 data visnet,visnet,7,sportschoenen,sportschoenen,10,bijl,bijl,10
-8030 data zwembril,zwembril,40,zalm,zalm,29,beker,"kristallen beker",19
-8040 data fles,"lege champagnefles",33,boek,boek,14,schilderij,"schilderij van oom wout",16
-8050 data snorkel,snorkel,40,landhuis,korenvliet,9,landhuis,korenvliet,1
-8060 data schuur,"oude verlaten schuur",36,tafel,"houten tafel",37,klok,"friese staartklok",14
-8070 data kluis,kluis,40,kist,"kist chablis",18,bomen,bomen,2,deur,deur,20,deur,deur,16
-8080 data panter,"een geimporteerde panter",18,winkel,supermarkt,9,trap,trap,19,ziekenhuis,ziekenhuis,9
+8000 data ballon,"neergestorte weerballon",3
+8001 data kachel,"kleine houtkachel",1
+8002 data mand,"grote rieten mand",12
+8005 data houtblokken,houtblokken,40
+8006 data koord,"rol koord",17
+8007 data lucifers,"doosje lucifers",15
+8010 data tas,"grote tas",16
+8011 data rubberboot,rubberboot,1
+8012 data bord,bord,8
+8020 data visnet,visnet,7
+8021 data sportschoenen,sportschoenen,10
+8022 data bijl,bijl,10
+8030 data zwembril,zwembril,40
+8031 data zalm,zalm,29
+8032 data beker,"kristallen beker",19
+8040 data fles,"lege champagnefles",33
+8041 data boek,boek,14
+8042 data schilderij,"schilderij van oom wout",16
+8050 data snorkel,snorkel,40
+8051 data landhuis,korenvliet,9
+8052 data landhuis,korenvliet,1
+8060 data schuur,"oude verlaten schuur",36
+8061 data tafel,"houten tafel",37
+8062 data klok,"friese staartklok",14
+8070 data kluis,kluis,40
+8071 data kist,"kist chablis",18
+8072 data bomen,bomen,2
+8073 data deur,deur,20
+8074 data deur,deur,16
+8080 data panter,"een geimporteerde panter",18
+8081 data winkel,supermarkt,9
+8082 data trap,trap,19
+8083 data ziekenhuis,ziekenhuis,9
 8100 data "op het binnenplein","in een bos","in een weiland"
 8102 data "een glibberige kanaalkant","de oever van een vijver"
 8104 data "op een braakliggend terrein","op een rotspaadje"
