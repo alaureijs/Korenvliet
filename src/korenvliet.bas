@@ -4,7 +4,7 @@
 13 rem
 14 rem *** init ***
 15 h$ = chr$(147): j$ = chr$(18): oc = 39: ol = 24: dim i$(33), o$(33), o(33), l$(37), d$(3, 37), d(3, 37): l = 9: i = 0
-20 print h$: ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
+20 print h$chr$(14): ho=11: ve=12: gosub 6500: print "K O R E N V L I E T";
 30 for x = 1 to 33: read i$(x), o$(x), o(x): next
 31 for x = 1 to 37: read l$(x): next
 32 for y = 1 to 37: for x = 1 to 3: read d$(x, y), d(x, y): next: next
@@ -307,7 +307,13 @@
 6480 ve = z + 7: ho = y: gosub 6500: print "***"
 6485 ve = z + 8: ho = y: gosub 6500: print "---"
 6490 for x = 1 to 500: next: return
-6500 if ho>oc then ho=39: if ve>ol then ve=24: poke 781, ve: poke 782, ho: poke 783, 0: sys 65520: return
+6500 if ho>oc then ho=39
+6501 if ve>ol then ve=24
+6502 poke 781,ve
+6503 poke 782,ho
+6504 poke 783,0
+6505 sys 65520
+6506 return
 6510 rem
 6550 print h$: print "   zo bouwt u een heteluchtballon:"
 6570 print: print: print tab(8) "1   ballon"
@@ -335,17 +341,33 @@
 7245 print spc(38) "**     kluis opent, wie dat ook         **"
 7250 print spc(38) "**     zijn moge, zelfs olivier.        **"
 7290 print spc(38) string$(41, 42) chr$(147): gosub 150: goto 9002
-7500 print h$: print "welkom in rittenburg. u hebt onlangs"
-7505 print "vernomen dat uw excentrieke oom wout": print "is overleden. het gerucht gaat dat"
-7510 print "deze oude zonderling het landhuis": print "korenvliet heeft nagelaten aan"
-7515 print "degene die zijn kluis vindt en": print "weet te openen."
-7520 print: print "om het spel te spelen moet u": print "objecten en uw omgeving onderzoeken"
-7525 print "en manipuleren door het gebruik van": print "eenvoudige opdrachten, zoals:"
-7530 print: print "neem mand, ga zuid, leg iets weg,": print "stop, ga door deur, ga in vijver,"
-7535 print "inventaris, bekijk iets, ga uit": print "landhuis, help, open deur, kijk"
-7540 print "(om u heen), verwijder deksel, ga": print "naar winkel."
-7550 print: print "richtingen mogen worden afgekort:": print "ga n,w,o,z; u=uit, l=omlaag,": print "h=omhoog"
-7560 print: gosub 150: return
+7500 print h$
+7501 print "welkom in rittenburg. u hebt onlangs"
+7505 print "vernomen dat uw excentrieke oom wout"
+7506 print "is overleden. het gerucht gaat dat"
+7510 print "deze oude zonderling het landhuis"
+7511 print "korenvliet heeft nagelaten aan"
+7515 print "degene die zijn kluis vindt en"
+7516 print "weet te openen."
+7520 print
+7521 print "om het spel te spelen moet u"
+7522 print "objecten en uw omgeving onderzoeken"
+7525 print "en manipuleren door het gebruik van"
+7526 print "eenvoudige opdrachten, zoals:"
+7530 print
+7531 print "neem mand, ga zuid, leg iets weg,"
+7532 print "stop, ga door deur, ga in vijver,"
+7535 print "inventaris, bekijk iets, ga uit"
+7536 print "landhuis, help, open deur, kijk"
+7540 print "(om u heen), verwijder deksel, ga"
+7541 print "naar winkel."
+7550 print
+7551 print "richtingen mogen worden afgekort:"
+7552 print "ga n,w,o,z; u=uit, l=omlaag,"
+7553 print "h=omhoog"
+7560 print
+7561 gosub 150
+7562 return
 8000 data ballon,"neergestorte weerballon",3,kachel,"kleine houtkachel",1,mand,"grote rieten mand",12
 8005 data houtblokken,houtblokken,40,koord,"rol koord",17,lucifers,"doosje lucifers",15
 8010 data tas,"grote tas",16,rubberboot,rubberboot,1,bord,bord,8
