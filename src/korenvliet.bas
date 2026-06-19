@@ -17,7 +17,7 @@
 45 z = int(rnd(1) * 3) + 1: if s(z) = z then 45
 50 s$(z) = right$(n$(x), 2): s(z) = z: next
 55 goto 670
-65 print chr$(147)chr$(14);: poke 53280,0: poke 53281,0: poke 646,1: return
+65 print chr$(147)chr$(14);: poke 53280,0: poke 53281,0: poke 646,5: return
 66 rem *** wait for key ***
 70 print "druk op een willekeurige toets:";
 75 poke 650, 0: get in$: if in$ = "" then 75
@@ -60,23 +60,22 @@
 685 if in$<>"n" and in$<>"N" then gosub 160: goto 680
 688 rem *** short delay before redraw ***
 690 for dx = 1 to 800: next: goto 1000
-1000 gosub 65
-1001 print "plaats    :" l$(l) "."
+1000 gosub 65: print "plaats    :";: poke 646,7: print l$(l) "."
 1002 print
 1003 print "uitgangen :";
 1010 for x = 1 to 3
-1011 gosub 5000: print " ";
+1011 poke 646,7: gosub 5000: print " ";
 1012 next
 1013 print
 1014 print
-1015 print "u ziet    :";
-1020 if o(13) <> 0 and (l = 30 or l = 31) then 1100
+1015 print "u ziet    :";: poke 646,7
+1020 if o(13) <> 0 and (l = 30 or l = 31) then poke 646,5: goto 1100
 1030 for x = 1 to 33: if o(x) <> l then 1050
 1035 if pos(0) + len(o$(x)) > 38 then print: print tab(11);
 1040 print o$(x) ". ";
-1050 next: print: print: gosub 5200
+1050 next: poke 646,5: print: print: gosub 5200
 1095 rem
-1100 print: print "wat nu    :";: gosub 120: print
+1100 poke 646,3: print: print "wat nu    :";: gosub 120: poke 646,5: print
 1105 if s = 1 then 6000
 1110 if left$(c$, 3) = "pak" then c$ = "neem" + mid$(c$, 4)
 1115 if left$(c$, 4) = "neem" then 2030
@@ -124,7 +123,7 @@
 1390 goto 1990
 1391 print "echt stoppen? (j/n) ";
 1392 gosub 101
-1393 if in$="j" or in$="J" then 9002
+1393 if in$="j" or in$="J" then 9003
 1394 if in$="n" or in$="N" then return
 1395 gosub 160: goto 1392
 1396 rem *** instr replacement for panter ***
@@ -162,7 +161,9 @@
 2196 if g > len(i$(x)) then g = len(i$(x))
 2197 if g > 0 and mid$(c$, 5, g) = right$(i$(x), g) and o(x) = 0 then 2240
 2198 next: goto 1990
-2240 if x = 8 and (l = 28 or l = 29) then o(8) = 5: ic = ic - 1: print "de boot drijft weg.....": x = 19: next: goto 690
+2239 if x <> 8 or (l <> 28 and l <> 29) then 2270
+2240 o(8)=5: ic=ic-1: poke 646,3: print"de boot drijft weg.....": x=19: next
+2241 goto 690
 2270 ic = ic - 1
 2280 if l = 28 or l = 29 then o(x) = l + 2: x = 19: next: goto 1000
 2300 o(x) = l: x = 19: next: goto 1000
@@ -187,8 +188,9 @@
 2560 if l = 36 then l = 35: goto 1000
 2570 print "ik kan het niet vinden.": goto 1100
 2600 if l <> 5 then 1990
+2609 if o(8) <> 0 then poke 646,3
 2610 if o(8) <> 0 then print "ik moet ergens op kunnen drijven.": goto 1100
-2630 if r = 0 then print "rubberboot is te slap.": goto 1100
+2630 if r = 0 then poke 646,3: print "rubberboot is te slap.": goto 1100
 2640 l = 28: goto 1000
 2650 if l = 16 and k = 0 then print "de deur is op slot.": goto 1100
 2655 if l = 20 then l = 16: k = 1: goto 1000
@@ -240,7 +242,9 @@
 3185 v = 1: o(14) = 40: o(30) = 40: goto 690
 3190 if l = 2 and (o(12) = 0 or o(12) = l) then o(4) = 2: goto 1000
 3200 goto 1990
-3210 if (l = 28 or l = 29) and o(8) = 0 and o(19) = 0 then o(8) = 5: ic = ic - 1: l = l + 2: print "de boot drijft weg...": goto 690
+3209 if (l <> 28 and l <> 29) or o(8) <> 0 or o(19) <> 0 then 3220
+3210 o(8) = 5: ic = ic - 1: l = l + 2: poke 646,3: print "de boot drijft weg..."
+3211 goto 690
 3220 if (l = 28 or l = 29) and o(19) = 0 then l = l + 2: goto 1000
 3230 if l = 28 or l = 29 then print "u hebt een snorkel nodig.": goto 1100
 3240 goto 1990
@@ -253,9 +257,9 @@
 3300 goto 1990
 3305 if l = 16 and k = 0 then print "gaat niet. de deur is aan de andere": print "kant vergrendeld.": goto 1100
 3310 print "ok.": goto 1100
-3350 if l <> 5 then print "niet hier.": goto 1100
-3360 if r = 1 then print "is al opgeblazen.": goto 1100
-3370 print "ok.": r = 1: goto 1100
+3350 if l <> 5 then poke 646,3: print "niet hier.": goto 1100
+3360 if r = 1 then poke 646,3: print "is al opgeblazen.": goto 1100
+3370 poke 646,3: print "ok.": r = 1: goto 1100
 3380 if l <> 8 then print "niet hier.": goto 1100
 3390 hb = 0: for x = 1 to 6: if o(x) = 0 or o(x) = 8 then hb = hb + 1
 3400 next: if hb = 6 then 3420
@@ -272,7 +276,7 @@
 3650 if l > 27 and l < 32 then print "neem het snel terug!": goto 1100
 3660 o(19) = l: ic = ic - 1: goto 1000
 3800 if l <> 2 then 1990
-3810 print "u viel eraf.": s = 1: l = 11: goto 690
+3810 poke 646,4: print "u viel eraf.": s = 1: l = 11: goto 690
 3900 if o(9) = 0 or o(9) = l then print "op het bord staat: een goede plaats.": goto 1100
 3910 print "kunt het niet vinden.": goto 1100
 3950 if o(19) = 0 then 3080
@@ -314,7 +318,7 @@
 6160 if o(13) = 40 and l = 14 then o(13) = 0: ic = ic + 1: goto 1000
 6170 if o(13) = l then o(13) = 0: ic = ic + 1: goto 1000
 6180 goto 1990
-6200 print "u had nog net genoeg kracht om weg te"
+6200 poke 646,4: print "u had nog net genoeg kracht om weg te"
 6210 print "komen.": s = 1: l = 11: goto 690
 6300 if v = 0 then print "panter laat dat niet toe.": goto 1100
 6310 l = 19: goto 1000
@@ -477,6 +481,7 @@
 8994 rem vrijgegeven dd 04-07-83
 8995 rem copyright hans pennings
 9000 poke 650, 0: rem *** stop? ***
-9001 gosub 160: print "stop?";: gosub 101: if in$<>"j" and in$<>"J" then 9001
-9002 poke 53280,14: poke 53281,6: poke 646,14
-9003 print chr$(147)chr$(14);: print: print "tot ziens.": end
+9001 poke 646,4: gosub 160: print "stop?";: gosub 101
+9002 if in$<>"j" and in$<>"J" then 9001
+9003 poke 53280,14: poke 53281,6: poke 646,14
+9004 print chr$(147)chr$(14);: print: print "tot ziens.": end

@@ -172,6 +172,33 @@
    `goto 1000` at line 2280 — dropping a non-rubberboot item at water
    locations (28/29) leaked a FOR frame on the stack
 - **"open boek/klok/tas" broken**: changed `g = len(c$) + 2` to
-   `g = len(c$) - 5` at line 2845 — original P2000t bug where
-   `RIGHT$(c$, g)` with `g > len(c$)` returned the full command instead of
-   just the object name, never matching an object in the examine loop
+  `g = len(c$) - 5` at line 2845 — original P2000t bug where
+  `RIGHT$(c$, g)` with `g > len(c$)` returned the full command instead of
+  just the object name, never matching an object in the examine loop
+
+## 2026-06-19 (final)
+
+### P2000t color scheme via POKE 646
+
+- **Default text**: changed `POKE 646,1` (white) → `POKE 646,5` (green) in
+  `gosub 65` (line 65), matching P2000t `CHR$(130)`
+- **Location / exits / objects**: added `POKE 646,7` (yellow) at lines 1000,
+  1011, 1015 — matches P2000t `J$=CHR$(131)` usage
+- **"Wat nu" prompt**: added `POKE 646,3` (cyan) at line 1100, resets to
+  green after input — matches P2000t `CHR$(134)`
+- **Boat messages (cyan)**: `POKE 646,3` added at lines 2240, 2609, 2630,
+  3210, 3350, 3360, 3370 — all rubberboat/water interactions
+- **Warning messages (magenta)**: `POKE 646,4` added at lines 3810 (tree
+  fall), 6200 (panter escape), 9001 (STOP confirmation) — matches P2000t
+  `CHR$(133)` usage
+
+### Line width fixes
+
+- **Line 2240** (boat drifts): split into 2239 (condition guard), 2240
+  (statements + colour), 2241 (`goto 690`)
+- **Line 3210** (boat drifts on dive): split into 3209 (condition guard),
+  3210 (statements + colour), 3211 (`goto 690`)
+- **STOP confirmation** (9001): split into 9001 (prompt + get), 9002
+  (j/n loop), 9003 (restore default colours), 9004 (farewell + end)
+- **Line 1393**: updated jump target from 9002 → 9003 to match restructured
+  game-end section
