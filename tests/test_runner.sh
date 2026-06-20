@@ -12,8 +12,9 @@ run_test() {
     local name="$1"
     local input="$2"
     local expected="$3"
+    local to=${4:-3}
 
-    output=$(printf "%b" "$input" | timeout 2 "$GAME" 2>/dev/null || true)
+    output=$(printf "%b" "$input" | timeout "$to" "$GAME" 2>/dev/null || true)
 
     if echo "$output" | grep -Fq "$expected"; then
         echo "  PASS  $name"
@@ -75,6 +76,16 @@ run_test "drop carried item"        \
 
 # ── Read testament (without safe open) ─────────────────────────
 run_test "read testament fail"      'lees testament\nstop\n'    'Ik begrijp U niet.'
+
+# ── Walkthrough: balloon speedrun ──────────────────────────────
+# Collect all 6 balloon parts, build balloon at AFGRAVING, fly it.
+BALLOON_SPEEDRUN='ga in winkel\nkoop bijl\nu\nz\nhak boom\nneem houtblokken\nz\nneem ballon\nn\no\nneem kachel\nw\nn\nn\no\no\nleg bijl\nleg ballon\nleg kachel\nleg houtblokken\nw\nw\nz\nga in landhuis\nneem mand\nz\nz\nneem koord\nn\no\no\nneem lucifers\nw\nw\nz\nu\nw\nn\nn\no\no\nleg mand\nleg koord\nleg lucifers\nbouw ballon\nga in ballon\nvlieg met ballon\nstop\n'
+run_test "balloon speedrun"         "$BALLOON_SPEEDRUN"         'Ballon op hoogte'  12
+
+# ── Walkthrough: exploration ───────────────────────────────────
+# Enter landhuis from HOOFDSTRAAT, explore rooms, take items, go upstairs.
+EXPLORE='ga in landhuis\nbekijk mand\nz\no\no\nneem boek\nw\nw\nn\nz\nu\nstop\n'
+run_test "exploration"              "$EXPLORE"                  'Friese staartklok' 9
 
 echo ""
 echo "=== Results: $PASS passed, $FAIL failed ==="
