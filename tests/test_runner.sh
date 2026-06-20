@@ -57,6 +57,11 @@ run_test "take invalid object"      'neem niets\nstop\n'        'Ik begrijp U ni
 # ── Examine ─────────────────────────────────────────────────────
 run_test "examine at location"      'bekijk landhuis\nstop\n'   'Korenvliet'
 
+# ── Entry limits ────────────────────────────────────────────────
+run_test "enter winkel with items"   \
+    'ga in winkel\nkoop sportschoenen\nu\nga in winkel\nstop\n' \
+    'niet binnen'
+
 # ── Jogging ─────────────────────────────────────────────────────
 run_test "buy and jog"              \
     'ga in winkel\nkoop sportschoenen\nu\nga joggen\nstop\n' \

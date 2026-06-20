@@ -2,11 +2,12 @@
 
 ## 2026-06-20
 
-- Added integration test suite (`tests/test_runner.sh`, 15 tests covering basic commands, movement, object interaction, examine, jogging, drop, overflow/underflow guards)
+- Added integration test suite (`tests/test_runner.sh`, 16 tests covering basic commands, movement, object interaction, examine, jogging, drop, overflow/underflow guards)
 - Fixed shell escaping: `printf "%s"` → `printf "%b"` in test runner to interpret `\n` as newline
 - Fixed test expectations: corrected examine target and location-format strings
 - Changed Makefile standard `-std=c89` → `-std=gnu99` (snprintf requires C99)
 - Added "drop not carried" and "drop carried item" tests
+- Added "enter winkel with items" test (inventory must be empty to enter supermarkt)
 - Updated changelog with current session changes
 
 - Lowercase input in `main` before dispatch; replaced all `strcasecmp`/`strncasecmp` with `strcmp`/`strncmp`
