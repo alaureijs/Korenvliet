@@ -2,7 +2,7 @@
 
 ## 2026-06-20
 
-- Added integration test suite (`tests/test_runner.sh`, 34 tests covering basic commands, movement, object interaction, examine, jogging, drop, enter buildings, boat crossing, sewer entry, balloon speedrun, safe number collection, landhuis exploration, kanaal/health, door/lock, kijk, special-case objects, max-carry overflow, overflow/underflow guards)
+- Added integration test suite (`tests/test_runner.sh`, 52 tests covering basic commands, movement, object interaction, examine, jogging, drop, enter buildings, boat crossing, sewer entry, balloon speedrun, safe number collection, landhuis exploration, kanaal/health, door/lock, kijk, special-case objects, max-carry overflow, open-X dispatch, balloon/boat guards, jogging guards, winkeldiefstal, klim, ga-naar alias, sewer grate closed, afgraving-in, overflow/underflow guards)
 - Fixed shell escaping: `printf "%s"` → `printf "%b"` in test runner to interpret `\n` as newline
 - Fixed test expectations: corrected examine target and location-format strings
 - Changed Makefile standard `-std=c89` → `-std=gnu99` (snprintf requires C99)

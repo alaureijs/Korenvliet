@@ -62,6 +62,15 @@ run_test "take too much"            \
 # ── Examine ─────────────────────────────────────────────────────
 run_test "examine at location"      'bekijk landhuis\nstop\n'   'Korenvliet'
 run_test "read sign"                'n\no\no\nlees bord\nstop\n' 'Een goede plaats'
+run_test "open boek"                \
+    'ga in landhuis\nz\no\nopen boek\nstop\n' \
+    'Zo bouwt U'
+run_test "open klok"                \
+    'ga in landhuis\nz\no\nopen klok\nstop\n' \
+    'duikbril'
+run_test "open tas"                 \
+    'ga in landhuis\nz\no\nz\nopen tas\nstop\n' \
+    'snorkel'
 
 # ── Entry limits ────────────────────────────────────────────────
 run_test "enter winkel with items"   \
@@ -72,6 +81,11 @@ run_test "enter winkel with items"   \
 run_test "buy and jog"              \
     'ga in winkel\nkoop sportschoenen\nu\nga joggen\nstop\n' \
     'Pfff'
+run_test "jog zonder schoenen"      \
+    'ga joggen\nstop\n'             'schoenen nodig'
+run_test "jog verkeerde plek"       \
+    'ga in winkel\nkoop sportschoenen\nu\nga in ziekenhuis\nga joggen\nstop\n' \
+    'hier niet joggen'
 
 # ── Drop ────────────────────────────────────────────────────────
 run_test "drop not carried"         'leg mand\nstop\n'          'Ik begrijp U niet'
@@ -92,11 +106,20 @@ run_test "boat already inflated"    \
 run_test "boat drifts away"         \
     'z\no\nneem rubberboot\nz\no\nblaas boot op\nga in vijver\nz\nleg rubberboot\nstop\n' \
     'drijft weg'  6
+run_test "enter vijver no boot"     \
+    'z\no\nz\no\nga in vijver\nstop\n' \
+    'kunnen drijven'  6
+run_test "enter vijver uninflated"  \
+    'z\no\nneem rubberboot\nz\no\nga in vijver\nstop\n' \
+    'te slap'  6
 
 # ── Sewer entry ────────────────────────────────────────────────
 run_test "sewer entry"              \
     'ga in winkel\nkoop sportschoenen\nu\nga joggen\nga in landhuis\nz\nverwijder deksel\nga in afvoer\nstop\n' \
     'uitlaat van het riool'  6
+run_test "sewer grate closed"       \
+    'ga in landhuis\nz\nga in afvoer\nstop\n' \
+    'uitlaat is afgedekt'
 
 # ── Canal / health ──────────────────────────────────────────────
 run_test "fall in canal"            \
@@ -119,9 +142,29 @@ run_test "take kluis"               \
 run_test "take zalm without net"    \
     'z\no\nneem rubberboot\nz\no\nblaas boot op\nga in vijver\nz\nneem zalm\nstop\n' \
     'glipte'  6
+run_test "take schilderij"          \
+    'ga in landhuis\nz\no\nz\nneem schilderij\nstop\n' \
+    'Te kostbaar'
+run_test "winkel diefstal"          \
+    'ga in winkel\nneem bijl\nstop\n' \
+    'winkeldiefstal'
+run_test "take bril"                \
+    'ga in landhuis\nz\no\nopen klok\nneem bril\nstop\n' \
+    'duikbril'
+run_test "take snorkel"             \
+    'ga in landhuis\nz\no\nz\nopen tas\nneem snorkel\nstop\n' \
+    'snorkel'
 
 # ── Read testament (without safe open) ─────────────────────────
 run_test "read testament fail"      'lees testament\nstop\n'    'Ik begrijp U niet.'
+
+# ── Balloon guards ─────────────────────────────────────────────
+run_test "enter balloon unbuilt"    \
+    'ga in ballon\nstop\n'          'Nog niet klaar'
+run_test "build balloon wrong loc"  \
+    'bouw ballon\nstop\n'           'Niet hier'
+run_test "fly balloon unbuilt"      \
+    'vlieg met ballon\nstop\n'      'Niet klaar'
 
 # ── Walkthrough: balloon speedrun ──────────────────────────────
 # Collect all 6 balloon parts, build balloon at AFGRAVING, fly it.
@@ -137,6 +180,15 @@ run_test "examine tafel in schuur"  "${BALLOON_BUILD}${BALLOON_FLIGHT}\nu\nga in
 # Enter landhuis from HOOFDSTRAAT, explore rooms, take items, go upstairs.
 EXPLORE='ga in landhuis\nbekijk mand\nz\no\no\nneem boek\nw\nw\nn\nz\nu\nstop\n'
 run_test "exploration"              "$EXPLORE"                  'Friese staartklok' 9
+
+# ── Miscellaneous ──────────────────────────────────────────────
+run_test "afgraving in"             \
+    'n\no\no\nga in afgraving\nstop\n' \
+    'Te steil'
+run_test "klim in boom"             \
+    'z\nklim\nstop\n'               'U viel eraf'
+run_test "ga naar alias"            \
+    'ga naar winkel\nstop\n'        'in de supermarkt'
 
 echo ""
 echo "=== Results: $PASS passed, $FAIL failed ==="
