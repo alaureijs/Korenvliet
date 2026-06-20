@@ -2,7 +2,7 @@
 
 ## 2026-06-20
 
-- Added integration test suite (`tests/test_runner.sh`, 19 tests covering basic commands, movement, object interaction, examine, jogging, drop, balloon speedrun, landhuis exploration, overflow/underflow guards)
+- Added integration test suite (`tests/test_runner.sh`, 22 tests covering basic commands, movement, object interaction, examine, jogging, drop, enter buildings, boat crossing, sewer entry, balloon speedrun, safe number collection, landhuis exploration, overflow/underflow guards)
 - Fixed shell escaping: `printf "%s"` → `printf "%b"` in test runner to interpret `\n` as newline
 - Fixed test expectations: corrected examine target and location-format strings
 - Changed Makefile standard `-std=c89` → `-std=gnu99` (snprintf requires C99)
@@ -10,6 +10,10 @@
 - Added "enter winkel with items" test (inventory must be empty to enter supermarkt)
 - Added balloon speedrun walkthrough (collect 6 parts, build, fly) and landhuis exploration walkthrough
 - Added "examine tafel in schuur" test (collects safe number n[2] via balloon to PLATEAU)
+- Added boat crossing test (rubberboot → inflate → enter vijver)
+- Added sewer entry test (jog → remove grate → enter afvoer)
+- Added ziekenhuis entry test
+- Changed test runner stderr capture: `2>/dev/null` → `2>&1` to surface sanitizer/runtime errors
 - Updated changelog with current session changes
 
 - Lowercase input in `main` before dispatch; replaced all `strcasecmp`/`strncasecmp` with `strcmp`/`strncmp`

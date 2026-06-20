@@ -14,7 +14,7 @@ run_test() {
     local expected="$3"
     local to=${4:-3}
 
-    output=$(printf "%b" "$input" | timeout "$to" "$GAME" 2>/dev/null || true)
+    output=$(printf "%b" "$input" | timeout "$to" "$GAME" 2>&1 || true)
 
     if echo "$output" | grep -Fq "$expected"; then
         echo "  PASS  $name"
@@ -73,6 +73,19 @@ run_test "drop not carried"         'leg mand\nstop\n'          'Ik begrijp U ni
 run_test "drop carried item"        \
     'ga in winkel\nkoop sportschoenen\nu\nleg sportschoenen\nstop\n' \
     'sportschoenen'
+
+# ── Enter buildings ────────────────────────────────────────────
+run_test "enter ziekenhuis"         'ga in ziekenhuis\nstop\n'  'in het ziekenhuis'
+
+# ── Boat crossing ──────────────────────────────────────────────
+run_test "boat crossing"            \
+    'z\no\nneem rubberboot\nz\no\nblaas boot op\nga in vijver\nstop\n' \
+    'op de vijver'  6
+
+# ── Sewer entry ────────────────────────────────────────────────
+run_test "sewer entry"              \
+    'ga in winkel\nkoop sportschoenen\nu\nga joggen\nga in landhuis\nz\nverwijder deksel\nga in afvoer\nstop\n' \
+    'uitlaat van het riool'  6
 
 # ── Read testament (without safe open) ─────────────────────────
 run_test "read testament fail"      'lees testament\nstop\n'    'Ik begrijp U niet.'
