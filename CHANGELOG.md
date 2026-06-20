@@ -2,6 +2,12 @@
 
 ## 2026-06-20
 
+- Added integration test suite (`tests/test_runner.sh`, 13 tests covering basic commands, movement, object interaction, examine, jogging, overflow/underflow guards)
+- Fixed shell escaping: `printf "%s"` → `printf "%b"` in test runner to interpret `\n` as newline
+- Fixed test expectations: corrected examine target and location-format strings
+- Changed Makefile standard `-std=c89` → `-std=gnu99` (snprintf requires C99)
+- Updated changelog with current session changes
+
 - Lowercase input in `main` before dispatch; replaced all `strcasecmp`/`strncasecmp` with `strcmp`/`strncmp`
 - Removed `xsnprintf` wrapper and `#include <stdarg.h>` (standard `snprintf` available with C99)
 - Added `keep in sync` comments to data tables (`obj_data`, `loc_desc`, `exit_data`)
