@@ -2,6 +2,8 @@
 
 ## 2026-06-20
 
+- Replaced magic `-2` sentinel with named constant `RET_NOT_MINE`
+- Replaced bare `6` with `BALLOON_PARTS` in balloon-parts check
 - Fixed `xsnprintf`: replaced unbounded `vsprintf` with `vsnprintf` to cap temp buffer writes
 - Guarded all 5 `inventory_count--` sites against underflow
 - Capped `rand_range` to max range 100, added `hi < lo` guard

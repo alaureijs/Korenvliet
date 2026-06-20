@@ -42,6 +42,7 @@ static int xstrncasecmp(const char *a, const char *b, size_t n)
 #define RET_EXIT    -1   /* Exit game loop */
 #define RET_REDRAW   0   /* Redraw location description */
 #define RET_KEEP     1   /* Keep prompt, no redraw */
+#define RET_NOT_MINE -2  /* Command not handled here */
 
 static int fail(void)
 {
@@ -534,8 +535,8 @@ static int cmd_drop(char *arg)
                 if (x == 8 && (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI)) {
                     obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; if (inventory_count > 0) inventory_count--;
                     printf("De boot drijft weg.....\n");
-    return 0;
-}
+                    return RET_REDRAW;
+                }
                 if (inventory_count > 0) inventory_count--;
                 obj[x].loc = (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI) ? player_location + WATER_OFF : player_location;
                 return RET_REDRAW;
@@ -589,7 +590,7 @@ static int cmd_enter(const char *arg)
     else if (strncasecmp(arg, "ga in", 5) == 0)
         place = arg + 5;
     else
-        return -2;
+        return RET_NOT_MINE;
 
     while (*place == ' ') place++;
 
@@ -684,7 +685,7 @@ static int cmd_enter(const char *arg)
         return fail();
     }
 
-    return -2;
+    return RET_NOT_MINE;
 }
 
 static int cmd_examine(const char *arg)
@@ -702,7 +703,7 @@ static int cmd_examine(const char *arg)
     else if (strncasecmp(arg, "open", 4) == 0)
         item = arg + 4;
     else
-        return -2;
+        return RET_NOT_MINE;
 
     while (*item == ' ') item++;
     arglen = strlen(item);
@@ -902,7 +903,7 @@ static int cmd_build_balloon_built(void)
     for (x = 1; x <= BALLOON_PARTS; x++) {
         if (obj[x].loc == 0 || obj[x].loc == LOCATION_AFGRAVING) balloon_parts_count++;
     }
-    if (balloon_parts_count != 6) { printf("Niet klaar.\n"); balloon_parts_count = 0; return RET_KEEP; }
+    if (balloon_parts_count != BALLOON_PARTS) { printf("Niet klaar.\n"); balloon_parts_count = 0; return RET_KEEP; }
     for (x = 1; x <= BALLOON_PARTS; x++) {
         if (obj[x].loc == 0 && inventory_count > 0) inventory_count--;
         obj[x].loc = OBJECT_GONE;
@@ -1061,7 +1062,7 @@ static int handle_command(const char *cmd)
 
     /* "ga in X" place entry */
     ret = cmd_enter(cp);
-    if (ret != -2) return ret;
+    if (ret != RET_NOT_MINE) return ret;
 
     /* Snorkel check before generic "ga o" */
     if (strcmp(cp, "ga o") == 0 && player_location == LOCATION_STROOM) {
@@ -1114,7 +1115,7 @@ static int handle_command(const char *cmd)
     /* "onderzoek " / "bekijk " */
     if (strncmp(cp, "onderzoek ", 10) == 0 || strncmp(cp, "bekijk ", 7) == 0) {
         ret = cmd_examine(cp);
-        if (ret != -2) return ret;
+        if (ret != RET_NOT_MINE) return ret;
     }
 
     /* "open " (boek/klok/tas → examine, deur → open) */
@@ -1123,7 +1124,7 @@ static int handle_command(const char *cmd)
         while (*what == ' ') what++;
         if (strcmp(what, "boek") == 0 || strcmp(what, "klok") == 0 || strcmp(what, "tas") == 0) {
             ret = cmd_examine(cp);
-            if (ret != -2) return ret;
+            if (ret != RET_NOT_MINE) return ret;
         }
         if (strcmp(what, "deur") == 0)
             return cmd_open_door();
