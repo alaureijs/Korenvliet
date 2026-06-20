@@ -62,6 +62,12 @@ run_test "buy and jog"              \
     'ga in winkel\nkoop sportschoenen\nu\nga joggen\nstop\n' \
     'Pfff'
 
+# ── Drop ────────────────────────────────────────────────────────
+run_test "drop not carried"         'leg mand\nstop\n'          'Ik begrijp U niet'
+run_test "drop carried item"        \
+    'ga in winkel\nkoop sportschoenen\nu\nleg sportschoenen\nstop\n' \
+    'sportschoenen'
+
 # ── Read testament (without safe open) ─────────────────────────
 run_test "read testament fail"      'lees testament\nstop\n'    'Ik begrijp U niet.'
 
