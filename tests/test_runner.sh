@@ -42,6 +42,7 @@ run_test "help"                     'help\nstop\n'              'Richtingen'
 run_test "empty inventory"          'inventaris\nstop\n'        'Inventaris:'
 run_test "invalid command"          'xyzzy\nstop\n'             'Ik begrijp U niet.'
 run_test "unknown direction"        'ga q\nstop\n'              'Richting niet duidelijk'
+run_test "kijk"                     'kijk\nstop\n'              'Plaats'
 
 # ── Movement ─────────────────────────────────────────────────────
 # Start at HOOFDSTRAAT (9). Exits: z→BOS, n→TERREIN
@@ -54,9 +55,13 @@ run_test "multiple moves"           'z\nz\no\nstop\n'           'glibberige kana
 # ── Object interaction ──────────────────────────────────────────
 
 run_test "take invalid object"      'neem niets\nstop\n'        'Ik begrijp U niet'
+run_test "take too much"            \
+    'ga in winkel\nkoop sportschoenen\nkoop bijl\nu\nz\no\nneem rubberboot\nneem kachel\nw\nz\nneem ballon\nstop\n' \
+    'teveel'
 
 # ── Examine ─────────────────────────────────────────────────────
 run_test "examine at location"      'bekijk landhuis\nstop\n'   'Korenvliet'
+run_test "read sign"                'n\no\no\nlees bord\nstop\n' 'Een goede plaats'
 
 # ── Entry limits ────────────────────────────────────────────────
 run_test "enter winkel with items"   \
@@ -77,15 +82,43 @@ run_test "drop carried item"        \
 # ── Enter buildings ────────────────────────────────────────────
 run_test "enter ziekenhuis"         'ga in ziekenhuis\nstop\n'  'in het ziekenhuis'
 
-# ── Boat crossing ──────────────────────────────────────────────
+# ── Boat ────────────────────────────────────────────────────────
 run_test "boat crossing"            \
     'z\no\nneem rubberboot\nz\no\nblaas boot op\nga in vijver\nstop\n' \
     'op de vijver'  6
+run_test "boat already inflated"    \
+    'z\no\nneem rubberboot\nz\no\nblaas boot op\nblaas boot op\nstop\n' \
+    'al opgeblazen'  6
+run_test "boat drifts away"         \
+    'z\no\nneem rubberboot\nz\no\nblaas boot op\nga in vijver\nz\nleg rubberboot\nstop\n' \
+    'drijft weg'  6
 
 # ── Sewer entry ────────────────────────────────────────────────
 run_test "sewer entry"              \
     'ga in winkel\nkoop sportschoenen\nu\nga joggen\nga in landhuis\nz\nverwijder deksel\nga in afvoer\nstop\n' \
     'uitlaat van het riool'  6
+
+# ── Canal / health ──────────────────────────────────────────────
+run_test "fall in canal"            \
+    'z\nz\no\nga in kanaal\nstop\n' 'U gleed uit en viel.'
+run_test "get cured"                \
+    'z\nz\no\nga in kanaal\nwordt beter\nstop\n' 'Genezen.'
+
+# ── Door at overloop ───────────────────────────────────────────
+run_test "open door locked"         \
+    'ga in landhuis\nz\no\nz\nopen deur\nstop\n' 'vergrendeld'
+run_test "go through door locked"   \
+    'ga in landhuis\nz\no\nz\nga door deur\nstop\n' 'op slot'
+
+# ── Object special cases ───────────────────────────────────────
+run_test "take klok"                \
+    'ga in landhuis\nz\no\nneem klok\nstop\n' 'Te zwaar'
+run_test "take kluis"               \
+    'ga in landhuis\nz\no\nz\nbekijk schilderij\nneem kluis\nstop\n' \
+    'aan de muur vast'  6
+run_test "take zalm without net"    \
+    'z\no\nneem rubberboot\nz\no\nblaas boot op\nga in vijver\nz\nneem zalm\nstop\n' \
+    'glipte'  6
 
 # ── Read testament (without safe open) ─────────────────────────
 run_test "read testament fail"      'lees testament\nstop\n'    'Ik begrijp U niet.'
