@@ -2,6 +2,9 @@
 
 ## 2026-06-20
 
+- Lowercase input in `main` before dispatch; replaced all `strcasecmp`/`strncasecmp` with `strcmp`/`strncmp`
+- Removed `xsnprintf` wrapper and `#include <stdarg.h>` (standard `snprintf` available with C99)
+- Added `keep in sync` comments to data tables (`obj_data`, `loc_desc`, `exit_data`)
 - Replaced magic `-2` sentinel with named constant `RET_NOT_MINE`
 - Replaced bare `6` with `BALLOON_PARTS` in balloon-parts check
 - Fixed `xsnprintf`: replaced unbounded `vsprintf` with `vsnprintf` to cap temp buffer writes

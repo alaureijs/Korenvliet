@@ -10,34 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdarg.h>
-
 /* Portable case-insensitive string comparison (Amiga-safe) */
-static int xstrcasecmp(const char *a, const char *b)
-{
-    while (*a && *b) {
-        int ca = tolower((unsigned char)*a);
-        int cb = tolower((unsigned char)*b);
-        if (ca != cb) return ca - cb;
-        a++; b++;
-    }
-    return tolower((unsigned char)*a) - tolower((unsigned char)*b);
-}
-static int xstrncasecmp(const char *a, const char *b, size_t n)
-{
-    while (n > 0 && *a && *b) {
-        int ca = tolower((unsigned char)*a);
-        int cb = tolower((unsigned char)*b);
-        if (ca != cb) return ca - cb;
-        a++; b++; n--;
-    }
-    if (n == 0) return 0;
-    return tolower((unsigned char)*a) - tolower((unsigned char)*b);
-}
-
-#define strcasecmp  xstrcasecmp
-#define strncasecmp xstrncasecmp
-
 /* Return value convention for command handlers */
 #define RET_EXIT    -1   /* Exit game loop */
 #define RET_REDRAW   0   /* Redraw location description */
@@ -49,25 +22,6 @@ static int fail(void)
     printf("Ik begrijp U niet.\n");
     return RET_KEEP;
 }
-
-static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
-{
-    char tmp[256];
-    int n;
-    size_t copy;
-    va_list ap;
-    va_start(ap, fmt);
-    n = vsnprintf(tmp, sizeof(tmp), fmt, ap);
-    va_end(ap);
-    if (n < 0) return n;
-    if (size == 0) return n;
-    copy = (size_t)n;
-    if (copy >= size) copy = size - 1;
-    memcpy(buf, tmp, copy);
-    buf[copy] = '\0';
-    return n;
-}
-#define snprintf xsnprintf
 
 /* ------------------------------------------------------------------ */
 /*  Data sizes                                                         */
@@ -425,7 +379,7 @@ static int find_obj_by_name(const char *name, int max_idx)
         size_t slen = strlen(obj[x].short_name);
         int g = (int)nlen;
         if (g > (int)slen) g = (int)slen;
-        if (g > 0 && strcasecmp(name + nlen - g, obj[x].short_name + slen - g) == 0)
+        if (g > 0 && strcmp(name + nlen - g, obj[x].short_name + slen - g) == 0)
             return x;
     }
     return 0;
@@ -442,17 +396,17 @@ static int generic_take_item(int idx)
 
 static int cmd_take(char *arg)
 {
-    if (strncasecmp(arg, "pak ", 4) == 0)
+    if (strncmp(arg, "pak ", 4) == 0)
         memmove(arg, arg + 4, strlen(arg) - 3);
-    else if (strncasecmp(arg, "neem ", 5) == 0)
+    else if (strncmp(arg, "neem ", 5) == 0)
         memmove(arg, arg + 5, strlen(arg) - 4);
 
     /* Specific checks before generic handling */
-    if (strcasecmp(arg, "zalm") == 0 && player_location == LOCATION_ZUIDBAAI && obj[OBJ_VISNET].loc != 0) {
+    if (strcmp(arg, "zalm") == 0 && player_location == LOCATION_ZUIDBAAI && obj[OBJ_VISNET].loc != 0) {
         printf("Die glipte uit Uw vingers.\n");
         return RET_KEEP;
     }
-    if (strcasecmp(arg, "schilderij") == 0 && player_location == LOCATION_OVERLOOP) {
+    if (strcmp(arg, "schilderij") == 0 && player_location == LOCATION_OVERLOOP) {
         printf("Te kostbaar.\n");
         return RET_KEEP;
     }
@@ -460,7 +414,7 @@ static int cmd_take(char *arg)
         printf("Pleeg geen winkeldiefstal!\n");
         return RET_KEEP;
     }
-    if (strcasecmp(arg, "tafel") == 0 && player_location == LOCATION_SCHUUR) {
+    if (strcmp(arg, "tafel") == 0 && player_location == LOCATION_SCHUUR) {
         printf("Die zit vastgespijkerd.\n");
         return RET_KEEP;
     }
@@ -470,7 +424,7 @@ static int cmd_take(char *arg)
     }
 
     /* Bril (zwembril, obj 13) */
-    if (strcasecmp(arg, "bril") == 0) {
+    if (strcmp(arg, "bril") == 0) {
         if (obj[OBJ_ZWEMBRIL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
         if (obj[OBJ_ZWEMBRIL].loc == OBJECT_GONE && player_location == LOCATION_STUDEERKAMER) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
         if (obj[OBJ_ZWEMBRIL].loc == player_location) { obj[OBJ_ZWEMBRIL].loc = 0; inventory_count++; return RET_REDRAW; }
@@ -478,7 +432,7 @@ static int cmd_take(char *arg)
     }
 
     /* Snorkel (obj 19) */
-    if (strcasecmp(arg, "snorkel") == 0) {
+    if (strcmp(arg, "snorkel") == 0) {
         if (obj[OBJ_SNORKEL].loc == 0) { printf("Heeft U al.\n"); return RET_KEEP; }
         if (obj[OBJ_SNORKEL].loc == OBJECT_GONE && (obj[OBJ_TAS].loc == 0 || obj[OBJ_TAS].loc == player_location)) {
             obj[OBJ_SNORKEL].loc = 0; inventory_count++; return RET_REDRAW;
@@ -491,18 +445,18 @@ static int cmd_take(char *arg)
     {
         int idx = find_obj_by_name(arg, MAX_INV);
         if (idx == 0) {
-            if (strcasecmp(arg, "panter") == 0 && obj[OBJ_PANTER].loc == player_location) {
+            if (strcmp(arg, "panter") == 0 && obj[OBJ_PANTER].loc == player_location) {
                 printf("U had nog net genoeg kracht om\nweg te komen.\n");
                 health_status = SICK; player_location = LOCATION_ZIEKENHUIS;
                 return RET_REDRAW;
             }
-            if (strcasecmp(arg, "klok") == 0 && player_location == LOCATION_STUDEERKAMER) {
+            if (strcmp(arg, "klok") == 0 && player_location == LOCATION_STUDEERKAMER) {
                 printf("Te zwaar.\n"); return RET_KEEP;
             }
-            if (strcasecmp(arg, "kist") == 0 && obj[OBJ_KIST].loc == player_location) {
+            if (strcmp(arg, "kist") == 0 && obj[OBJ_KIST].loc == player_location) {
                 printf("Ik heb geen dorst.\n"); return RET_KEEP;
             }
-            if (strcasecmp(arg, "kluis") == 0 && obj[OBJ_KLUIS].loc == player_location) {
+            if (strcmp(arg, "kluis") == 0 && obj[OBJ_KLUIS].loc == player_location) {
                 printf("De kluis zit aan de muur vast.\n"); return RET_KEEP;
             }
             return fail();
@@ -517,13 +471,13 @@ static int cmd_drop(char *arg)
     int x;
 
     /* "leg snorkel" special */
-    if (strncasecmp(arg, "leg snorkel", 11) == 0) {
+    if (strncmp(arg, "leg snorkel", 11) == 0) {
         if (obj[OBJ_SNORKEL].loc != 0) { printf("Heeft U niet.\n"); return RET_KEEP; }
         if (player_location > LOCATION_RIOOL_27 && player_location < LOCATION_STROOM) { printf("Neem het snel terug!\n"); return RET_KEEP; }
         obj[OBJ_SNORKEL].loc = player_location; if (inventory_count > 0) inventory_count--; return RET_REDRAW;
     }
 
-    if (strncasecmp(arg, "leg ", 4) == 0)
+    if (strncmp(arg, "leg ", 4) == 0)
         arg += 4;
     {
         size_t arglen = strlen(arg);
@@ -531,7 +485,7 @@ static int cmd_drop(char *arg)
             size_t slen = strlen(obj[x].short_name);
             int g = (int)arglen;
             if (g > (int)slen) g = (int)slen;
-            if (g > 0 && strcasecmp(arg + arglen - g, obj[x].short_name + slen - g) == 0 && obj[x].loc == 0) {
+            if (g > 0 && strcmp(arg + arglen - g, obj[x].short_name + slen - g) == 0 && obj[x].loc == 0) {
                 if (x == 8 && (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI)) {
                     obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; if (inventory_count > 0) inventory_count--;
                     printf("De boot drijft weg.....\n");
@@ -551,20 +505,20 @@ static int cmd_go(const char *arg)
     int x;
     char dir;
 
-    if (strncasecmp(arg, "ga ", 3) == 0)
+    if (strncmp(arg, "ga ", 3) == 0)
         arg += 3;
-    else if (strncasecmp(arg, "ga", 2) == 0)
+    else if (strncmp(arg, "ga", 2) == 0)
         arg += 2;
 
     dir = (char)tolower((unsigned char)*arg);
 
-    if (strncasecmp(arg, "noord", 5) == 0) dir = 'n';
-    else if (strncasecmp(arg, "oost", 4) == 0) dir = 'o';
-    else if (strncasecmp(arg, "zuid", 4) == 0) dir = 'z';
-    else if (strncasecmp(arg, "west", 4) == 0) dir = 'w';
-    else if (strncasecmp(arg, "uit", 3) == 0) dir = 'u';
-    else if (strncasecmp(arg, "omhoog", 6) == 0) dir = 'h';
-    else if (strncasecmp(arg, "omlaag", 6) == 0) dir = 'l';
+    if (strncmp(arg, "noord", 5) == 0) dir = 'n';
+    else if (strncmp(arg, "oost", 4) == 0) dir = 'o';
+    else if (strncmp(arg, "zuid", 4) == 0) dir = 'z';
+    else if (strncmp(arg, "west", 4) == 0) dir = 'w';
+    else if (strncmp(arg, "uit", 3) == 0) dir = 'u';
+    else if (strncmp(arg, "omhoog", 6) == 0) dir = 'h';
+    else if (strncmp(arg, "omlaag", 6) == 0) dir = 'l';
 
     if (dir == 'o' && player_location == LOCATION_WIJNKELDER_WEST) {
         if (panther_fed == 0) { printf("Panter laat dat niet toe.\n"); return RET_KEEP; }
@@ -585,16 +539,16 @@ static int cmd_enter(const char *arg)
 {
     const char *place;
 
-    if (strncasecmp(arg, "ga in ", 6) == 0)
+    if (strncmp(arg, "ga in ", 6) == 0)
         place = arg + 6;
-    else if (strncasecmp(arg, "ga in", 5) == 0)
+    else if (strncmp(arg, "ga in", 5) == 0)
         place = arg + 5;
     else
         return RET_NOT_MINE;
 
     while (*place == ' ') place++;
 
-    if (strcasecmp(place, "afvoer") == 0) {
+    if (strcmp(place, "afvoer") == 0) {
         int x, found = 0;
         for (x = 1; x <= SEWER_MAX; x++) {
             if (ve[x] == player_location) { found = 1; break; }
@@ -621,7 +575,7 @@ static int cmd_enter(const char *arg)
         return fail();
     }
 
-    if (strcasecmp(place, "ballon") == 0) {
+    if (strcmp(place, "ballon") == 0) {
         if (balloon_built == 0) { printf("Nog niet klaar.\n"); return RET_KEEP; }
         if (player_location == LOCATION_AFGRAVING)  { player_location = LOCATION_BALLON_STRAAT; return RET_REDRAW; }
         if (player_location == LOCATION_PLATEAU) { player_location = LOCATION_BALLON_PLATEAU; return RET_REDRAW; }
@@ -629,14 +583,14 @@ static int cmd_enter(const char *arg)
         return RET_KEEP;
     }
 
-    if (strcasecmp(place, "vijver") == 0) {
+    if (strcmp(place, "vijver") == 0) {
         if (player_location != LOCATION_VIJVEROEVER) return fail();
         if (obj[OBJ_RUBBERBOOT].loc != 0) { printf("Ik moet ergens op kunnen drijven.\n"); return RET_KEEP; }
         if (boat_inflated == 0) { printf("Rubberboot is te slap.\n"); return RET_KEEP; }
         player_location = LOCATION_VIJVER; return RET_REDRAW;
     }
 
-    if (strcasecmp(place, "winkel") == 0 || strcasecmp(place, "supermarkt") == 0) {
+    if (strcmp(place, "winkel") == 0 || strcmp(place, "supermarkt") == 0) {
         if (player_location != LOCATION_HOOFDSTRAAT) return fail();
         {
             int x;
@@ -650,23 +604,23 @@ static int cmd_enter(const char *arg)
         player_location = LOCATION_SUPERMARKT; return RET_REDRAW;
     }
 
-    if (strcasecmp(place, "landhuis") == 0 || strcasecmp(place, "korenvliet") == 0) {
+    if (strcmp(place, "landhuis") == 0 || strcmp(place, "korenvliet") == 0) {
         if (player_location == LOCATION_HOOFDSTRAAT)  { player_location = LOCATION_FOYER; return RET_REDRAW; }
         if (player_location == LOCATION_BINNENPLEIN)  { player_location = LOCATION_ATRIUM; return RET_REDRAW; }
         return fail();
     }
 
-    if (strcasecmp(place, "ziekenhuis") == 0) {
+    if (strcmp(place, "ziekenhuis") == 0) {
         if (player_location == LOCATION_HOOFDSTRAAT) { player_location = LOCATION_ZIEKENHUIS; return RET_REDRAW; }
         return fail();
     }
 
-    if (strcasecmp(place, "tunnel") == 0) {
+    if (strcmp(place, "tunnel") == 0) {
         if (player_location == LOCATION_ONDERWATER_31 && obj[OBJ_ZWEMBRIL].loc == 0) { player_location = LOCATION_STROOM; return RET_REDRAW; }
         return fail();
     }
 
-    if (strcasecmp(place, "kanaal") == 0) {
+    if (strcmp(place, "kanaal") == 0) {
         if (player_location == LOCATION_KANAALKANT) {
             printf("U gleed uit en viel.\n");
             health_status = SICK; player_location = LOCATION_ZIEKENHUIS;
@@ -675,12 +629,12 @@ static int cmd_enter(const char *arg)
         return fail();
     }
 
-    if (strcasecmp(place, "afgraving") == 0) {
+    if (strcmp(place, "afgraving") == 0) {
         if (player_location == LOCATION_AFGRAVING) { printf("Te steil.\n"); return RET_KEEP; }
         return fail();
     }
 
-    if (strcasecmp(place, "schuur") == 0) {
+    if (strcmp(place, "schuur") == 0) {
         if (player_location == LOCATION_PLATEAU) { player_location = LOCATION_SCHUUR; return RET_REDRAW; }
         return fail();
     }
@@ -694,13 +648,13 @@ static int cmd_examine(const char *arg)
     size_t arglen;
     const char *item;
 
-    if (strncasecmp(arg, "onderzoek ", 10) == 0)
+    if (strncmp(arg, "onderzoek ", 10) == 0)
         item = arg + 10;
-    else if (strncasecmp(arg, "bekijk ", 7) == 0)
+    else if (strncmp(arg, "bekijk ", 7) == 0)
         item = arg + 7;
-    else if (strncasecmp(arg, "open ", 5) == 0)
+    else if (strncmp(arg, "open ", 5) == 0)
         item = arg + 5;
-    else if (strncasecmp(arg, "open", 4) == 0)
+    else if (strncmp(arg, "open", 4) == 0)
         item = arg + 4;
     else
         return RET_NOT_MINE;
@@ -715,26 +669,26 @@ static int cmd_examine(const char *arg)
             size_t slen = strlen(obj[xi].short_name);
             g = (int)arglen;
             if (g > (int)slen) g = (int)slen;
-            if (g > 0 && strcasecmp(item + arglen - g, obj[xi].short_name + slen - g) == 0 &&
+            if (g > 0 && strcmp(item + arglen - g, obj[xi].short_name + slen - g) == 0 &&
                 (obj[xi].loc == player_location || obj[xi].loc == 0))
                 { x = xi; break; }
         }
     }
     if (x == 0) return fail();
 
-    if (strcasecmp(obj[x].short_name, "fles") == 0) {
+    if (strcmp(obj[x].short_name, "fles") == 0) {
         printf("%s %s\n", pref[2], n[0]); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "beker") == 0) {
+    if (strcmp(obj[x].short_name, "beker") == 0) {
         printf("%s %s\n", pref[2], n[1]); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "tafel") == 0) {
+    if (strcmp(obj[x].short_name, "tafel") == 0) {
         printf("Er ligt een briefje met het nummer %s\n", n[2]); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "kist") == 0) {
+    if (strcmp(obj[x].short_name, "kist") == 0) {
         printf("Er ontbreekt een fles.\n"); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "boek") == 0) {
+    if (strcmp(obj[x].short_name, "boek") == 0) {
         printf("   Zo bouwt U een heteluchtballon:\n\n");
         printf("       1   ballon\n");
         printf("       2   kachel\n");
@@ -745,13 +699,13 @@ static int cmd_examine(const char *arg)
         printf("   Bouw op een geschikte plaats!\n");
         return RET_REDRAW;
     }
-    if (strcasecmp(obj[x].short_name, "klok") == 0 && obj[OBJ_ZWEMBRIL].loc == OBJECT_GONE) {
+    if (strcmp(obj[x].short_name, "klok") == 0 && obj[OBJ_ZWEMBRIL].loc == OBJECT_GONE) {
         printf("Er zit een duikbril in.\n"); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "tas") == 0 && obj[OBJ_SNORKEL].loc == OBJECT_GONE) {
+    if (strcmp(obj[x].short_name, "tas") == 0 && obj[OBJ_SNORKEL].loc == OBJECT_GONE) {
         printf("Er zit een snorkel in.\n"); return RET_KEEP;
     }
-    if (strcasecmp(obj[x].short_name, "schilderij") == 0) {
+    if (strcmp(obj[x].short_name, "schilderij") == 0) {
         printf("Er zit een kluis achter!\n");
         painting_examined = 1;
         obj[OBJ_KLUIS].loc = player_location;
@@ -1033,13 +987,14 @@ static int handle_command(const char *cmd)
 {
     char buf[128];
     char *cp;
-    size_t ci;
+    size_t len;
     int ret;
     const CmdEntry *entry;
 
-    for (ci = 0; ci < sizeof(buf) - 1 && cmd[ci]; ci++)
-        buf[ci] = (char)tolower((unsigned char)cmd[ci]);
-    buf[ci] = '\0';
+    len = strlen(cmd);
+    if (len >= sizeof(buf)) len = sizeof(buf) - 1;
+    memcpy(buf, cmd, len);
+    buf[len] = '\0';
 
     cp = buf;
     while (*cp == ' ') cp++;
@@ -1142,6 +1097,7 @@ static void init_data(void)
     int x;
 
     {
+        /* Must have exactly MAX_OBJ (33) entries — keep in sync */
         struct { const char *sn, *desc; int loc; } obj_data[] = {
             {"ballon",      "neergestorte weerballon",     LOCATION_WEILAND},
             {"kachel",      "kleine houtkachel",           LOCATION_BINNENPLEIN},
@@ -1185,6 +1141,7 @@ static void init_data(void)
     }
 
     {
+        /* Must have exactly MAX_LOC (37) entries — keep in sync */
         const char *loc_desc[] = {
             "op het binnenplein",
             "in een bos",
@@ -1229,6 +1186,7 @@ static void init_data(void)
     }
 
     {
+        /* Must have exactly MAX_LOC (37) entries — keep in sync */
         struct { int loc; char d1; int n1; char d2; int n2; char d3; int n3; } exit_data[] = {
             {LOCATION_BINNENPLEIN,  'w', LOCATION_BOS,  'z', LOCATION_KANAALKANT,  '-', 0},
             {LOCATION_BOS,  'o', LOCATION_BINNENPLEIN,  'z', LOCATION_WEILAND,  'n', LOCATION_HOOFDSTRAAT},
@@ -1313,6 +1271,7 @@ int main(void)
             if (fgets(input, sizeof(input), stdin) == NULL)
                 break;
             chomp(input);
+            { char *p = input; while (*p) { *p = (char)tolower((unsigned char)*p); p++; } }
 
             result = handle_command(input);
             if (result == RET_EXIT) return EXIT_SUCCESS;
