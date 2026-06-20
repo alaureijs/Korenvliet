@@ -79,8 +79,13 @@ run_test "read testament fail"      'lees testament\nstop\n'    'Ik begrijp U ni
 
 # ── Walkthrough: balloon speedrun ──────────────────────────────
 # Collect all 6 balloon parts, build balloon at AFGRAVING, fly it.
-BALLOON_SPEEDRUN='ga in winkel\nkoop bijl\nu\nz\nhak boom\nneem houtblokken\nz\nneem ballon\nn\no\nneem kachel\nw\nn\nn\no\no\nleg bijl\nleg ballon\nleg kachel\nleg houtblokken\nw\nw\nz\nga in landhuis\nneem mand\nz\nz\nneem koord\nn\no\no\nneem lucifers\nw\nw\nz\nu\nw\nn\nn\no\no\nleg mand\nleg koord\nleg lucifers\nbouw ballon\nga in ballon\nvlieg met ballon\nstop\n'
-run_test "balloon speedrun"         "$BALLOON_SPEEDRUN"         'Ballon op hoogte'  12
+BALLOON_BUILD='ga in winkel\nkoop bijl\nu\nz\nhak boom\nneem houtblokken\nz\nneem ballon\nn\no\nneem kachel\nw\nn\nn\no\no\nleg bijl\nleg ballon\nleg kachel\nleg houtblokken\nw\nw\nz\nga in landhuis\nneem mand\nz\nz\nneem koord\nn\no\no\nneem lucifers\nw\nw\nz\nu\nw\nn\nn\no\no\nleg mand\nleg koord\nleg lucifers\nbouw ballon'
+BALLOON_FLIGHT='\nga in ballon\nvlieg met ballon'
+run_test "balloon speedrun"         "${BALLOON_BUILD}${BALLOON_FLIGHT}\nstop\n"  'Ballon op hoogte'  12
+
+# ── Safe number from tafel ─────────────────────────────────────
+# Build balloon, fly to PLATEAU, enter schuur, examine tafel.
+run_test "examine tafel in schuur"  "${BALLOON_BUILD}${BALLOON_FLIGHT}\nu\nga in schuur\nbekijk tafel\nstop\n"  'Er ligt een briefje met het nummer'  15
 
 # ── Walkthrough: exploration ───────────────────────────────────
 # Enter landhuis from HOOFDSTRAAT, explore rooms, take items, go upstairs.
