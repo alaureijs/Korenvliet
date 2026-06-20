@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-06-20
+
+- Fixed `xsnprintf`: replaced unbounded `vsprintf` with `vsnprintf` to cap temp buffer writes
+- Guarded all 5 `inventory_count--` sites against underflow
+- Capped `rand_range` to max range 100, added `hi < lo` guard
+- `main` now returns `EXIT_SUCCESS` instead of `RET_REDRAW` / bare `0`
+- `generic_take_item` returns `RET_KEEP` (not `RET_EXIT`) for `idx == 0` and fallthrough
+- Replaced `strcpy` with `memcpy` in `cmd_open_safe` (3 occurrences)
+- Used `MAX_CARRY` constant in place of hardcoded `4` in capacity check
+- EOF on stdin (`fgets` returns NULL) breaks to outer loop instead of exiting
+- Removed unused defines: `SUFFIX_LEN`, `BOAT_DROP`, `JOG_BOUND`, `WOOD_SPAWN`, `SAFE_DIGITS`
+
 ## 2026-06-18
 
 - Replaced 37 `#define LOCATION_*` with an `enum`

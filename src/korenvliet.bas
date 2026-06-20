@@ -58,8 +58,8 @@
 675 gosub 65: ho=6: ve=12: gosub 6500: print "wilt u instructies? (j/n) ";
 680 gosub 101: if in$="j" or in$="J" then gosub 7500: goto 1000
 685 if in$<>"n" and in$<>"N" then gosub 160: goto 680
-688 rem *** short delay before redraw ***
-690 for dx = 1 to 800: next: goto 1000
+688 rem 
+690  goto 1000
 1000 gosub 65: print "plaats    :";: poke 646,7: print l$(l) "."
 1002 poke 646,5: print
 1003 print "uitgangen :";

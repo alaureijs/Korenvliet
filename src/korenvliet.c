@@ -56,7 +56,7 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
     size_t copy;
     va_list ap;
     va_start(ap, fmt);
-    n = vsprintf(tmp, fmt, ap);
+    n = vsnprintf(tmp, sizeof(tmp), fmt, ap);
     va_end(ap);
     if (n < 0) return n;
     if (size == 0) return n;
@@ -77,16 +77,11 @@ static int xsnprintf(char *buf, size_t size, const char *fmt, ...)
 #define MAX_EXITS  3
 #define OBJECT_GONE  40      /* object is used/destroyed/gone */
 #define WRAP_W    38      /* display column width for word-wrap */
-#define SUFFIX_LEN 2      /* strlen of ". " appended to object names */
 #define MAX_CARRY 4       /* max items player can carry */
-#define BOAT_DROP 5       /* location 5 (vijveroever) when boat drops */
 #define WATER_OFF 2       /* room offset: surface (28/29) -> underwater (30/31) */
 #define SEWER_MAX 8       /* number of sewer entrance locations */
 #define SEWER_NEED 4      /* objects 1..4 required for sewer entry */
-#define JOG_BOUND 9       /* rooms 1..9 are outdoors for jogging */
-#define WOOD_SPAWN 2      /* room where houtblokken appear after cutting */
 #define BALLOON_PARTS 6   /* objects 1..6 needed to build balloon_built */
-#define SAFE_DIGITS 3     /* number of safe-code digits */
 #define SAFE_MIN 10       /* safe code lower bound */
 #define SAFE_MAX 99       /* safe code upper bound */
 
@@ -278,10 +273,14 @@ static unsigned int rng_state;
 /* Return random integer in [lo, hi] */
 static int rand_range(int lo, int hi)
 {
+    unsigned int range;
     rng_state ^= rng_state << 13;
     rng_state ^= rng_state >> 17;
     rng_state ^= rng_state << 5;
-    return lo + (int)(rng_state % (unsigned int)(hi - lo + 1));
+    if (hi < lo) return lo;
+    range = (unsigned int)(hi - lo + 1);
+    if (range > 100) range = 100;
+    return lo + (int)(rng_state % range);
 }
 
 /* Remove trailing newline from a string */
@@ -434,10 +433,10 @@ static int find_obj_by_name(const char *name, int max_idx)
 /* Helper: generic take item (after name match). Returns 0=ok, 1=error. */
 static int generic_take_item(int idx)
 {
-    if (idx == 0) return RET_EXIT;
+    if (idx == 0) return RET_KEEP;
     if (obj[idx].loc == 0) { printf("Dat heeft U al.\n"); return RET_KEEP; }
     if (obj[idx].loc == player_location) { obj[idx].loc = 0; inventory_count++; return RET_REDRAW; }
-    return RET_EXIT;
+    return RET_KEEP;
 }
 
 static int cmd_take(char *arg)
@@ -464,7 +463,7 @@ static int cmd_take(char *arg)
         printf("Die zit vastgespijkerd.\n");
         return RET_KEEP;
     }
-    if (inventory_count >= 4) {
+    if (inventory_count >= MAX_CARRY) {
         printf("U draagt teveel bij U.\n");
         return RET_KEEP;
     }
@@ -520,7 +519,7 @@ static int cmd_drop(char *arg)
     if (strncasecmp(arg, "leg snorkel", 11) == 0) {
         if (obj[OBJ_SNORKEL].loc != 0) { printf("Heeft U niet.\n"); return RET_KEEP; }
         if (player_location > LOCATION_RIOOL_27 && player_location < LOCATION_STROOM) { printf("Neem het snel terug!\n"); return RET_KEEP; }
-        obj[OBJ_SNORKEL].loc = player_location; inventory_count--; return RET_REDRAW;
+        obj[OBJ_SNORKEL].loc = player_location; if (inventory_count > 0) inventory_count--; return RET_REDRAW;
     }
 
     if (strncasecmp(arg, "leg ", 4) == 0)
@@ -533,11 +532,11 @@ static int cmd_drop(char *arg)
             if (g > (int)slen) g = (int)slen;
             if (g > 0 && strcasecmp(arg + arglen - g, obj[x].short_name + slen - g) == 0 && obj[x].loc == 0) {
                 if (x == 8 && (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI)) {
-                    obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; inventory_count--;
+                    obj[OBJ_RUBBERBOOT].loc = LOCATION_VIJVEROEVER; if (inventory_count > 0) inventory_count--;
                     printf("De boot drijft weg.....\n");
-                    return RET_REDRAW;
-                }
-                inventory_count--;
+    return 0;
+}
+                if (inventory_count > 0) inventory_count--;
                 obj[x].loc = (player_location == LOCATION_VIJVER || player_location == LOCATION_ZUIDBAAI) ? player_location + WATER_OFF : player_location;
                 return RET_REDRAW;
             }
@@ -794,7 +793,7 @@ static int cmd_panther(void)
     if (player_location != LOCATION_WIJNKELDER_WEST) return fail();
     if (obj[OBJ_ZALM].loc != 0) { printf("U hebt voedsel nodig.\n"); return RET_KEEP; }
     printf("Panter ontsnapte met de zalm.\n");
-    if (obj[OBJ_ZALM].loc == 0) inventory_count--;
+    if (obj[OBJ_ZALM].loc == 0 && inventory_count > 0) inventory_count--;
     panther_fed = 1;
     obj[OBJ_ZALM].loc = OBJECT_GONE;
     obj[OBJ_PANTER].loc = OBJECT_GONE;
@@ -864,19 +863,19 @@ static int cmd_open_safe(void)
     printf("Combinatieslot.\n");
     printf("Type het eerste getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
-    chomp(input); input[15] = '\0'; strcpy(f1, input);
+    chomp(input); input[15] = '\0'; memcpy(f1, input, 16);
     if (strcmp(f1, n[0]) != 0) { printf("Fout.\n"); return RET_KEEP; }
 
     printf("Type tweede getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
-    chomp(input); input[15] = '\0'; strcpy(f2, input);
+    chomp(input); input[15] = '\0'; memcpy(f2, input, 16);
     snprintf(sum1, sizeof(sum1), "%s%s", f1, f2);
     snprintf(sum2, sizeof(sum2), "%s%s", n[0], n[1]);
     if (strcmp(sum1, sum2) != 0) { printf("Fout.\n"); return RET_KEEP; }
 
     printf("Type het laatste getal  - ");
     if (fgets(input, sizeof(input), stdin) == NULL) return RET_KEEP;
-    chomp(input); input[15] = '\0'; strcpy(f3, input);
+    chomp(input); input[15] = '\0'; memcpy(f3, input, 16);
     snprintf(sum1, sizeof(sum1), "%s%s%s", f1, f2, f3);
     snprintf(sum2, sizeof(sum2), "%s%s%s", n[0], n[1], n[2]);
     if (strcmp(sum1, sum2) == 0) {
@@ -905,7 +904,7 @@ static int cmd_build_balloon_built(void)
     }
     if (balloon_parts_count != 6) { printf("Niet klaar.\n"); balloon_parts_count = 0; return RET_KEEP; }
     for (x = 1; x <= BALLOON_PARTS; x++) {
-        if (obj[x].loc == 0) inventory_count--;
+        if (obj[x].loc == 0 && inventory_count > 0) inventory_count--;
         obj[x].loc = OBJECT_GONE;
     }
     balloon_built = 1;
@@ -1311,14 +1310,14 @@ int main(void)
         while (1) {
             printf("\nWat nu    : ");
             if (fgets(input, sizeof(input), stdin) == NULL)
-                return RET_REDRAW;
+                break;
             chomp(input);
 
             result = handle_command(input);
-            if (result == RET_EXIT) return RET_REDRAW;
+            if (result == RET_EXIT) return EXIT_SUCCESS;
             if (result == RET_REDRAW) break;
         }
     }
 
-    return RET_REDRAW;
+    return EXIT_SUCCESS;
 }
